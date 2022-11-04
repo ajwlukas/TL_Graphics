@@ -19,5 +19,6 @@ namespace TL_Graphics
 		virtual void Set() = 0;
 		virtual void Update(DirectX::SimpleMath::Vector3 pos, DirectX::SimpleMath::Vector3 rot) = 0;
 		virtual void Update(DirectX::SimpleMath::Matrix m) = 0;
+
 	};
 }

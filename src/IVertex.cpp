@@ -51,17 +51,17 @@ namespace TL_Graphics
 		}
 	}
 
-	VertexSet::VertexSet()
+	VertexAttribute::VertexAttribute()
 	{
 		pimpl = new Impl();
 	}
 
-	VertexSet::~VertexSet()
+	VertexAttribute::~VertexAttribute()
 	{
 		SAFE_DELETE(pimpl);
 	}
 
-	void VertexSet::AddElementToDesc(UINT dataSize, TL_Graphics::DataType type, LPCSTR SemanticName, int SemanticIndex,
+	void VertexAttribute::AddElementToDesc(UINT dataSize, TL_Graphics::DataType type, LPCSTR SemanticName, int SemanticIndex,
 		int inputSlot, int InstanceDataStepRate)
 	{
 		UINT dataCount = dataSize / sizeof(DWORD);
@@ -85,7 +85,7 @@ namespace TL_Graphics
 		pimpl->semanticString += SemanticName;
 	}
 
-	void VertexSet::AddData(void* data, UINT dataSize)
+	void VertexAttribute::AddData(void* data, UINT dataSize)
 	{
 
 		UINT dataCount = dataSize / sizeof(DWORD);

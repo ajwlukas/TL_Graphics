@@ -30,7 +30,7 @@ public:
 	virtual void Draw() override;
 	virtual void Present()override;
 
-	virtual Mesh* CreateMesh(TL_Graphics::VertexSet& vertexSet, UINT indexData[], UINT indexCount, std::wstring fileName) override;
+	virtual Mesh* CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, std::wstring fileName) override;
 
 	virtual Material* CreateMaterial(std::wstring fileName, const TL_Graphics::MaterialDesc& desc = TL_Graphics::MaterialDesc()) override;
 
@@ -57,18 +57,12 @@ private:
 	Resource<ID3D11DepthStencilView> depthStencilView;
 	Resource<ID3D11RenderTargetView> rtv;
 	Resource<ID3D11Texture2D> depthStencilBuffer;
-	Resource<ID3D11DepthStencilState> depthStencilState;
-	Resource<ID3D11DepthStencilState> noDepthStencilState;
-	Resource<ID3D11RasterizerState> rasterState;
-	Resource<ID3D11BlendState> blendState;
 
 	Pipeline* pipeline;
 
 	HRESULT CreateDeviceAndSwapChain();
 	HRESULT CreateRtv();
 	HRESULT CreateAndSetDepthStencilView();
-	HRESULT CreateAndSetRasterizerState();
-	HRESULT CreateBlendState();
 	void SetViewPort();
 
 };

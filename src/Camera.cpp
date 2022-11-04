@@ -63,6 +63,7 @@ void Camera::Update(SimpleMath::Matrix m)
 	viewprojBuffer->Update(&data, sizeof(Data));
 }
 
+
 void Camera::OnResize(UINT width, UINT height)
 {
 	screenWidth = width;

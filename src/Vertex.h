@@ -2,7 +2,7 @@
 
 #include "IVertex.h"
 
-class TL_Graphics::VertexSet::Impl
+class TL_Graphics::VertexAttribute::Impl
 {
 public:
 	void* GetVerticesData() { return verticesData.data(); }
@@ -13,7 +13,7 @@ public:
 	UINT GetDescsSize() { return descs.size(); }
 
 private:
-	friend class TL_Graphics::VertexSet;
+	friend class TL_Graphics::VertexAttribute;
 	std::vector<DWORD> verticesData;//실제 버텍스들의 데이터
 	UINT memIndex;
 

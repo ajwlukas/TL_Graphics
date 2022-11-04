@@ -7,16 +7,17 @@
 
 DX11Renderer::DX11Renderer()
     :device(nullptr), dc(nullptr), hWnd(0), windowInfo{}, swapChain(nullptr), rtv{}, depthStencilBuffer{},
-    depthStencilView{}, rasterState{}, width(0), height(0)
+    depthStencilView{}, width(0), height(0)
 {
     onResizeNotice.AddObserver(this);
 }
 
 DX11Renderer::~DX11Renderer()
 {
-    depthStencilState.Return();
-    noDepthStencilState.Return();
+    rtv.Return();
+    depthStencilBuffer.Return();
 
+    SAFE_DELETE(pipeline);
     SAFE_DELETE(resources);
     SAFE_RELEASE(device);
     SAFE_RELEASE(dc);
@@ -38,18 +39,12 @@ HRESULT DX11Renderer::Init()
     if (hr != S_OK) return hr;
 
     resources = new Resources(device);
-    pipeline = new Pipeline(dc);
+    pipeline = new Pipeline(dc, resources);
 
     hr = CreateRtv();
     if (hr != S_OK) return hr;
 
     hr = CreateAndSetDepthStencilView();
-    if (hr != S_OK) return hr;
-
-    hr = CreateAndSetRasterizerState();
-    if (hr != S_OK) return hr;
-
-    hr = CreateBlendState();
     if (hr != S_OK) return hr;
 
     SetViewPort();
@@ -132,7 +127,6 @@ HRESULT DX11Renderer::CreateAndSetDepthStencilView()
     D3D11_TEXTURE2D_DESC depthBufferDesc;
     ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
-
     depthBufferDesc.Width = width;
     depthBufferDesc.Height = height;
     depthBufferDesc.MipLevels = 1;
@@ -147,57 +141,9 @@ HRESULT DX11Renderer::CreateAndSetDepthStencilView()
 
     resources->texture2Ds->Create(depthStencilBuffer, depthBufferDesc);
 
-    resources->depthStencilStates->GetDefault(depthStencilState);
-
-    D3D11_DEPTH_STENCIL_DESC desc = {};
-
-    desc.DepthEnable = false;
-    desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-    desc.DepthFunc = D3D11_COMPARISON_LESS;
-
-    desc.StencilEnable = true;
-    desc.StencilReadMask = 0xFF;
-    desc.StencilWriteMask = 0xFF;
-
-    desc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-    desc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-    desc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-    desc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-    desc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-    desc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-    desc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-    desc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-    resources->depthStencilStates->Get(noDepthStencilState,desc);
-
-    dc->OMSetDepthStencilState(noDepthStencilState, 1);
-
     resources->depthStencilViews->CreateDefault(depthStencilView, depthStencilBuffer);
 
     dc->OMSetRenderTargets(1, rtv, depthStencilView);
-
-    return hr;
-}
-
-HRESULT DX11Renderer::CreateAndSetRasterizerState()
-{
-    HRESULT hr = S_OK;
-
-    resources->rasterStates->GetDefault(rasterState);
-
-    dc->RSSetState(rasterState);
-
-    return hr;
-}
-
-HRESULT DX11Renderer::CreateBlendState()
-{
-    HRESULT hr = S_OK;
-
-    resources->blendStates->GetDefault(blendState);
-
-    dc->OMSetBlendState(blendState, NULL, 0xFF);
 
     return hr;
 }
@@ -252,7 +198,7 @@ void DX11Renderer::Present()
     swapChain->Present(0, 0);
 }
 
-Mesh* DX11Renderer::CreateMesh(TL_Graphics::VertexSet& vertexSet, UINT indexData[], UINT indexCount, wstring fileName)
+Mesh* DX11Renderer::CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, wstring fileName)
 {
     return new Mesh(dc, resources, pipeline, vertexSet, indexData, indexCount, fileName);
 }

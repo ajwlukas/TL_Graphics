@@ -19,5 +19,6 @@ namespace TL_Graphics
 	{
 	public:
 		virtual void Set() = 0;
+
 	};
 }

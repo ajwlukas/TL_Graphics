@@ -34,6 +34,19 @@ Resources::~Resources()
 	rtvs->Release();
 	depthStencilViews->Release();
 	buffers->Release();
+
+	SAFE_DELETE(vertexShaders);
+	SAFE_DELETE(inputLayouts);
+	SAFE_DELETE(pixelShaders);
+	SAFE_DELETE(srvs);
+	SAFE_DELETE(samplerStates);
+	SAFE_DELETE(rasterStates);
+	SAFE_DELETE(depthStencilStates);
+	SAFE_DELETE(blendStates);
+	SAFE_DELETE(texture2Ds);
+	SAFE_DELETE(rtvs);
+	SAFE_DELETE(depthStencilViews);
+	SAFE_DELETE(buffers);
 }
 
 ID3D11VertexShader* VertexShaderResources::Get(std::wstring shaderFileName)
@@ -447,7 +460,9 @@ void DepthStencilStateResources::SetDefault(D3D11_DEPTH_STENCIL_DESC desc)
 void DepthStencilStateResources::Release()
 {
 	for (auto depthStencilState : depthStencilStates)
+	{
 		depthStencilState.second.data->Release();
+	}
 }
 
 void BlendStateResources::Get(Resource<ID3D11BlendState>& dest, D3D11_BLEND_DESC desc)
