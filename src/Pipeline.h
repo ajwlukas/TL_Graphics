@@ -9,14 +9,21 @@
 /// <summary>
 /// dc->DrawIndexed() 호출 시점이 애매해져서 만든 클래스
 /// 
+/// this class represent Device Context
+/// 
 /// 221018 Ssreppa
 /// </summary>
 
 class Pipeline
 {
 public:
-	Pipeline(ID3D11DeviceContext* dc, Resources* resources);
+	Pipeline(ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, Resources* resources);
 	~Pipeline();
+
+	void Init(UINT width, UINT height);
+
+
+	void Clear(float color[4]);
 
 	void SetCurrentRasterState(Resource<ID3D11RasterizerState> state);
 	void SetCurrentDepthStencilState(Resource<ID3D11DepthStencilState> state);
@@ -25,9 +32,13 @@ public:
 	void SetMesh(Mesh* mesh);
 	void SetMaterial(Material* material);
 
+	void SetRenderTarget(Resource<ID3D11RenderTargetView> rtv);//todo : depthStencilView도 해줘야하는가? 아직 depthStencilView가 뭔지 잘 모르겠다.
+	void SetRenderTarget_SwapChain();//스왑체인의 렌더타겟을 꽂는다.
+
 	void Draw();
 private:
 	ID3D11DeviceContext* dc;
+	IDXGISwapChain* swapChain;
 	Resources* resources;
 
 	Mesh* currentMesh;
@@ -51,4 +62,6 @@ private:
 
 	void CreateDefaultStates();
 
+	void ResizeSwapChainRtv(UINT width, UINT height);//aka Create
+	void ResizeDepthStencilView(UINT width, UINT height);//aka Create
 };

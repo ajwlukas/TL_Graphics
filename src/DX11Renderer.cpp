@@ -39,13 +39,15 @@ HRESULT DX11Renderer::Init()
     if (hr != S_OK) return hr;
 
     resources = new Resources(device);
-    pipeline = new Pipeline(dc, resources);
+    pipeline = new Pipeline(dc, swapChain, resources);
 
-    hr = CreateRtv();
-    if (hr != S_OK) return hr;
+    pipeline->Init(width, height);
 
-    hr = CreateAndSetDepthStencilView();
-    if (hr != S_OK) return hr;
+    //hr = CreateRtv();
+    //if (hr != S_OK) return hr;
+
+    //hr = CreateAndSetDepthStencilView();
+    //if (hr != S_OK) return hr;
 
     SetViewPort();
 
@@ -185,12 +187,7 @@ void DX11Renderer::OnResize(uint32_t _width, uint32_t _height)
 void DX11Renderer::Clear()
 {
     float color[4] = { 0.0f, 0.7f, 1.0f, 1.0f };
-    float transparent[4] = { 0.0f,0.0f,0.0f,0.0f };//todo: 구차나서 일단 이렇게 해놓음
-    float white[4] = { 1.0f,1.0f,1.0f,1.0f };//todo: 구차나서 일단 이렇게 해놓음
-
-    dc->ClearRenderTargetView(rtv, color);
-
-    dc->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+    pipeline->Clear(color);
 }
 
 void DX11Renderer::Present()

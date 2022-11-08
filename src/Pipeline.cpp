@@ -1,20 +1,31 @@
 #include "pch_dx_11.h"
 #include "Pipeline.h"
 
-Pipeline::Pipeline(ID3D11DeviceContext* dc, Resources* resources)
+Pipeline::Pipeline(ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, Resources* resources)
 	:dc(dc), currentMaterial(nullptr), currentMesh(nullptr)
+	,swapChain(swapChain)
 	,resources(resources)
 {
-	CreateDefaultStates();
-
-	 SetCurrentRasterState(defaultRasterState);
-	 SetCurrentDepthStencilState(defaultDepthStencilState);
-	 SetCurrentBlendState(defaultBlendState);
 }
 
 Pipeline::~Pipeline()
 {
 }
+
+void Pipeline::Init(UINT width, UINT height)
+{
+	CreateDefaultStates();
+
+	SetCurrentRasterState(defaultRasterState);
+	SetCurrentDepthStencilState(defaultDepthStencilState);
+	SetCurrentBlendState(defaultBlendState);
+
+	ResizeSwapChainRtv(width, height);
+	ResizeDepthStencilView(width, height);
+
+	SetRenderTarget_SwapChain();
+}
+
 
 void Pipeline::SetMesh(Mesh* mesh)
 {
@@ -27,6 +38,13 @@ void Pipeline::SetMesh(Mesh* mesh)
 	currentMesh = mesh;
 }
 
+void Pipeline::Clear(float color[4])
+{
+	dc->ClearRenderTargetView(swapChainRtv, color);
+
+	dc->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+}
+
 void Pipeline::SetCurrentRasterState(Resource<ID3D11RasterizerState> state)
 {
 	dc->RSSetState(state);
@@ -36,6 +54,16 @@ void Pipeline::SetCurrentRasterState(Resource<ID3D11RasterizerState> state)
 void Pipeline::SetMaterial(Material* material)
 {
 	currentMaterial = material;
+}
+
+void Pipeline::SetRenderTarget(Resource<ID3D11RenderTargetView> rtv)
+{
+	dc->OMSetRenderTargets(1, rtv, depthStencilView);
+}
+
+void Pipeline::SetRenderTarget_SwapChain()
+{
+	dc->OMSetRenderTargets(1, swapChainRtv, depthStencilView);
 }
 
 void Pipeline::SetCurrentBlendState(Resource<ID3D11BlendState> state)
@@ -60,4 +88,49 @@ void Pipeline::CreateDefaultStates()
 	resources->rasterStates->GetDefault(defaultRasterState);
 	resources->depthStencilStates->GetDefault(defaultDepthStencilState);
 	resources->blendStates->GetDefault(defaultBlendState);
+}
+
+void Pipeline::ResizeSwapChainRtv(UINT width, UINT height)
+{
+	HRESULT hr = S_OK;
+
+	swapChainRtv.Return();
+
+	ID3D11Texture2D* backBuffer = nullptr;
+	swapChain->ResizeBuffers(1, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
+
+	hr = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
+
+	resources->rtvs->CreateDefault(swapChainRtv, backBuffer);
+
+	backBuffer->Release();
+	backBuffer = nullptr;
+
+	assert(SUCCEEDED(hr));
+}
+
+void Pipeline::ResizeDepthStencilView(UINT width, UINT height)
+{
+	HRESULT hr = S_OK;
+
+	D3D11_TEXTURE2D_DESC depthBufferDesc;
+	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
+
+	depthBufferDesc.Width = width;
+	depthBufferDesc.Height = height;
+	depthBufferDesc.MipLevels = 1;
+	depthBufferDesc.ArraySize = 1;
+	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthBufferDesc.SampleDesc.Count = 1;
+	depthBufferDesc.SampleDesc.Quality = 0;
+	depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthBufferDesc.CPUAccessFlags = 0;
+	depthBufferDesc.MiscFlags = 0;
+
+	resources->texture2Ds->Create(depthStencilBuffer, depthBufferDesc);
+
+	resources->depthStencilViews->CreateDefault(depthStencilView, depthStencilBuffer);
+
+	assert(SUCCEEDED(hr));
 }
