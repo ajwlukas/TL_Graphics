@@ -42,11 +42,15 @@ private:
 
 	void OccurEvent()
 	{
+		if (width == 0 && height == 0) return;
+
 		for (Observer* ob : observers)
 			ob->OnResize(width, height);
 	}
 
-	uint32_t width , height;
+	//값이 0이면 dll의 초기화 순서를 엄격하게 따져야해서 널널하게 바꿔줌
+	uint32_t width = 1;
+	uint32_t height = 1;
 
 	std::vector<Observer*> observers;
 };

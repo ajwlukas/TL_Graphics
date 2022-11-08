@@ -6,6 +6,7 @@ DX11Renderer::DX11Renderer()
     :device(nullptr), dc(nullptr), hWnd(0)
     
     , swapChain(nullptr)
+
 {
 }
 
@@ -21,6 +22,7 @@ DX11Renderer::~DX11Renderer()
 HRESULT DX11Renderer::Init()
 {
     hWnd = GetActiveWindow();
+   
 
     HRESULT hr = S_OK;
 
