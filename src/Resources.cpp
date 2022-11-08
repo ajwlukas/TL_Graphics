@@ -335,6 +335,11 @@ void SamplerStateResources::Get(Resource<ID3D11SamplerState>& dest, D3D11_SAMPLE
 	};
 }
 
+void SamplerStateResources::SetDefault(D3D11_SAMPLER_DESC desc)
+{
+	defaultDesc = desc;
+}
+
 void SamplerStateResources::Release()
 {
 	for (auto samplerState : samplerStates)

@@ -167,11 +167,21 @@ class SamplerStateResources
 {
 public:
 	void Get(Resource< ID3D11SamplerState>& dest, D3D11_SAMPLER_DESC desc);
+	void GetDefault(Resource< ID3D11SamplerState>& dest) { Get(dest, defaultDesc); }
 
+	void SetDefault(D3D11_SAMPLER_DESC desc);
 private:
 	friend class Resources;
 	Resources* resources;
-	SamplerStateResources(Resources* resources) : resources(resources) {}
+	SamplerStateResources(Resources* resources) : resources(resources) 
+	{
+		D3D11_SAMPLER_DESC desc = {};
+		desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+
+		SetDefault(desc);
+	}
 
 	void Release();
 
@@ -181,6 +191,7 @@ private:
 		ID3D11SamplerState* data;
 		UINT refCount;
 	};
+	D3D11_SAMPLER_DESC defaultDesc;
 	std::unordered_map<std::string, Data> samplerStates;
 };
 

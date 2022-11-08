@@ -30,8 +30,6 @@ private:
 
 	float fov;//½Ã¾ß°¢
 	float fovInRadian;
-	UINT screenWidth;
-	UINT screenHeight;
 	float frustumNear;
 	float frustumFar;
 

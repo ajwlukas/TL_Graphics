@@ -31,8 +31,11 @@ public:
 	void SetCurrentRasterState(Resource<ID3D11RasterizerState> state);
 	void SetCurrentDepthStencilState(Resource<ID3D11DepthStencilState> state);
 	void SetCurrentBlendState(Resource<ID3D11BlendState> state);
+	void SetCurrentSamplerState(Resource<ID3D11SamplerState> state);
 
 	void SetViewPort();
+
+	void SetConstantBuffer(ConstantBuffer* constantBuffer);
 
 	void SetMesh(Mesh* mesh);
 	void SetMaterial(Material* material);
@@ -49,6 +52,9 @@ private:
 	Mesh* currentMesh;
 	Material* currentMaterial;
 
+	ConstantBuffer* currentConstantBuffersVS[255];
+	ConstantBuffer* currentConstantBuffersPS[255];
+
 	Resource<ID3D11RasterizerState> currentRasterState;
 	Resource<ID3D11DepthStencilState> currentDepthStencilState;
 	Resource<ID3D11BlendState> currentBlendState;
@@ -59,6 +65,7 @@ private:
 	Resource<ID3D11RasterizerState> defaultRasterState;
 	Resource<ID3D11DepthStencilState> defaultDepthStencilState;
 	Resource<ID3D11BlendState> defaultBlendState;
+	Resource<ID3D11SamplerState> defualtSamplerState;
 
 	Resource<ID3D11DepthStencilView> depthStencilView;
 	Resource<ID3D11Texture2D> depthStencilBuffer;

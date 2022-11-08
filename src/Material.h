@@ -21,8 +21,8 @@ class Pipeline;
 class Material : public TL_Graphics::IMaterial
 {
 public:
-	Material(ID3D11DeviceContext* deviceContext, Resources* resources, Pipeline* pipeline, std::wstring pixelShaderName,
-		D3D11_SAMPLER_DESC samplerDesc, const TL_Graphics::MaterialDesc& desc = TL_Graphics::MaterialDesc());
+	Material( Resources* resources, Pipeline* pipeline, std::wstring pixelShaderName
+		,const TL_Graphics::MaterialDesc& desc = TL_Graphics::MaterialDesc());
 	virtual ~Material();
 
 	virtual void Set() override;
@@ -33,9 +33,6 @@ public:
 	void SetNormalMap(std::wstring fileName);
 	void SetSpecularMap(std::wstring fileName);
 
-
-	void SetSamplerState(D3D11_SAMPLER_DESC samplerDesc);
-
 	struct Data
 	{
 		float ambient[4];
@@ -45,7 +42,7 @@ public:
 
 	std::wstring pixelShaderName;
 private:
-	ID3D11DeviceContext* dc;
+	friend class Pipeline;
 	Resources* resources;
 	Pipeline* pipeline;
 
@@ -53,7 +50,6 @@ private:
 	Resource<ID3D11ShaderResourceView> diffuse;
 	Resource<ID3D11ShaderResourceView> normal;
 	Resource<ID3D11ShaderResourceView> specular;
-	Resource<ID3D11SamplerState> samplerState;
 
 
 	Resource<ID3D11Buffer> buffer;

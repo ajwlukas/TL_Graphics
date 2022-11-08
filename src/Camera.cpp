@@ -6,8 +6,6 @@ constexpr float pi  = 3.141592f;
 Camera::Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, float fov, float frustumNear, float frustumFar)
 	:data{}
 	,fov(fov)
-	, screenWidth(screenWidth)
-	, screenHeight(screenHeight)
 	,frustumNear(frustumNear)
 	,frustumFar(frustumFar)
 {
@@ -66,9 +64,6 @@ void Camera::Update(SimpleMath::Matrix m)
 
 void Camera::OnResize(UINT width, UINT height)
 {
-	screenWidth = width;
-	screenHeight = height;
-
 	data.proj = XMMatrixPerspectiveFovLH(fovInRadian, width / (float)height, frustumNear, frustumFar);
 
 	viewprojBuffer->Update(&data, sizeof(Data));

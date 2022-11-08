@@ -94,16 +94,12 @@ void DX11Renderer::Present()
 
 Mesh* DX11Renderer::CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, wstring fileName)
 {
-    return new Mesh(dc, resources, pipeline, vertexSet, indexData, indexCount, fileName);
+    return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, fileName);
 }
 
 Material* DX11Renderer::CreateMaterial(std::wstring fileName, const TL_Graphics::MaterialDesc& desc)
 {
-    D3D11_SAMPLER_DESC samplerDesc = {};
-    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-    return new Material(dc, resources, pipeline, fileName, samplerDesc, desc);
+    return new Material(resources, pipeline, fileName, desc);
 }
 
 ConstantBuffer* DX11Renderer::CreateConstantBuffer(UINT slot,TL_Graphics::E_SHADER_TYPE type, void* data, size_t dataSize)

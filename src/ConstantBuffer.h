@@ -19,6 +19,7 @@ public:
 	
 
 private:
+	friend class Pipeline;
 	ID3D11DeviceContext* dc;
 	Resources* resources;
 	Pipeline* pipeline;

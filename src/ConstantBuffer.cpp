@@ -6,6 +6,7 @@ ConstantBuffer::ConstantBuffer(ID3D11DeviceContext* dc, Resources* resources, Pi
 	,resources(resources)
 	,slot(slot)
 	,type(type)
+	,pipeline(pipeline)
 {
 	D3D11_BUFFER_DESC desc = {};
 	desc.Usage = D3D11_USAGE_DYNAMIC;
@@ -27,13 +28,7 @@ ConstantBuffer::~ConstantBuffer()
 
 void ConstantBuffer::Set()
 {
-	if(type == TL_Graphics::E_SHADER_TYPE::VS)
-		dc->VSSetConstantBuffers( slot, 1, buffer);
-	
-	else if(type == TL_Graphics::E_SHADER_TYPE::PS)
-		dc->PSSetConstantBuffers( slot, 1, buffer);
-
-	//pipeline->SetConstantBuffer(this);
+	pipeline->SetConstantBuffer(this);
 }
 
 void ConstantBuffer::Update(void* data, size_t dataSize)
@@ -48,6 +43,4 @@ void ConstantBuffer::Update(void* data, size_t dataSize)
 
 	// GPU Access UnLock Buffer Data..
 	dc->Unmap(buffer, 0);
-
-
 }

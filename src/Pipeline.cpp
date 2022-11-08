@@ -21,6 +21,7 @@ void Pipeline::Init(UINT width, UINT height)
 	SetCurrentRasterState(defaultRasterState);
 	SetCurrentDepthStencilState(defaultDepthStencilState);
 	SetCurrentBlendState(defaultBlendState);
+	SetCurrentSamplerState(defualtSamplerState);
 
 	OnResize(width, height);
 }
@@ -64,8 +65,27 @@ void Pipeline::SetViewPort()
 	dc->RSSetViewports(1, &viewPort);
 }
 
+void Pipeline::SetConstantBuffer(ConstantBuffer* constantBuffer)
+{
+	if (constantBuffer->type == TL_Graphics::E_SHADER_TYPE::VS)
+	{
+		dc->VSSetConstantBuffers(constantBuffer->slot, 1, constantBuffer->buffer);
+
+		currentConstantBuffersVS[constantBuffer->slot] = constantBuffer;
+	}
+
+	else if (constantBuffer->type == TL_Graphics::E_SHADER_TYPE::PS)
+	{
+		dc->PSSetConstantBuffers(constantBuffer->slot, 1, constantBuffer->buffer);
+
+		currentConstantBuffersPS[constantBuffer->slot] = constantBuffer;
+	}
+}
+
 void Pipeline::SetMaterial(Material* material)
 {
+	dc->PSSetShader(material->pixelShader, 0, 0);
+
 	currentMaterial = material;
 }
 
@@ -85,6 +105,12 @@ void Pipeline::SetCurrentBlendState(Resource<ID3D11BlendState> state)
 	currentBlendState = state;
 }
 
+void Pipeline::SetCurrentSamplerState(Resource<ID3D11SamplerState> state)
+{
+	dc->PSSetSamplers(0, 1, state);
+	defualtSamplerState = state;
+}
+
 
 void Pipeline::SetCurrentDepthStencilState(Resource<ID3D11DepthStencilState> state)
 {
@@ -102,6 +128,7 @@ void Pipeline::CreateDefaultStates()
 	resources->rasterStates->GetDefault(defaultRasterState);
 	resources->depthStencilStates->GetDefault(defaultDepthStencilState);
 	resources->blendStates->GetDefault(defaultBlendState);
+	resources->samplerStates->GetDefault(defualtSamplerState);
 }
 
 void Pipeline::ResizeSwapChainRtv(UINT width, UINT height)

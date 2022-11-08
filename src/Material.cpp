@@ -1,13 +1,11 @@
 #include "pch_dx_11.h"
 #include "Material.h"
 
-Material::Material(ID3D11DeviceContext* deviceContext, Resources* resources, Pipeline* pipeline, std::wstring pixelShaderName,
-	D3D11_SAMPLER_DESC samplerDesc
+Material::Material(Resources* resources, Pipeline* pipeline, std::wstring pixelShaderName
 	, const TL_Graphics::MaterialDesc& desc)
-	:normal{}, diffuse{}, specular{},
-	samplerState{}, pixelShader(nullptr)
+	:normal{}, diffuse{}, specular{}
+	, pixelShader(nullptr)
 	, pixelShaderName(pixelShaderName)
-	, dc(deviceContext)
 	, resources(resources)
 	, pipeline(pipeline)
 {
@@ -23,14 +21,10 @@ Material::Material(ID3D11DeviceContext* deviceContext, Resources* resources, Pip
 		resources->srvs->GetFromFile(normal, desc.normalFileName);//todo : 비어있을 때 에러가 안남
 	}
 
-	resources->samplerStates->Get(samplerState, samplerDesc);
 
 	memcpy(data.ambient, desc.ambient, sizeof(desc.ambient))		  ;
 	memcpy(data.diffuse, desc.diffuse, sizeof(desc.diffuse))			;
 	memcpy(data.specular, desc.specular, sizeof(desc.specular));
-		/*data.ambient = desc.ambient ;
-		data.diffuse = desc.diffuse	 ;
-		data.specular = desc.specular;*/
 
 		D3D11_BUFFER_DESC cbd;
 		cbd.Usage = D3D11_USAGE_DEFAULT;
@@ -50,7 +44,7 @@ Material::~Material()
 
 void Material::Set()
 {//todo
-	if (diffuse.resource != nullptr)
+	/*if (diffuse.resource != nullptr)
 		dc->PSSetShaderResources(0, 1, diffuse);
 	if (normal.resource != nullptr)
 		dc->PSSetShaderResources(1, 1, normal);
@@ -60,7 +54,7 @@ void Material::Set()
 		dc->PSSetSamplers(0, 1, samplerState);
 		dc->PSSetShader(pixelShader,0,0);
 
-		dc->PSSetConstantBuffers(0, 1, buffer);
+		dc->PSSetConstantBuffers(0, 1, buffer);*/
 
 		pipeline->SetMaterial(this);
 }
@@ -85,9 +79,4 @@ void Material::SetNormalMap(wstring fileName)
 void Material::SetSpecularMap(wstring fileName)
 {
 	resources->srvs->GetFromFile(specular, fileName);
-}
-
-void Material::SetSamplerState(D3D11_SAMPLER_DESC samplerDesc)
-{
-	resources->samplerStates->Get(samplerState, samplerDesc);
 }
