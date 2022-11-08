@@ -3,7 +3,7 @@
 
 constexpr float pi  = 3.141592f;
 
-Camera::Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, float fov, UINT screenWidth, UINT screenHeight, float frustumNear, float frustumFar)
+Camera::Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, float fov, float frustumNear, float frustumFar)
 	:data{}
 	,fov(fov)
 	, screenWidth(screenWidth)
@@ -16,7 +16,7 @@ Camera::Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline
 	resizeNotice->AddObserver(this);
 
 	data.view = XMMatrixInverse(nullptr, XMMatrixIdentity());
-	data.proj = XMMatrixPerspectiveFovLH(fovInRadian, screenWidth / (float)screenHeight, frustumNear, frustumFar);
+	data.proj = XMMatrixPerspectiveFovLH(fovInRadian, resizeNotice->GetWidth() / (float)resizeNotice->GetHeight(), frustumNear, frustumFar);
 
 	data.camPos = { 0,0,0 };
 

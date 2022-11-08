@@ -35,6 +35,9 @@ public:
 		}
 	}
 
+	uint32_t GetWidth() { return width; }
+	uint32_t GetHeight() { return height; }
+
 private:
 
 	void OccurEvent()

@@ -1,11 +1,13 @@
 #include "pch_dx_11.h"
 #include "Pipeline.h"
 
-Pipeline::Pipeline(ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, Resources* resources)
+Pipeline::Pipeline(ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, OnResizeNotice* resizeNotice, Resources* resources)
 	:dc(dc), currentMaterial(nullptr), currentMesh(nullptr)
 	,swapChain(swapChain)
 	,resources(resources)
 {
+	resizeNotice->AddObserver(this);
+	Init(resizeNotice->GetWidth(), resizeNotice->GetHeight());
 }
 
 Pipeline::~Pipeline()
@@ -20,12 +22,18 @@ void Pipeline::Init(UINT width, UINT height)
 	SetCurrentDepthStencilState(defaultDepthStencilState);
 	SetCurrentBlendState(defaultBlendState);
 
-	ResizeSwapChainRtv(width, height);
-	ResizeDepthStencilView(width, height);
-
-	SetRenderTarget_SwapChain();
+	OnResize(width, height);
 }
 
+void Pipeline::OnResize(uint32_t width, uint32_t height)
+{
+	ResizeSwapChainRtv(width, height);
+	ResizeDepthStencilView(width, height);
+	ResizeViewPort(width, height);
+
+	SetRenderTarget_SwapChain();
+	SetViewPort();
+}
 
 void Pipeline::SetMesh(Mesh* mesh)
 {
@@ -51,6 +59,11 @@ void Pipeline::SetCurrentRasterState(Resource<ID3D11RasterizerState> state)
 	currentRasterState = state;
 }
 
+void Pipeline::SetViewPort()
+{
+	dc->RSSetViewports(1, &viewPort);
+}
+
 void Pipeline::SetMaterial(Material* material)
 {
 	currentMaterial = material;
@@ -71,6 +84,7 @@ void Pipeline::SetCurrentBlendState(Resource<ID3D11BlendState> state)
 	dc->OMSetBlendState(state, NULL, 0xFF);
 	currentBlendState = state;
 }
+
 
 void Pipeline::SetCurrentDepthStencilState(Resource<ID3D11DepthStencilState> state)
 {
@@ -133,4 +147,14 @@ void Pipeline::ResizeDepthStencilView(UINT width, UINT height)
 	resources->depthStencilViews->CreateDefault(depthStencilView, depthStencilBuffer);
 
 	assert(SUCCEEDED(hr));
+}
+
+void Pipeline::ResizeViewPort(UINT width, UINT height)
+{
+	viewPort.Width = (float)width;
+	viewPort.Height = (float)height;
+	viewPort.MinDepth = 0.0f;
+	viewPort.MaxDepth = 1.0f;
+	viewPort.TopLeftX = 0.0f;
+	viewPort.TopLeftY = 0.0f;
 }

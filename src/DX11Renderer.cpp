@@ -2,36 +2,25 @@
 
 #include "DX11Renderer.h"
 
-
-//DX11Renderer* DX11Renderer::instance = nullptr;
-
 DX11Renderer::DX11Renderer()
-    :device(nullptr), dc(nullptr), hWnd(0), windowInfo{}, swapChain(nullptr), rtv{}, depthStencilBuffer{},
-    depthStencilView{}, width(0), height(0)
+    :device(nullptr), dc(nullptr), hWnd(0)
+    
+    , swapChain(nullptr)
 {
-    onResizeNotice.AddObserver(this);
 }
 
 DX11Renderer::~DX11Renderer()
 {
-    rtv.Return();
-    depthStencilBuffer.Return();
-
     SAFE_DELETE(pipeline);
     SAFE_DELETE(resources);
-    SAFE_RELEASE(device);
     SAFE_RELEASE(dc);
+    SAFE_RELEASE(device);
     SAFE_RELEASE(swapChain);
 }
 
 HRESULT DX11Renderer::Init()
 {
     hWnd = GetActiveWindow();
-    GetWindowInfo(hWnd, &windowInfo);
-    width = windowInfo.rcClient.right - windowInfo.rcClient.left;
-    height = windowInfo.rcClient.bottom - windowInfo.rcClient.top;
-
-    OnResize(width, height);
 
     HRESULT hr = S_OK;
 
@@ -39,17 +28,7 @@ HRESULT DX11Renderer::Init()
     if (hr != S_OK) return hr;
 
     resources = new Resources(device);
-    pipeline = new Pipeline(dc, swapChain, resources);
-
-    pipeline->Init(width, height);
-
-    //hr = CreateRtv();
-    //if (hr != S_OK) return hr;
-
-    //hr = CreateAndSetDepthStencilView();
-    //if (hr != S_OK) return hr;
-
-    SetViewPort();
+    pipeline = new Pipeline(dc, swapChain, &onResizeNotice, resources);
 
 
     return hr;
@@ -60,8 +39,8 @@ HRESULT DX11Renderer::CreateDeviceAndSwapChain()
     DXGI_SWAP_CHAIN_DESC swapChainDesc;
     ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
     swapChainDesc.BufferCount = 1;
-    swapChainDesc.BufferDesc.Width = width;
-    swapChainDesc.BufferDesc.Height = height;
+    swapChainDesc.BufferDesc.Width = onResizeNotice.GetWidth();
+    swapChainDesc.BufferDesc.Height = onResizeNotice.GetHeight();
     swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     swapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
     swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
@@ -101,88 +80,6 @@ HRESULT DX11Renderer::CreateDeviceAndSwapChain()
     return hr;
 }
 
-HRESULT DX11Renderer::CreateRtv()
-{
-    HRESULT hr = S_OK;
-
-    rtv.Return();
-
-    ID3D11Texture2D* backBuffer = nullptr;
-    swapChain->ResizeBuffers(1, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
-    if (FAILED(hr = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer)))
-    {
-        return hr;
-    }
-
-    resources->rtvs->CreateDefault(rtv, backBuffer);
-
-    backBuffer->Release();
-    backBuffer = nullptr;
-
-    return hr;
-}
-
-HRESULT DX11Renderer::CreateAndSetDepthStencilView()
-{
-    HRESULT hr = S_OK;
-
-    D3D11_TEXTURE2D_DESC depthBufferDesc;
-    ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
-
-    depthBufferDesc.Width = width;
-    depthBufferDesc.Height = height;
-    depthBufferDesc.MipLevels = 1;
-    depthBufferDesc.ArraySize = 1;
-    depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-    depthBufferDesc.SampleDesc.Count = 1;
-    depthBufferDesc.SampleDesc.Quality = 0;
-    depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-    depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-    depthBufferDesc.CPUAccessFlags = 0;
-    depthBufferDesc.MiscFlags = 0;
-
-    resources->texture2Ds->Create(depthStencilBuffer, depthBufferDesc);
-
-    resources->depthStencilViews->CreateDefault(depthStencilView, depthStencilBuffer);
-
-    dc->OMSetRenderTargets(1, rtv, depthStencilView);
-
-    return hr;
-}
-
-void DX11Renderer::SetViewPort()
-{
-    D3D11_VIEWPORT viewPort = {};
-    viewPort.Width = (float)width;
-    viewPort.Height = (float)height;
-    viewPort.MinDepth = 0.0f;
-    viewPort.MaxDepth = 1.0f;
-    viewPort.TopLeftX = 0.0f;
-    viewPort.TopLeftY = 0.0f;
-
-    dc->RSSetViewports(1, &viewPort);
-}
-
-
-void DX11Renderer::OnResize(uint32_t _width, uint32_t _height)
-{
-    if (this == nullptr) return;
-
-    GetWindowInfo(hWnd, &windowInfo);
-        width = _width;
-        height = _height;
-
-        if (width == 0 && height == 0) return;
-
-    if (dc != nullptr)
-    {
-        CreateRtv();
-
-        CreateAndSetDepthStencilView();
-
-        SetViewPort();
-    }
-}
 
 void DX11Renderer::Clear()
 {
@@ -216,7 +113,7 @@ ConstantBuffer* DX11Renderer::CreateConstantBuffer(UINT slot,TL_Graphics::E_SHAD
 
 Camera* DX11Renderer::CreateCamera()
 {
-    return new Camera(dc, resources, pipeline, &onResizeNotice, 80.0f, width, height, 1.0f, 2000.0f);
+    return new Camera(dc, resources, pipeline, &onResizeNotice, 80.0f, 1.0f, 2000.0f);
 }
 
 void DX11Renderer::UpdateWindowSize(UINT width, UINT height)

@@ -18,7 +18,7 @@
 #include "Pipeline.h"
 
 
-class  DX11Renderer : public TL_Graphics::RenderSystem, public OnResize_Observer
+class  DX11Renderer : public TL_Graphics::RenderSystem
 {
 public:
 	DX11Renderer();
@@ -42,27 +42,15 @@ public:
 
 private:
 	HWND hWnd;
-	WINDOWINFO windowInfo;
-	UINT width, height;
 
+	HRESULT CreateDeviceAndSwapChain();
 	ID3D11Device* device;
 	ID3D11DeviceContext* dc;
 	IDXGISwapChain* swapChain;
 
 	OnResizeNotice onResizeNotice;
-	virtual void  OnResize(uint32_t _width, uint32_t _height) override;
 
-	Resources* resources;
-
-	Resource<ID3D11DepthStencilView> depthStencilView;
-	Resource<ID3D11RenderTargetView> rtv;
-	Resource<ID3D11Texture2D> depthStencilBuffer;
-
-	Pipeline* pipeline;
-
-	HRESULT CreateDeviceAndSwapChain();
-	HRESULT CreateRtv();
-	HRESULT CreateAndSetDepthStencilView();
-	void SetViewPort();
+	Resources* resources;//this class represent device
+	Pipeline* pipeline;//this class represent device context
 
 };
