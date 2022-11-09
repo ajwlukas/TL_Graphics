@@ -106,7 +106,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch_dx_11.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../TL_Common/inc;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -114,15 +114,8 @@
       <AdditionalLibraryDirectories>./lib;</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>IF NOT EXIST "$(ProjectDir)inc" mkdir "$(ProjectDir)inc"
-copy/Y "$(ProjectDir)src\IVertex.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\IMaterial.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\IMesh.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\RenderSystem.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\Export.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\IConstantBuffer.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\ICamera.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\ILight.h" "$(ProjectDir)inc\Graphics"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <FxCompile />
     <FxCompile>
@@ -141,7 +134,7 @@ copy/Y "$(ProjectDir)src\ILight.h" "$(ProjectDir)inc\Graphics"</Command>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch_dx_11.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../TL_Common/inc;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,15 +144,8 @@ copy/Y "$(ProjectDir)src\ILight.h" "$(ProjectDir)inc\Graphics"</Command>
       <AdditionalLibraryDirectories>./lib;</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>IF NOT EXIST "$(ProjectDir)inc" mkdir "$(ProjectDir)inc"
-copy/Y "$(ProjectDir)src\IVertex.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\IMaterial.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\IMesh.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\RenderSystem.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\Export.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\IConstantBuffer.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\ICamera.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\ILight.h" "$(ProjectDir)inc\Graphics"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <FxCompile />
     <FxCompile>
@@ -176,7 +162,7 @@ copy/Y "$(ProjectDir)src\ILight.h" "$(ProjectDir)inc\Graphics"</Command>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch_dx_11.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../TL_Common/inc;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -184,15 +170,8 @@ copy/Y "$(ProjectDir)src\ILight.h" "$(ProjectDir)inc\Graphics"</Command>
       <AdditionalLibraryDirectories>./lib;</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>IF NOT EXIST "$(ProjectDir)inc" mkdir "$(ProjectDir)inc"
-copy/Y "$(ProjectDir)src\IVertex.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\IMaterial.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\IMesh.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\RenderSystem.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\Export.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\IConstantBuffer.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\ICamera.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\ILight.h" "$(ProjectDir)inc\Graphics"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <FxCompile />
     <FxCompile>
@@ -211,7 +190,7 @@ copy/Y "$(ProjectDir)src\ILight.h" "$(ProjectDir)inc\Graphics"</Command>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch_dx_11.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../TL_Common/inc;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -221,15 +200,8 @@ copy/Y "$(ProjectDir)src\ILight.h" "$(ProjectDir)inc\Graphics"</Command>
       <AdditionalLibraryDirectories>./lib;</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>IF NOT EXIST "$(ProjectDir)inc" mkdir "$(ProjectDir)inc"
-copy/Y "$(ProjectDir)src\IVertex.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\IMaterial.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\IMesh.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\RenderSystem.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\Export.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\IConstantBuffer.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\ICamera.h" "$(ProjectDir)inc\Graphics"
-copy/Y "$(ProjectDir)src\ILight.h" "$(ProjectDir)inc\Graphics"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <FxCompile />
     <FxCompile>
@@ -239,49 +211,55 @@ copy/Y "$(ProjectDir)src\ILight.h" "$(ProjectDir)inc\Graphics"</Command>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Camera.h" />
-    <ClInclude Include="src\ConstantBuffer.h" />
-    <ClInclude Include="src\DX11Renderer.h" />
-    <ClInclude Include="src\DXTK\SimpleMath.h" />
-    <ClInclude Include="src\Export.h" />
-    <ClInclude Include="src\ICamera.h" />
-    <ClInclude Include="src\IConstantBuffer.h" />
-    <ClInclude Include="src\ILight.h" />
-    <ClInclude Include="src\IMaterial.h" />
-    <ClInclude Include="src\IMesh.h" />
-    <ClInclude Include="src\IVertex.h" />
-    <ClInclude Include="src\Material.h" />
-    <ClInclude Include="src\Mesh.h" />
-    <ClInclude Include="src\OnResize.h" />
-    <ClInclude Include="src\pch_dx_11.h" />
-    <ClInclude Include="src\Pipeline.h" />
-    <ClInclude Include="src\RenderSystem.h" />
-    <ClInclude Include="src\Resource.h" />
-    <ClInclude Include="src\Resources.h" />
-    <ClInclude Include="src\Utility.h" />
-    <ClInclude Include="src\Vertex.h" />
+    <ClInclude Include="inc\Graphics\Export.h" />
+    <ClInclude Include="inc\Graphics\ICamera.h" />
+    <ClInclude Include="inc\Graphics\IConstantBuffer.h" />
+    <ClInclude Include="inc\Graphics\ILight.h" />
+    <ClInclude Include="inc\Graphics\IMaterial.h" />
+    <ClInclude Include="inc\Graphics\IMesh.h" />
+    <ClInclude Include="inc\Graphics\IShaderResource.h" />
+    <ClInclude Include="inc\Graphics\IVertex.h" />
+    <ClInclude Include="inc\Graphics\RenderSystem.h" />
+    <ClInclude Include="inc\Graphics\ShaderType.h" />
+    <ClInclude Include="src\Graphics\Camera.h" />
+    <ClInclude Include="src\Graphics\ConstantBuffer.h" />
+    <ClInclude Include="src\Graphics\DX11Renderer.h" />
+    <ClInclude Include="src\Graphics\DXTK\SimpleMath.h" />
+    <ClInclude Include="src\Graphics\Export.h" />
+    <ClInclude Include="src\Graphics\Material.h" />
+    <ClInclude Include="src\Graphics\Mesh.h" />
+    <ClInclude Include="src\Graphics\OnResize.h" />
+    <ClInclude Include="src\Graphics\pch_dx_11.h" />
+    <ClInclude Include="src\Graphics\Pipeline.h" />
+    <ClInclude Include="src\Graphics\Resource.h" />
+    <ClInclude Include="src\Graphics\Resources.h" />
+    <ClInclude Include="src\Graphics\ShaderResource.h" />
+    <ClInclude Include="src\Graphics\ShaderType.h" />
+    <ClInclude Include="src\Graphics\Utility.h" />
+    <ClInclude Include="src\Graphics\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Camera.cpp" />
-    <ClCompile Include="src\ConstantBuffer.cpp" />
-    <ClCompile Include="src\DX11Renderer.cpp" />
-    <ClCompile Include="src\IVertex.cpp" />
-    <ClCompile Include="src\Material.cpp" />
-    <ClCompile Include="src\Mesh.cpp" />
-    <ClCompile Include="src\pch_dx_11.cpp">
+    <ClCompile Include="src\Graphics\Camera.cpp" />
+    <ClCompile Include="src\Graphics\ConstantBuffer.cpp" />
+    <ClCompile Include="src\Graphics\DX11Renderer.cpp" />
+    <ClCompile Include="src\Graphics\IVertex.cpp" />
+    <ClCompile Include="src\Graphics\Material.cpp" />
+    <ClCompile Include="src\Graphics\Mesh.cpp" />
+    <ClCompile Include="src\Graphics\pch_dx_11.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Pipeline.cpp" />
-    <ClCompile Include="src\RenderSystem.cpp" />
-    <ClCompile Include="src\Resources.cpp" />
-    <ClCompile Include="src\Utility.cpp" />
-    <ClCompile Include="src\Vertex.cpp" />
+    <ClCompile Include="src\Graphics\Pipeline.cpp" />
+    <ClCompile Include="src\Graphics\RenderSystem.cpp" />
+    <ClCompile Include="src\Graphics\Resources.cpp" />
+    <ClCompile Include="src\Graphics\ShaderResource.cpp" />
+    <ClCompile Include="src\Graphics\Utility.cpp" />
+    <ClCompile Include="src\Graphics\Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\SimpleMath.inl" />
+    <None Include="src\Graphics\SimpleMath.inl" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\BoxCameraPS.hlsl">

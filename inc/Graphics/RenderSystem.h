@@ -33,6 +33,8 @@ namespace TL_Graphics
 
 		virtual ICamera* CreateCamera() = 0;
 
+		void Return(void* address);//Create한거 지우는 거
+
 		virtual void UpdateWindowSize(UINT width, UINT height) = 0;
 	};
 }
