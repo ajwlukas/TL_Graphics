@@ -3,13 +3,15 @@
 #include <string>
 #include "Export.h"
 
+#include "Math\TL_Math.h"
+
 namespace TL_Graphics
 {
-	struct AJW_GRAPHICS_DLLEXPORT MaterialDesc
+	struct MaterialDesc
 	{
-		float ambient[4] = { 0.8f, 0.8f, 0.8f, 1.0f };
-		float diffuse[4];
-		float specular[4];
+		TL_Math::Vector4 ambient;
+		TL_Math::Vector4 diffuse;
+		TL_Math::Vector4 specular;
 
 		std::wstring diffuseFileName;
 		std::wstring normalFileName;

@@ -35,9 +35,9 @@ public:
 
 	struct Data
 	{
-		float ambient[4];
-		float diffuse[4];
-		float specular[4];
+		TL_Math::Vector4 ambient;
+		TL_Math::Vector4 diffuse;
+		TL_Math::Vector4 specular;
 	}data;
 
 	std::wstring pixelShaderName;

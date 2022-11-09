@@ -2,28 +2,30 @@
 
 #include "Export.h"
 
+#include "Math\TL_Math.h"
+
 namespace TL_Graphics
 {
-	__declspec(align(16)) struct AJW_GRAPHICS_DLLEXPORT DirectionalLight
+	 __declspec(align(16)) struct  DirectionalLight
 	{
-		float direction[3];
+		TL_Math::Vector3 direction;
 	};
-	__declspec(align(16)) struct AJW_GRAPHICS_DLLEXPORT PointLight
+	__declspec(align(16)) struct  PointLight
 	{
-		float position[3];
+		TL_Math::Vector3 position;
 		float range;
 
-		float attenuation[3];
+		TL_Math::Vector3 attenuation;
 	};
-	__declspec(align(16)) struct AJW_GRAPHICS_DLLEXPORT SpotLight
+	__declspec(align(16)) struct  SpotLight
 	{
-		float position[3];
+		TL_Math::Vector3 position;
 		float range;
 
-		float direction[3];
+		TL_Math::Vector3 direction;
 		float spot;
 
-		float attenuation[3];
+		TL_Math::Vector3 attenuation;
 	};
 
 

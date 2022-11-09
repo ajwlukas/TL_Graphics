@@ -75,3 +75,6 @@ using namespace DirectX;
 //#pragma comment(lib, "libfbxsdk.lib")
 
 #include "DX11Renderer.h"
+
+
+#include "Math\TL_Math.h"

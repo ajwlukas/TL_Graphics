@@ -22,9 +22,9 @@ Material::Material(Resources* resources, Pipeline* pipeline, std::wstring pixelS
 	}
 
 
-	memcpy(data.ambient, desc.ambient, sizeof(desc.ambient))		  ;
-	memcpy(data.diffuse, desc.diffuse, sizeof(desc.diffuse))			;
-	memcpy(data.specular, desc.specular, sizeof(desc.specular));
+	data.ambient = desc.ambient;
+	data.diffuse = desc.diffuse;
+	data.specular = desc.specular;
 
 		D3D11_BUFFER_DESC cbd;
 		cbd.Usage = D3D11_USAGE_DEFAULT;

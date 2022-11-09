@@ -31,12 +31,12 @@ void Camera::Set()
 	viewprojBuffer->Set();
 }
 
-void Camera::Update(SimpleMath::Vector3 pos, SimpleMath::Vector3 rot)
+void Camera::Update(TL_Math::Vector3 pos, TL_Math::Vector3 rot)
 {
-	SimpleMath::Matrix R = DirectX::XMMatrixRotationRollPitchYawFromVector(rot);
-	SimpleMath::Matrix T = DirectX::XMMatrixTranslationFromVector(pos);
+	TL_Math::Matrix R = DirectX::XMMatrixRotationRollPitchYawFromVector(rot);
+	TL_Math::Matrix T = DirectX::XMMatrixTranslationFromVector(pos);
 
-	SimpleMath::Matrix m = XMMatrixIdentity();
+	TL_Math::Matrix m = XMMatrixIdentity();
 
 	m *= R;
 	m *= T;
@@ -48,7 +48,7 @@ void Camera::Update(SimpleMath::Vector3 pos, SimpleMath::Vector3 rot)
 	viewprojBuffer->Update(&data, sizeof(Data));
 }
 
-void Camera::Update(SimpleMath::Matrix m)
+void Camera::Update(TL_Math::Matrix m)
 {
 	data.view = XMMatrixInverse(nullptr, m);
 

@@ -4,7 +4,8 @@
 
 #include "OnResize.h"
 
-#include "DXTK/SimpleMath.h"
+#include "Math\TL_Math.h"
+
 #include "ConstantBuffer.h"
 
 class Camera : public TL_Graphics::ICamera, public OnResize_Observer
@@ -14,16 +15,16 @@ public:
 	~Camera();
 	
 	virtual void Set() override;
-	virtual void Update(SimpleMath::Vector3 pos, SimpleMath::Vector3 rot) override;
-	virtual void Update(SimpleMath::Matrix m) override;
+	virtual void Update(TL_Math::Vector3 pos, TL_Math::Vector3 rot) override;
+	virtual void Update(TL_Math::Matrix m) override;
 
 private:
 
 	__declspec(align(16)) struct Data
 	{
-		SimpleMath::Matrix view;
-		SimpleMath::Matrix  proj;
-		SimpleMath::Vector3 camPos;
+		TL_Math::Matrix view;
+		TL_Math::Matrix  proj;
+		TL_Math::Vector3 camPos;
 	}data;
 
 	ConstantBuffer* viewprojBuffer;
