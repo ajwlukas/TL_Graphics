@@ -114,6 +114,11 @@ Camera* DX11Renderer::CreateCamera()
     return new Camera(dc, resources, pipeline, &onResizeNotice, 80.0f, 1.0f, 2000.0f);
 }
 
+Texture* DX11Renderer::CreateTexture(UINT slot, TL_Graphics::E_SHADER_TYPE type, std::wstring fileName)
+{
+    return new Texture(dc, resources, pipeline, slot, type, fileName);
+}
+
 void DX11Renderer::UpdateWindowSize(UINT width, UINT height)
 {
     onResizeNotice.Update(width, height);

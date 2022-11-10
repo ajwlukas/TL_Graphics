@@ -9,6 +9,7 @@
 #include "IConstantBuffer.h"
 #include "ICamera.h"
 
+#include "IShaderResource.h"
 
 namespace TL_Graphics
 {
@@ -32,6 +33,8 @@ namespace TL_Graphics
 		virtual IConstantBuffer* CreateConstantBuffer(UINT slot, TL_Graphics::E_SHADER_TYPE type, void* data, size_t dataSize) = 0;
 
 		virtual ICamera* CreateCamera() = 0;
+
+		virtual IShaderResource* CreateTexture(UINT slot, TL_Graphics::E_SHADER_TYPE type, std::wstring fileName) = 0;
 
 		void Return(void* address);//Create한거 지우는 거
 

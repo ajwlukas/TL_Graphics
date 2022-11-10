@@ -93,6 +93,9 @@
     <ClInclude Include="inc\Graphics\IShaderResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Graphics\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Graphics\Camera.cpp">
@@ -134,6 +137,9 @@
     <ClCompile Include="src\Graphics\ShaderResource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="inc\Graphics\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Graphics\SimpleMath.inl">
@@ -149,5 +155,7 @@
     <FxCompile Include="Shader\TriangleColorVS.hlsl" />
     <FxCompile Include="Shader\TrianglePS.hlsl" />
     <FxCompile Include="Shader\TriangleVS.hlsl" />
+    <FxCompile Include="Shader\TextureVS.hlsl" />
+    <FxCompile Include="Shader\TexturePS.hlsl" />
   </ItemGroup>
 </Project>
