@@ -36,6 +36,8 @@ namespace TL_Graphics
 
 		virtual IShaderResource* CreateTexture(UINT slot, TL_Graphics::E_SHADER_TYPE type, std::wstring fileName) = 0;
 
+		virtual IShaderResource* CreateTextureBuffer(UINT slot, TL_Graphics::E_SHADER_TYPE type, void* data, size_t dataSize) = 0;
+
 		void Return(void* address);//Create한거 지우는 거
 
 		virtual void UpdateWindowSize(UINT width, UINT height) = 0;

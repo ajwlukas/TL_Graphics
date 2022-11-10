@@ -119,6 +119,11 @@ Texture* DX11Renderer::CreateTexture(UINT slot, TL_Graphics::E_SHADER_TYPE type,
     return new Texture(dc, resources, pipeline, slot, type, fileName);
 }
 
+TextureBuffer* DX11Renderer::CreateTextureBuffer(UINT slot, TL_Graphics::E_SHADER_TYPE type, void* data, size_t dataSize)
+{
+    return new TextureBuffer(dc, resources, pipeline, slot, type, data, dataSize);
+}
+
 void DX11Renderer::UpdateWindowSize(UINT width, UINT height)
 {
     onResizeNotice.Update(width, height);

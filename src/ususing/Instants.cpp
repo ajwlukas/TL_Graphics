@@ -1,5 +1,5 @@
-#include "pch_dx_11.h"
-#include "Instants.h"
+//#include "pch_dx_11.h"
+//#include "Instants.h"
 //https://docs.microsoft.com/en-us/windows/win32/direct3d11/overviews-direct3d-11-devices-downlevel-intro
 //텍스쳐당 최대 크기 내용 있는 것으로 유추? Max Texture Dimension, 에 따라 좀 더 보완 할 예정
 //Instants::Instants(InstancingObject* proto) : proto(proto), count(0)

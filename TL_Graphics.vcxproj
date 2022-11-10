@@ -238,6 +238,7 @@
     <ClInclude Include="src\Graphics\ShaderType.h" />
     <ClInclude Include="src\Graphics\Utility.h" />
     <ClInclude Include="src\Graphics\Vertex.h" />
+    <ClInclude Include="src\Graphics\TextureBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="inc\Graphics\Texture.cpp" />
@@ -256,6 +257,7 @@
     <ClCompile Include="src\Graphics\Pipeline.cpp" />
     <ClCompile Include="src\Graphics\RenderSystem.cpp" />
     <ClCompile Include="src\Graphics\Resources.cpp" />
+    <ClCompile Include="src\Graphics\TextureBuffer.cpp" />
     <ClCompile Include="src\Graphics\ShaderResource.cpp" />
     <ClCompile Include="src\Graphics\Utility.cpp" />
     <ClCompile Include="src\Graphics\Vertex.cpp" />
@@ -278,6 +280,18 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Shader\LightVS.hlsl" />
+    <FxCompile Include="Shader\TextureBufferPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\TextureBufferVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="Shader\TexturePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>

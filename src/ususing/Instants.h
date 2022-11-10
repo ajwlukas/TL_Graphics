@@ -48,9 +48,9 @@ class IInstancingBuffer abstract
 //	Resource<ID3D11ShaderResourceView> srvBuffer;//buffer와 묶여있다
 };
 
-template<typename T, UINT SLOT>
-class InstancingBuffer : public IInstancingBuffer
-{
+//template<typename T, UINT SLOT>
+//class InstancingBuffer : public IInstancingBuffer
+//{
 //public:
 //	InstancingBuffer()
 //	{
@@ -85,57 +85,57 @@ class InstancingBuffer : public IInstancingBuffer
 //		delete[] data;
 //	}
 //
-};
-
-struct World
-{
-	World() : world(XMMatrixIdentity())
-	{
-
-	}
-	Matrix world;
-};
-
-struct Bones
-{
-	Bones() : bones{}
-	{
-
-	}
-	Matrix bones[MAX_BONE_SIZE];
-};
-
-//인스턴스 하나의 정보
-class Instance
-{
-public:
-	Instance() : instanceNum(0), animator(nullptr)//, skinner(nullptr)
-	{}
-	~Instance() 
-	{
-		if (animator != nullptr) delete animator;
-		//if (skinner != nullptr) delete skinner;
-	}
-
-	void Update()
-	{
-		if (animator != nullptr)//원형이 animator를 가지고 있다면
-			animator->Update();
-
-		//if (skinner != nullptr)//todo: 조건 달아줄 것, skinning쓰는 애들만 쓰도록
-		//	skinner->Update();
-
-		transform.UpdateWorld();
-	}
-
-	Transform transform;
-	UINT instanceNum;
-
-	Animator* animator;
-	//Skinner* skinner;
-
-	vector<void*> dataAddress;
-};
+//};
+//
+//struct World
+//{
+//	World() : world(XMMatrixIdentity())
+//	{
+//
+//	}
+//	Matrix world;
+//};
+//
+//struct Bones
+//{
+//	Bones() : bones{}
+//	{
+//
+//	}
+//	Matrix bones[MAX_BONE_SIZE];
+//};
+//
+////인스턴스 하나의 정보
+//class Instance
+//{
+//public:
+//	Instance() : instanceNum(0), animator(nullptr)//, skinner(nullptr)
+//	{}
+//	~Instance() 
+//	{
+//		if (animator != nullptr) delete animator;
+//		//if (skinner != nullptr) delete skinner;
+//	}
+//
+//	void Update()
+//	{
+//		if (animator != nullptr)//원형이 animator를 가지고 있다면
+//			animator->Update();
+//
+//		//if (skinner != nullptr)//todo: 조건 달아줄 것, skinning쓰는 애들만 쓰도록
+//		//	skinner->Update();
+//
+//		transform.UpdateWorld();
+//	}
+//
+//	Transform transform;
+//	UINT instanceNum;
+//
+//	Animator* animator;
+//	//Skinner* skinner;
+//
+//	vector<void*> dataAddress;
+//};
 
 //인스턴스들의 모음, 인스턴스들의 데이터를 관리한다.
 class Instants

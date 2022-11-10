@@ -16,6 +16,7 @@
 #include "Camera.h"
 
 #include "Texture.h"
+#include "TextureBuffer.h"
 
 #include "Pipeline.h"
 
@@ -41,6 +42,8 @@ public:
 	virtual Camera* CreateCamera() override;
 
 	virtual Texture* CreateTexture(UINT slot, TL_Graphics::E_SHADER_TYPE type, std::wstring fileName) override;
+
+	virtual TextureBuffer* CreateTextureBuffer(UINT slot, TL_Graphics::E_SHADER_TYPE type, void* data, size_t dataSize) override;
 
 	virtual void UpdateWindowSize(UINT width, UINT height) override;
 

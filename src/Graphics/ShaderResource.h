@@ -15,6 +15,7 @@ public:
 	virtual ~ShaderResource();
 
 	virtual void Set() override;
+	virtual void Update(void* data, size_t dataSize) override {};
 
 private:
 	friend class Pipeline;
