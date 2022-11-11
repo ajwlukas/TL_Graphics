@@ -133,3 +133,8 @@ void DX11Renderer::Draw()
 {
     pipeline->Draw();
 }
+
+void DX11Renderer::DrawInstanced(UINT numInstance)
+{
+    pipeline->DrawInstanced(numInstance);
+}

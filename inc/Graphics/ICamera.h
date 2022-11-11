@@ -11,6 +11,7 @@ namespace TL_Graphics
 	public:
 		virtual void Set() = 0;
 		virtual void Update(TL_Math::Vector3 pos, TL_Math::Vector3 rot) = 0;
+		virtual void Update(TL_Math::Vector3 pos, TL_Math::Quaternion rot) = 0;
 		virtual void Update(TL_Math::Matrix m) = 0;
 
 	};

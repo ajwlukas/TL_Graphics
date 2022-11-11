@@ -48,6 +48,23 @@ void Camera::Update(TL_Math::Vector3 pos, TL_Math::Vector3 rot)
 	viewprojBuffer->Update(&data, sizeof(Data));
 }
 
+void Camera::Update(TL_Math::Vector3 pos, TL_Math::Quaternion rot)
+{
+	TL_Math::Matrix R = DirectX::XMMatrixRotationQuaternion(rot);
+	TL_Math::Matrix T = DirectX::XMMatrixTranslationFromVector(pos);
+
+	TL_Math::Matrix m = XMMatrixIdentity();
+
+	m *= R;
+	m *= T;
+
+	data.view = XMMatrixInverse(nullptr, m);
+
+	data.camPos = pos;
+
+	viewprojBuffer->Update(&data, sizeof(Data));
+}
+
 void Camera::Update(TL_Math::Matrix m)
 {
 	data.view = XMMatrixInverse(nullptr, m);

@@ -140,6 +140,11 @@ void Pipeline::Draw()
 	dc->DrawIndexed(currentMesh->GetIndexCount(), 0, 0);
 }
 
+void Pipeline::DrawInstanced(UINT numInstance)
+{
+	dc->DrawIndexedInstanced(currentMesh->GetIndexCount(), numInstance, 0, 0, 0);
+}
+
 void Pipeline::CreateDefaultStates()
 {
 	resources->rasterStates->GetDefault(defaultRasterState);

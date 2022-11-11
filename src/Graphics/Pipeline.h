@@ -50,6 +50,7 @@ public:
 	void SetRenderTarget_SwapChain();//Ω∫ø“√º¿Œ¿« ∑ª¥ı≈∏∞Ÿ¿ª ≤»¥¬¥Ÿ.
 
 	void Draw();
+	void DrawInstanced(UINT numInstance);
 private:
 	ID3D11DeviceContext* dc;
 	IDXGISwapChain* swapChain;

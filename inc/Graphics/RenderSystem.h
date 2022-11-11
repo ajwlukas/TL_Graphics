@@ -24,6 +24,7 @@ namespace TL_Graphics
 
 		virtual void Clear() = 0;
 		virtual void Draw() = 0;
+		virtual void DrawInstanced(UINT numInstance) = 0;
 		virtual void Present() = 0;
 
 		virtual IMesh* CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, std::wstring fileName) = 0;

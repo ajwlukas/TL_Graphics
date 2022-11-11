@@ -16,6 +16,7 @@ public:
 	
 	virtual void Set() override;
 	virtual void Update(TL_Math::Vector3 pos, TL_Math::Vector3 rot) override;
+	virtual void Update(TL_Math::Vector3 pos, TL_Math::Quaternion rot) override;
 	virtual void Update(TL_Math::Matrix m) override;
 
 private:

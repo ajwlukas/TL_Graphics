@@ -31,6 +31,7 @@ public:
 
 	virtual void Clear()override;
 	virtual void Draw() override;
+	virtual void DrawInstanced(UINT numInstance) override;
 	virtual void Present()override;
 
 	virtual Mesh* CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, std::wstring fileName) override;
