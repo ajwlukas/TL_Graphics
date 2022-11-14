@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <d3d11.h>
 #include "Resources.h"
 
@@ -73,6 +74,10 @@ private:
 	/// //////////////////////////////////////////////
 	/// </summary>
 	Resource<ID3D11RasterizerState> defaultRasterState;
+	Resource<ID3D11RasterizerState> wireFrameRasterState;
+	Resource<ID3D11RasterizerState> solidRasterState;
+
+
 	Resource<ID3D11DepthStencilState> defaultDepthStencilState;
 	Resource<ID3D11BlendState> defaultBlendState;
 	Resource<ID3D11SamplerState> defualtSamplerState;
@@ -88,4 +93,14 @@ private:
 	void ResizeSwapChainRtv(UINT width, UINT height);//aka Create
 	void ResizeDepthStencilView(UINT width, UINT height);	//aka Create
 	void ResizeViewPort(UINT width, UINT height);//aka Create
+
+public:
+	void DrawWireOnce();
+	void DrawSolidOnce();
+
+	void SetSolidModeAsDefualt();
+	void SetWireModeAsDefualt();
+
+private:
+	vector<function<void()>> reservations;//calls after one drawcall
 };

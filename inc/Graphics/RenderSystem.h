@@ -42,5 +42,14 @@ namespace TL_Graphics
 		void Return(void* address);//Create한거 지우는 거
 
 		virtual void UpdateWindowSize(UINT width, UINT height) = 0;
+
+		//바로 다음 드로우콜에만 적용된다.
+		virtual void DrawWireOnce() = 0;
+		virtual void DrawSolidOnce() = 0;
+
+		virtual void SetSolidModeAsDefualt() = 0;
+		virtual void SetWireModeAsDefualt() = 0;
+
 	};
+
 }

@@ -61,4 +61,14 @@ private:
 	Resources* resources;//this class represent device
 	Pipeline* pipeline;//this class represent device context
 
+
+					   // RenderSystem을(를) 통해 상속됨
+	virtual void DrawWireOnce() override;
+
+	virtual void DrawSolidOnce() override;
+
+	virtual void SetSolidModeAsDefualt() override;
+
+	virtual void SetWireModeAsDefualt() override;
+
 };

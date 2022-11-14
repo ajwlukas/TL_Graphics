@@ -82,6 +82,26 @@ HRESULT DX11Renderer::CreateDeviceAndSwapChain()
     return hr;
 }
 
+void DX11Renderer::DrawWireOnce()
+{
+    pipeline->DrawWireOnce();
+}
+
+void DX11Renderer::DrawSolidOnce()
+{
+    pipeline->DrawSolidOnce();
+}
+
+void DX11Renderer::SetSolidModeAsDefualt()
+{
+    pipeline->SetSolidModeAsDefualt();
+}
+
+void DX11Renderer::SetWireModeAsDefualt()
+{
+    pipeline->SetWireModeAsDefualt();
+}
+
 
 void DX11Renderer::Clear()
 {

@@ -138,6 +138,10 @@ void Pipeline::SetCurrentDepthStencilState(Resource<ID3D11DepthStencilState> sta
 void Pipeline::Draw()
 {
 	dc->DrawIndexed(currentMesh->GetIndexCount(), 0, 0);
+
+	for (auto reserve : reservations)
+		reserve();
+	reservations.clear();
 }
 
 void Pipeline::DrawInstanced(UINT numInstance)
@@ -147,7 +151,14 @@ void Pipeline::DrawInstanced(UINT numInstance)
 
 void Pipeline::CreateDefaultStates()
 {
-	resources->rasterStates->GetDefault(defaultRasterState);
+	resources->rasterStates->GetDefault(solidRasterState);
+	resources->rasterStates->GetWireMode(wireFrameRasterState);
+
+	defaultRasterState = solidRasterState;
+	//defaultRasterState = wireFrameRasterState;
+
+
+
 	resources->depthStencilStates->GetDefault(defaultDepthStencilState);
 	resources->blendStates->GetDefault(defaultBlendState);
 	resources->samplerStates->GetDefault(defualtSamplerState);
@@ -206,4 +217,41 @@ void Pipeline::ResizeViewPort(UINT width, UINT height)
 	viewPort.MaxDepth = 1.0f;
 	viewPort.TopLeftX = 0.0f;
 	viewPort.TopLeftY = 0.0f;
+}
+
+void Pipeline::DrawWireOnce()
+{
+	SetCurrentRasterState(wireFrameRasterState);
+
+	reservations.emplace_back(
+		[&]() 
+		{
+			SetCurrentRasterState(defaultRasterState);
+		}
+	);
+}
+
+void Pipeline::DrawSolidOnce()
+{
+
+	SetCurrentRasterState(solidRasterState);
+
+	reservations.emplace_back(
+		[&]()
+		{
+			SetCurrentRasterState(defaultRasterState);
+		}
+	);
+}
+
+void Pipeline::SetSolidModeAsDefualt()
+{
+	defaultRasterState = solidRasterState;
+	SetCurrentRasterState(defaultRasterState);
+}
+
+void Pipeline::SetWireModeAsDefualt()
+{
+	defaultRasterState = wireFrameRasterState;
+	SetCurrentRasterState(defaultRasterState);
 }

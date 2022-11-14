@@ -93,7 +93,7 @@
     <ClInclude Include="inc\Graphics\IShaderResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Graphics\Texture.h">
+    <ClInclude Include="src\Graphics\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\TextureBuffer.h">
@@ -122,9 +122,6 @@
     <ClCompile Include="src\Graphics\pch_dx_11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\Pipeline.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Graphics\RenderSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -140,10 +137,13 @@
     <ClCompile Include="src\Graphics\ShaderResource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="inc\Graphics\Texture.cpp">
+    <ClCompile Include="src\Graphics\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\TextureBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Pipeline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -165,5 +165,7 @@
     <FxCompile Include="Shader\TexturePS.hlsl" />
     <FxCompile Include="Shader\TextureBufferVS.hlsl" />
     <FxCompile Include="Shader\TextureBufferPS.hlsl" />
+    <FxCompile Include="Shader\BoxVS.hlsl" />
+    <FxCompile Include="Shader\BoxPS.hlsl" />
   </ItemGroup>
 </Project>
