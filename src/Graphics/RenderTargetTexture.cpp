@@ -1,10 +1,20 @@
 #include "pch_dx_11.h"
 #include "RenderTargetTexture.h"
 
-RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, UINT width, UINT height)
-	:ShaderResource(dc, resources, pipeline)
+RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, UINT width, UINT height)
+	:ShaderResource(dc, resources, pipeline), RenderTarget(dc, resources, pipeline)
+    , isBasedWindowSize(false)
 {
     OnResize(width, height);
+}
+
+RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, float widthRatio, float heightRatio)
+    : ShaderResource(dc, resources, pipeline), RenderTarget(dc, resources, pipeline)
+    ,widthRatio(widthRatio)
+    , heightRatio(heightRatio)
+    ,isBasedWindowSize(true)
+{
+    OnResize(resizeNotice->GetWidth() * widthRatio, resizeNotice->GetHeight() * heightRatio);
 }
 
 RenderTargetTexture::~RenderTargetTexture()
@@ -13,6 +23,7 @@ RenderTargetTexture::~RenderTargetTexture()
 
 void RenderTargetTexture::SetRT(UINT slot)
 {
+    RenderTarget::Set(slot);
 }
 
 void RenderTargetTexture::SetT(TL_Graphics::E_SHADER_TYPE type, UINT slot)
@@ -25,8 +36,8 @@ void RenderTargetTexture::OnResize(uint32_t width, uint32_t height)
     if (!isBasedWindowSize) return;
 
     D3D11_TEXTURE2D_DESC desc = {};
-    desc.Width = width;
-    desc.Height = height;
+    desc.Width = width * widthRatio;
+    desc.Height = height * heightRatio;
     desc.MipLevels = 1;
     desc.ArraySize = 1;
     desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;

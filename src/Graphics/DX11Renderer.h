@@ -18,6 +18,8 @@
 #include "Texture.h"
 #include "TextureBuffer.h"
 
+#include "RenderTargetTexture.h"
+
 #include "Pipeline.h"
 
 
@@ -45,6 +47,9 @@ public:
 	virtual Texture* CreateTexture(std::wstring fileName) override;
 
 	virtual TextureBuffer* CreateTextureBuffer(void* data, size_t dataSize) override;
+
+	// RenderSystem을(를) 통해 상속됨
+	virtual RenderTargetTexture* CreateRenderTargetTexture(float widthRatio = 1.0f, float heightRatio = 1.0f) override;
 
 	virtual void UpdateWindowSize(UINT width, UINT height) override;
 
@@ -76,5 +81,7 @@ private:
 	virtual ID3D11Device* GetDevice() override;
 
 	virtual ID3D11DeviceContext* GetDeviceContext() override;
+
+
 
 };

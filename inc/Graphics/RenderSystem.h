@@ -11,6 +11,8 @@
 
 #include "IShaderResource.h"
 
+#include "IRenderTargetTexture.h"
+
 struct ID3D11Device;
 struct ID3D11DeviceContext;
 
@@ -41,6 +43,9 @@ namespace TL_Graphics
 		virtual IShaderResource* CreateTexture( std::wstring fileName) = 0;
 
 		virtual IShaderResource* CreateTextureBuffer( void* data, size_t dataSize) = 0;
+
+		virtual IRenderTargetTexture* CreateRenderTargetTexture(float widthRatio = 1.0f, float heightRatio = 1.0f) = 0;
+
 
 		void Return(void* address);//Create한거 지우는 거
 

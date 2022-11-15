@@ -113,6 +113,7 @@ ID3D11DeviceContext* DX11Renderer::GetDeviceContext()
 }
 
 
+
 void DX11Renderer::Clear()
 {
     float color[4] = { 0.0f, 0.7f, 1.0f, 1.0f };
@@ -152,6 +153,11 @@ Texture* DX11Renderer::CreateTexture(std::wstring fileName)
 TextureBuffer* DX11Renderer::CreateTextureBuffer(void* data, size_t dataSize)
 {
     return new TextureBuffer(dc, resources, pipeline, data, dataSize);
+}
+
+RenderTargetTexture* DX11Renderer::CreateRenderTargetTexture(float widthRatio , float heightRatio )
+{
+    return new RenderTargetTexture(dc, resources, pipeline, &onResizeNotice, widthRatio, heightRatio);
 }
 
 void DX11Renderer::UpdateWindowSize(UINT width, UINT height)
