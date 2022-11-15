@@ -221,6 +221,7 @@
     <ClInclude Include="inc\Graphics\IVertex.h" />
     <ClInclude Include="inc\Graphics\RenderSystem.h" />
     <ClInclude Include="inc\Graphics\ShaderType.h" />
+    <ClInclude Include="src\Graphics\RenderTargetTexture.h" />
     <ClInclude Include="src\Graphics\Texture.h" />
     <ClInclude Include="src\Graphics\Camera.h" />
     <ClInclude Include="src\Graphics\ConstantBuffer.h" />

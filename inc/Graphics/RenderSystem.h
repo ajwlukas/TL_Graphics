@@ -11,6 +11,9 @@
 
 #include "IShaderResource.h"
 
+class ID3D11Device;
+class ID3D11DeviceContext;
+
 namespace TL_Graphics
 {
 	class AJW_GRAPHICS_DLLEXPORT RenderSystem
@@ -49,6 +52,9 @@ namespace TL_Graphics
 
 		virtual void SetSolidModeAsDefualt() = 0;
 		virtual void SetWireModeAsDefualt() = 0;
+
+		virtual ID3D11Device* GetDevice() = 0;
+		virtual ID3D11DeviceContext* GetDeviceContext() = 0;
 
 	};
 

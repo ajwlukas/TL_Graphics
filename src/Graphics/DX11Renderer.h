@@ -71,4 +71,10 @@ private:
 
 	virtual void SetWireModeAsDefualt() override;
 
+
+	// RenderSystem을(를) 통해 상속됨
+	virtual ID3D11Device* GetDevice() override;
+
+	virtual ID3D11DeviceContext* GetDeviceContext() override;
+
 };

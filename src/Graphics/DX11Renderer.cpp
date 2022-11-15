@@ -102,6 +102,16 @@ void DX11Renderer::SetWireModeAsDefualt()
     pipeline->SetWireModeAsDefualt();
 }
 
+ID3D11Device* DX11Renderer::GetDevice()
+{
+    return device;
+}
+
+ID3D11DeviceContext* DX11Renderer::GetDeviceContext()
+{
+    return dc;
+}
+
 
 void DX11Renderer::Clear()
 {
