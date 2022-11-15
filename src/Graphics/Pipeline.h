@@ -20,6 +20,8 @@
 /// 221018 Ssreppa
 /// </summary>
 
+constexpr UINT MAX_RENDERTARGET = 8;
+
 class Pipeline : public OnResize_Observer
 {
 public:
@@ -86,6 +88,8 @@ private:
 	Resource<ID3D11Texture2D> depthStencilBuffer;
 
 	Resource<ID3D11RenderTargetView> swapChainRtv;//swapChainø° present«“ øÎµµ¿« ∑ª¥ı≈∏∞Ÿ
+
+	ID3D11RenderTargetView* renderTargets[MAX_RENDERTARGET] = {};
 	D3D11_VIEWPORT viewPort;
 
 	void CreateDefaultStates();

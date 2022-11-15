@@ -113,7 +113,9 @@ void Pipeline::SetRenderTarget(Resource<ID3D11RenderTargetView> rtv)
 
 void Pipeline::SetRenderTarget_SwapChain()
 {
-	dc->OMSetRenderTargets(1, swapChainRtv, depthStencilView);
+	renderTargets[0] = swapChainRtv;
+
+	dc->OMSetRenderTargets(8, renderTargets, depthStencilView);
 }
 
 void Pipeline::SetCurrentBlendState(Resource<ID3D11BlendState> state)
