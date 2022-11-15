@@ -50,7 +50,7 @@ public:
 	void SetMaterial(Material* material);
 
 	void SetRenderTarget(Resource<ID3D11RenderTargetView> rtv);//todo : depthStencilView도 해줘야하는가? 아직 depthStencilView가 뭔지 잘 모르겠다.
-	void SetRenderTarget_SwapChain();//스왑체인의 렌더타겟을 꽂는다.
+	void SetRenderTarget_SwapChain(UINT slot = 0);//스왑체인의 렌더타겟을 꽂는다.
 
 	void Draw();
 	void DrawInstanced(UINT numInstance);

@@ -111,9 +111,9 @@ void Pipeline::SetRenderTarget(Resource<ID3D11RenderTargetView> rtv)
 	dc->OMSetRenderTargets(1, rtv, depthStencilView);
 }
 
-void Pipeline::SetRenderTarget_SwapChain()
+void Pipeline::SetRenderTarget_SwapChain(UINT slot)
 {
-	renderTargets[0] = swapChainRtv;
+	renderTargets[slot] = swapChainRtv;
 
 	dc->OMSetRenderTargets(8, renderTargets, depthStencilView);
 }
