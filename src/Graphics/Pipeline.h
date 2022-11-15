@@ -12,6 +12,9 @@
 #include "ConstantBuffer.h"
 #include "ShaderResource.h"
 
+#include "RenderTarget.h"
+#include "SwapChainRenderTarget.h"
+
 /// <summary>
 /// dc->DrawIndexed() 호출 시점이 애매해져서 만든 클래스
 /// 
@@ -51,14 +54,14 @@ public:
 	void SetMesh(Mesh* mesh);
 	void SetMaterial(Material* material);
 
-	void SetRenderTarget(Resource<ID3D11RenderTargetView> rtv);//todo : depthStencilView도 해줘야하는가? 아직 depthStencilView가 뭔지 잘 모르겠다.
-	void SetRenderTarget_SwapChain(UINT slot = 0);//스왑체인의 렌더타겟을 꽂는다.
+	void SetRenderTarget(RenderTarget* rtv, UINT slot);//todo : depthStencilView도 해줘야하는가? 아직 depthStencilView가 뭔지 잘 모르겠다.
+
 
 	void Draw();
 	void DrawInstanced(UINT numInstance);
 private:
 	ID3D11DeviceContext* dc;
-	IDXGISwapChain* swapChain;
+	IDXGISwapChain* swapChain; friend class SwapChainRenderTarget;
 	Resources* resources;
 
 	Mesh* currentMesh;
@@ -69,6 +72,8 @@ private:
 
 	ShaderResource* currentShaderResourceVS[255];
 	ShaderResource* currentShaderResourcePS[255];
+
+	RenderTarget* currentRenderTarget[MAX_RENDERTARGET];
 
 	Resource<ID3D11RasterizerState> currentRasterState;
 	Resource<ID3D11DepthStencilState> currentDepthStencilState;
@@ -89,14 +94,14 @@ private:
 	Resource<ID3D11DepthStencilView> depthStencilView;
 	Resource<ID3D11Texture2D> depthStencilBuffer;
 
-	Resource<ID3D11RenderTargetView> swapChainRtv;//swapChain에 present할 용도의 렌더타겟
+	SwapChainRenderTarget* swapChainRtv;//swapChain에 present할 용도의 렌더타겟
 
 	ID3D11RenderTargetView* renderTargets[MAX_RENDERTARGET] = {};
 	D3D11_VIEWPORT viewPort;
 
 	void CreateDefaultStates();
 
-	void ResizeSwapChainRtv(UINT width, UINT height);//aka Create
+	//void ResizeSwapChainRtv(UINT width, UINT height);//aka Create
 	void ResizeDepthStencilView(UINT width, UINT height);	//aka Create
 	void ResizeViewPort(UINT width, UINT height);//aka Create
 

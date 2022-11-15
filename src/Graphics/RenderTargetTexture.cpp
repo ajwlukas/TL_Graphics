@@ -11,8 +11,11 @@ RenderTargetTexture::~RenderTargetTexture()
 {
 }
 
-void RenderTargetTexture::Set(TL_Graphics::E_SHADER_TYPE type,
-    UINT slot)
+void RenderTargetTexture::SetRT(UINT slot)
+{
+}
+
+void RenderTargetTexture::SetT(TL_Graphics::E_SHADER_TYPE type, UINT slot)
 {
     ShaderResource::Set(type, slot);
 }

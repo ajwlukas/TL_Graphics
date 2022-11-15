@@ -8,6 +8,8 @@
 
 class Pipeline;
 
+//todo : 인터페이스로 빼주지 말자
+
 class ShaderResource : public TL_Graphics::IShaderResource
 {
 public:

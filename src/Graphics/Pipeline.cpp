@@ -7,11 +7,16 @@ Pipeline::Pipeline(ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, OnResizeN
 	,resources(resources)
 {
 	resizeNotice->AddObserver(this);
+
+	swapChainRtv = new SwapChainRenderTarget(dc, resources, this, resizeNotice);
+
 	Init(resizeNotice->GetWidth(), resizeNotice->GetHeight());
+
 }
 
 Pipeline::~Pipeline()
 {
+	SAFE_DELETE(swapChainRtv);
 }
 
 void Pipeline::Init(UINT width, UINT height)
@@ -23,16 +28,16 @@ void Pipeline::Init(UINT width, UINT height)
 	SetCurrentBlendState(defaultBlendState);
 	SetCurrentSamplerState(defualtSamplerState);
 
+	swapChainRtv->OnResize(width, height);
+
 	OnResize(width, height);
 }
 
 void Pipeline::OnResize(uint32_t width, uint32_t height)
 {
-	ResizeSwapChainRtv(width, height);
 	ResizeDepthStencilView(width, height);
 	ResizeViewPort(width, height);
 
-	SetRenderTarget_SwapChain();
 	SetViewPort();
 }
 
@@ -49,7 +54,7 @@ void Pipeline::SetMesh(Mesh* mesh)
 
 void Pipeline::Clear(float color[4])
 {
-	dc->ClearRenderTargetView(swapChainRtv, color);
+	dc->ClearRenderTargetView(swapChainRtv->rtv, color);
 
 	dc->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
@@ -108,16 +113,13 @@ void Pipeline::SetMaterial(Material* material)
 	currentMaterial = material;
 }
 
-void Pipeline::SetRenderTarget(Resource<ID3D11RenderTargetView> rtv)
+void Pipeline::SetRenderTarget(RenderTarget* rtv, UINT slot)
 {
-	dc->OMSetRenderTargets(1, rtv, depthStencilView);
-}
-
-void Pipeline::SetRenderTarget_SwapChain(UINT slot)
-{
-	renderTargets[slot] = swapChainRtv;
+	renderTargets[slot] = rtv->rtv;
 
 	dc->OMSetRenderTargets(8, renderTargets, depthStencilView);
+
+	currentRenderTarget[slot] = rtv;
 }
 
 void Pipeline::SetCurrentBlendState(Resource<ID3D11BlendState> state)
@@ -166,25 +168,6 @@ void Pipeline::CreateDefaultStates()
 	resources->depthStencilStates->GetDefault(defaultDepthStencilState);
 	resources->blendStates->GetDefault(defaultBlendState);
 	resources->samplerStates->GetDefault(defualtSamplerState);
-}
-
-void Pipeline::ResizeSwapChainRtv(UINT width, UINT height)
-{
-	HRESULT hr = S_OK;
-
-	swapChainRtv.Return();
-
-	ID3D11Texture2D* backBuffer = nullptr;
-	swapChain->ResizeBuffers(1, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
-
-	hr = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
-
-	resources->rtvs->CreateDefault(swapChainRtv, backBuffer);
-
-	backBuffer->Release();
-	backBuffer = nullptr;
-
-	assert(SUCCEEDED(hr));
 }
 
 void Pipeline::ResizeDepthStencilView(UINT width, UINT height)

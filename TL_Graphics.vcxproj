@@ -217,11 +217,14 @@
     <ClInclude Include="inc\Graphics\ILight.h" />
     <ClInclude Include="inc\Graphics\IMaterial.h" />
     <ClInclude Include="inc\Graphics\IMesh.h" />
+    <ClInclude Include="inc\Graphics\IRenderTargetTexture.h" />
     <ClInclude Include="inc\Graphics\IShaderResource.h" />
     <ClInclude Include="inc\Graphics\IVertex.h" />
     <ClInclude Include="inc\Graphics\RenderSystem.h" />
     <ClInclude Include="inc\Graphics\ShaderType.h" />
+    <ClInclude Include="src\Graphics\RenderTarget.h" />
     <ClInclude Include="src\Graphics\RenderTargetTexture.h" />
+    <ClInclude Include="src\Graphics\SwapChainRenderTarget.h" />
     <ClInclude Include="src\Graphics\Texture.h" />
     <ClInclude Include="src\Graphics\Camera.h" />
     <ClInclude Include="src\Graphics\ConstantBuffer.h" />
@@ -242,7 +245,9 @@
     <ClInclude Include="src\Graphics\TextureBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\RenderTarget.cpp" />
     <ClCompile Include="src\Graphics\RenderTargetTexture.cpp" />
+    <ClCompile Include="src\Graphics\SwapChainRenderTarget.cpp" />
     <ClCompile Include="src\Graphics\Texture.cpp" />
     <ClCompile Include="src\Graphics\Camera.cpp" />
     <ClCompile Include="src\Graphics\ConstantBuffer.cpp" />
