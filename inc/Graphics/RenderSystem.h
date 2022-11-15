@@ -11,8 +11,8 @@
 
 #include "IShaderResource.h"
 
-class ID3D11Device;
-class ID3D11DeviceContext;
+struct ID3D11Device;
+struct ID3D11DeviceContext;
 
 namespace TL_Graphics
 {
