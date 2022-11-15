@@ -18,7 +18,7 @@ Camera::Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline
 
 	data.camPos = { 0,0,0 };
 
-	viewprojBuffer = new ConstantBuffer(dc, resources, pipeline, 0, TL_Graphics::E_SHADER_TYPE::VS, &data, sizeof(Data));
+	viewprojBuffer = new ConstantBuffer(dc, resources, pipeline,  &data, sizeof(Data));
 }
 
 Camera::~Camera()
@@ -26,9 +26,10 @@ Camera::~Camera()
 	SAFE_DELETE(viewprojBuffer);
 }
 
-void Camera::Set()
+void Camera::Set(TL_Graphics::E_SHADER_TYPE type,
+	UINT slot)
 {
-	viewprojBuffer->Set();
+	viewprojBuffer->Set(type, slot);
 }
 
 void Camera::Update(TL_Math::Vector3 pos, TL_Math::Vector3 rot)

@@ -3,12 +3,10 @@
 
 #include "Pipeline.h"
 
-ShaderResource::ShaderResource(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, UINT slot, TL_Graphics::E_SHADER_TYPE type)
+ShaderResource::ShaderResource(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
 	:dc(dc)
 	,resources(resources)
 	,pipeline(pipeline)
-	,slot(slot)
-	,type(type)
 {
 }
 
@@ -16,7 +14,8 @@ ShaderResource::~ShaderResource()
 {
 }
 
-void ShaderResource::Set()
+void ShaderResource::Set(TL_Graphics::E_SHADER_TYPE type,
+	UINT slot)
 {
-	pipeline->SetShaderResource(this);
+	pipeline->SetShaderResource(this, type, slot);
 }

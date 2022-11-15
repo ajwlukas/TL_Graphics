@@ -1,8 +1,8 @@
 #include "pch_dx_11.h"
 #include "RenderTargetTexture.h"
 
-RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, UINT slot, TL_Graphics::E_SHADER_TYPE type, UINT width, UINT height)
-	:ShaderResource(dc, resources, pipeline, slot, type)
+RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, UINT width, UINT height)
+	:ShaderResource(dc, resources, pipeline)
 {
     OnResize(width, height);
 }
@@ -11,8 +11,16 @@ RenderTargetTexture::~RenderTargetTexture()
 {
 }
 
+void RenderTargetTexture::Set(TL_Graphics::E_SHADER_TYPE type,
+    UINT slot)
+{
+    ShaderResource::Set(type, slot);
+}
+
 void RenderTargetTexture::OnResize(uint32_t width, uint32_t height)
 {
+    if (!isBasedWindowSize) return;
+
     D3D11_TEXTURE2D_DESC desc = {};
     desc.Width = width;
     desc.Height = height;

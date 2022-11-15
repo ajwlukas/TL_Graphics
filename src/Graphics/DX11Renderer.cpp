@@ -134,9 +134,9 @@ Material* DX11Renderer::CreateMaterial(std::wstring fileName, const TL_Graphics:
     return new Material(resources, pipeline, fileName, desc);
 }
 
-ConstantBuffer* DX11Renderer::CreateConstantBuffer(UINT slot,TL_Graphics::E_SHADER_TYPE type, void* data, size_t dataSize)
+ConstantBuffer* DX11Renderer::CreateConstantBuffer(void* data, size_t dataSize)
 {
-    return new ConstantBuffer(dc, resources, pipeline, slot, type, data, dataSize);
+    return new ConstantBuffer(dc, resources, pipeline, data, dataSize);
 }
 
 Camera* DX11Renderer::CreateCamera()
@@ -144,14 +144,14 @@ Camera* DX11Renderer::CreateCamera()
     return new Camera(dc, resources, pipeline, &onResizeNotice, 80.0f, 1.0f, 2000.0f);
 }
 
-Texture* DX11Renderer::CreateTexture(UINT slot, TL_Graphics::E_SHADER_TYPE type, std::wstring fileName)
+Texture* DX11Renderer::CreateTexture(std::wstring fileName)
 {
-    return new Texture(dc, resources, pipeline, slot, type, fileName);
+    return new Texture(dc, resources, pipeline, fileName);
 }
 
-TextureBuffer* DX11Renderer::CreateTextureBuffer(UINT slot, TL_Graphics::E_SHADER_TYPE type, void* data, size_t dataSize)
+TextureBuffer* DX11Renderer::CreateTextureBuffer(void* data, size_t dataSize)
 {
-    return new TextureBuffer(dc, resources, pipeline, slot, type, data, dataSize);
+    return new TextureBuffer(dc, resources, pipeline, data, dataSize);
 }
 
 void DX11Renderer::UpdateWindowSize(UINT width, UINT height)

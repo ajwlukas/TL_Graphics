@@ -65,37 +65,39 @@ void Pipeline::SetViewPort()
 	dc->RSSetViewports(1, &viewPort);
 }
 
-void Pipeline::SetConstantBuffer(ConstantBuffer* constantBuffer)
+void Pipeline::SetConstantBuffer(ConstantBuffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type,
+	UINT slot)
 {
-	if (constantBuffer->type == TL_Graphics::E_SHADER_TYPE::VS)
+	if (type == TL_Graphics::E_SHADER_TYPE::VS)
 	{
-		dc->VSSetConstantBuffers(constantBuffer->slot, 1, constantBuffer->buffer);
+		dc->VSSetConstantBuffers(slot, 1, constantBuffer->buffer);
 
-		currentConstantBuffersVS[constantBuffer->slot] = constantBuffer;
+		currentConstantBuffersVS[slot] = constantBuffer;
 	}
 
-	else if (constantBuffer->type == TL_Graphics::E_SHADER_TYPE::PS)
+	else if (type == TL_Graphics::E_SHADER_TYPE::PS)
 	{
-		dc->PSSetConstantBuffers(constantBuffer->slot, 1, constantBuffer->buffer);
+		dc->PSSetConstantBuffers(slot, 1, constantBuffer->buffer);
 
-		currentConstantBuffersPS[constantBuffer->slot] = constantBuffer;
+		currentConstantBuffersPS[slot] = constantBuffer;
 	}
 }
 
-void Pipeline::SetShaderResource(ShaderResource* shaderResource)
+void Pipeline::SetShaderResource(ShaderResource* shaderResource, TL_Graphics::E_SHADER_TYPE type,
+	UINT slot)
 {
-	if (shaderResource->type == TL_Graphics::E_SHADER_TYPE::VS)
+	if (type == TL_Graphics::E_SHADER_TYPE::VS)
 	{
-		dc->VSSetShaderResources(shaderResource->slot, 1, shaderResource->srv);
+		dc->VSSetShaderResources(slot, 1, shaderResource->srv);
 
-		currentShaderResourceVS[shaderResource->slot] = shaderResource;
+		currentShaderResourceVS[slot] = shaderResource;
 	}
 
-	else if (shaderResource->type == TL_Graphics::E_SHADER_TYPE::PS)
+	else if (type == TL_Graphics::E_SHADER_TYPE::PS)
 	{
-		dc->PSSetShaderResources(shaderResource->slot, 1, shaderResource->srv);
+		dc->PSSetShaderResources(slot, 1, shaderResource->srv);
 
-		currentShaderResourcePS[shaderResource->slot] = shaderResource;
+		currentShaderResourcePS[slot] = shaderResource;
 	}
 }
 

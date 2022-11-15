@@ -38,13 +38,13 @@ public:
 
 	virtual Material* CreateMaterial(std::wstring fileName, const TL_Graphics::MaterialDesc& desc = TL_Graphics::MaterialDesc()) override;
 
-	virtual ConstantBuffer* CreateConstantBuffer(UINT slot, TL_Graphics::E_SHADER_TYPE type, void* data, size_t dataSize) override;
+	virtual ConstantBuffer* CreateConstantBuffer( void* data, size_t dataSize) override;
 
 	virtual Camera* CreateCamera() override;
 
-	virtual Texture* CreateTexture(UINT slot, TL_Graphics::E_SHADER_TYPE type, std::wstring fileName) override;
+	virtual Texture* CreateTexture(std::wstring fileName) override;
 
-	virtual TextureBuffer* CreateTextureBuffer(UINT slot, TL_Graphics::E_SHADER_TYPE type, void* data, size_t dataSize) override;
+	virtual TextureBuffer* CreateTextureBuffer(void* data, size_t dataSize) override;
 
 	virtual void UpdateWindowSize(UINT width, UINT height) override;
 

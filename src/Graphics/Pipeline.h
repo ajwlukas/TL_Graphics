@@ -43,8 +43,10 @@ public:
 
 	void SetViewPort();
 
-	void SetConstantBuffer(ConstantBuffer* constantBuffer);
-	void SetShaderResource(ShaderResource* shaderResource);
+	void SetConstantBuffer(ConstantBuffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type,
+		UINT slot);
+	void SetShaderResource(ShaderResource* shaderResource, TL_Graphics::E_SHADER_TYPE type,
+		UINT slot);
 
 	void SetMesh(Mesh* mesh);
 	void SetMaterial(Material* material);

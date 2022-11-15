@@ -3,11 +3,9 @@
 
 #include "Pipeline.h"
 
-ConstantBuffer::ConstantBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, UINT slot, TL_Graphics::E_SHADER_TYPE type, void* data, size_t dataSize)
+ConstantBuffer::ConstantBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, void* data, size_t dataSize)
 	:dc(dc)
 	,resources(resources)
-	,slot(slot)
-	,type(type)
 	,pipeline(pipeline)
 {
 	D3D11_BUFFER_DESC desc = {};
@@ -28,9 +26,10 @@ ConstantBuffer::~ConstantBuffer()
 {
 }
 
-void ConstantBuffer::Set()
+void ConstantBuffer::Set(TL_Graphics::E_SHADER_TYPE type,
+	UINT slot)
 {
-	pipeline->SetConstantBuffer(this);
+	pipeline->SetConstantBuffer(this, type, slot);
 }
 
 void ConstantBuffer::Update(void* data, size_t dataSize)

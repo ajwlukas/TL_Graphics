@@ -1,8 +1,8 @@
 #include "pch_dx_11.h"
 #include "TextureBuffer.h"
 
-TextureBuffer::TextureBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, UINT slot, TL_Graphics::E_SHADER_TYPE type, void* data, size_t dataSize)
-	:ShaderResource(dc, resources, pipeline, slot, type)
+TextureBuffer::TextureBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, void* data, size_t dataSize)
+	:ShaderResource(dc, resources, pipeline)
 	,dc(dc)
 {
 	D3D11_BUFFER_DESC desc = {};
