@@ -188,5 +188,7 @@
     <FxCompile Include="Shader\TextureBufferPS.hlsl" />
     <FxCompile Include="Shader\BoxVS.hlsl" />
     <FxCompile Include="Shader\BoxPS.hlsl" />
+    <FxCompile Include="Shader\CanvasVS.hlsl" />
+    <FxCompile Include="Shader\CanvasPS.hlsl" />
   </ItemGroup>
 </Project>

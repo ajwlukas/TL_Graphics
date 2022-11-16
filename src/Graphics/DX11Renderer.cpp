@@ -102,6 +102,11 @@ void DX11Renderer::SetWireModeAsDefualt()
     pipeline->SetWireModeAsDefualt();
 }
 
+void DX11Renderer::SetSwapChainRenderTargetView(UINT slot)
+{
+    pipeline->SetSwapChainRenderTargetView(slot);
+}
+
 ID3D11Device* DX11Renderer::GetDevice()
 {
     return device;
@@ -158,6 +163,16 @@ TextureBuffer* DX11Renderer::CreateTextureBuffer(void* data, size_t dataSize)
 RenderTargetTexture* DX11Renderer::CreateRenderTargetTexture(float widthRatio , float heightRatio )
 {
     return new RenderTargetTexture(dc, resources, pipeline, &onResizeNotice, widthRatio, heightRatio);
+}
+
+void DX11Renderer::UnSetAllRenderTargets()
+{
+    pipeline->UnSetAllRenderTargets();
+}
+
+void DX11Renderer::UnSetRenderTarget(UINT slot)
+{
+    pipeline->UnSetRenderTarget(slot);
 }
 
 void DX11Renderer::UpdateWindowSize(UINT width, UINT height)

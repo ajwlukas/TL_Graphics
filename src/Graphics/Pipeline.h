@@ -38,6 +38,7 @@ public:
 
 
 	void Clear(float color[4]);
+	void ClearRenderTarget(RenderTarget* renderTarget, TL_Math::Vector4 color);
 
 	void SetCurrentRasterState(Resource<ID3D11RasterizerState> state);
 	void SetCurrentDepthStencilState(Resource<ID3D11DepthStencilState> state);
@@ -56,6 +57,11 @@ public:
 
 	void SetRenderTarget(RenderTarget* rtv, UINT slot);//todo : depthStencilView도 해줘야하는가? 아직 depthStencilView가 뭔지 잘 모르겠다.
 
+	void SetSwapChainRenderTargetView(UINT slot = 0);
+
+	void UnSetAllRenderTargets();
+
+	void UnSetRenderTarget(UINT slot);//렌더타겟을 빼준다.
 
 	void Draw();
 	void DrawInstanced(UINT numInstance);

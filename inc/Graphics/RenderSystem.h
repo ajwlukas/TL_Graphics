@@ -46,6 +46,8 @@ namespace TL_Graphics
 
 		virtual IRenderTargetTexture* CreateRenderTargetTexture(float widthRatio = 1.0f, float heightRatio = 1.0f) = 0;
 
+		virtual void UnSetAllRenderTargets() = 0;
+		virtual void UnSetRenderTarget(UINT slot) = 0;
 
 		void Return(void* address);//Create한거 지우는 거
 
@@ -57,6 +59,8 @@ namespace TL_Graphics
 
 		virtual void SetSolidModeAsDefualt() = 0;
 		virtual void SetWireModeAsDefualt() = 0;
+
+		virtual void SetSwapChainRenderTargetView(UINT slot = 0) = 0;
 
 		virtual ID3D11Device* GetDevice() = 0;
 		virtual ID3D11DeviceContext* GetDeviceContext() = 0;

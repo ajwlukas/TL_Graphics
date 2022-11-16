@@ -1,9 +1,14 @@
 #include "pch_dx_11.h"
 #include "RenderTargetTexture.h"
 
+#include "Pipeline.h"
+
 RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, UINT width, UINT height)
 	:ShaderResource(dc, resources, pipeline), RenderTarget(dc, resources, pipeline)
     , isBasedWindowSize(false)
+    ,dc(dc)
+    , resources(resources)
+    , pipeline(pipeline)
 {
     OnResize(width, height);
 }
@@ -13,12 +18,16 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
     ,widthRatio(widthRatio)
     , heightRatio(heightRatio)
     ,isBasedWindowSize(true)
+    ,dc(dc)
+    , resources(resources)
+    , pipeline(pipeline)
 {
     OnResize(resizeNotice->GetWidth() * widthRatio, resizeNotice->GetHeight() * heightRatio);
 }
 
 RenderTargetTexture::~RenderTargetTexture()
 {
+    int a = 01;
 }
 
 void RenderTargetTexture::SetRT(UINT slot)
@@ -29,6 +38,11 @@ void RenderTargetTexture::SetRT(UINT slot)
 void RenderTargetTexture::SetT(TL_Graphics::E_SHADER_TYPE type, UINT slot)
 {
     ShaderResource::Set(type, slot);
+}
+
+void RenderTargetTexture::Clear(TL_Math::Vector4 color)
+{
+    pipeline->ClearRenderTarget(this, color);
 }
 
 void RenderTargetTexture::OnResize(uint32_t width, uint32_t height)

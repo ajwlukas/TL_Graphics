@@ -59,6 +59,13 @@ void Pipeline::Clear(float color[4])
 	dc->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
+void Pipeline::ClearRenderTarget(RenderTarget* renderTarget, TL_Math::Vector4 color)
+{
+	float rgba[4] = { color.x,color.y,color.z,color.w };
+	dc->ClearRenderTargetView(renderTarget->rtv, rgba);
+
+}
+
 void Pipeline::SetCurrentRasterState(Resource<ID3D11RasterizerState> state)
 {
 	dc->RSSetState(state);
@@ -117,9 +124,29 @@ void Pipeline::SetRenderTarget(RenderTarget* rtv, UINT slot)
 {
 	renderTargets[slot] = rtv->rtv;
 
-	dc->OMSetRenderTargets(8, renderTargets, depthStencilView);
+	dc->OMSetRenderTargets(MAX_RENDERTARGET, renderTargets, depthStencilView);
 
 	currentRenderTarget[slot] = rtv;
+}
+
+void Pipeline::SetSwapChainRenderTargetView(UINT slot)
+{
+	swapChainRtv->Set(slot);
+}
+
+void Pipeline::UnSetAllRenderTargets()
+{
+	for (UINT i = 0; i < MAX_RENDERTARGET; i++)
+		UnSetRenderTarget(i);
+}
+
+void Pipeline::UnSetRenderTarget(UINT slot)
+{
+	renderTargets[slot] = nullptr;
+
+	dc->OMSetRenderTargets(MAX_RENDERTARGET, renderTargets, depthStencilView);
+
+	currentRenderTarget[slot] = nullptr;
 }
 
 void Pipeline::SetCurrentBlendState(Resource<ID3D11BlendState> state)

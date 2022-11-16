@@ -4,6 +4,8 @@
 
 #include "Resources.h"
 
+#include "Math\TL_Math.h"
+
 class Pipeline;
 
 class RenderTarget
@@ -14,6 +16,8 @@ public:
 
 	virtual void Set(UINT slot) ;
 	
+	void Clear(TL_Math::Vector4 color = { 0,0,0,0 });
+
 protected:
 	friend class Pipeline;
 	ID3D11DeviceContext* dc;

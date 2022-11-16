@@ -48,8 +48,10 @@ public:
 
 	virtual TextureBuffer* CreateTextureBuffer(void* data, size_t dataSize) override;
 
-	// RenderSystem을(를) 통해 상속됨
 	virtual RenderTargetTexture* CreateRenderTargetTexture(float widthRatio = 1.0f, float heightRatio = 1.0f) override;
+
+	virtual void UnSetAllRenderTargets() override;
+	virtual void UnSetRenderTarget(UINT slot) override;
 
 	virtual void UpdateWindowSize(UINT width, UINT height) override;
 
@@ -75,6 +77,8 @@ private:
 	virtual void SetSolidModeAsDefualt() override;
 
 	virtual void SetWireModeAsDefualt() override;
+
+	virtual void SetSwapChainRenderTargetView(UINT slot = 0) override;
 
 
 	// RenderSystem을(를) 통해 상속됨
