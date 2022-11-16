@@ -28,9 +28,9 @@ void Pipeline::Init(UINT width, UINT height)
 	SetCurrentBlendState(defaultBlendState);
 	SetCurrentSamplerState(defualtSamplerState);
 
-	swapChainRtv->OnResize(width, height);
-
 	OnResize(width, height);
+
+	swapChainRtv->OnResize(width, height);
 }
 
 void Pipeline::OnResize(uint32_t width, uint32_t height)
