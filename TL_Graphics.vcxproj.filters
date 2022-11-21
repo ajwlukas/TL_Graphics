@@ -194,5 +194,7 @@
     <FxCompile Include="Shader\TL_PS.hlsl" />
     <FxCompile Include="Shader\PBR_VS.hlsl" />
     <FxCompile Include="Shader\PBR_PS.hlsl" />
+    <FxCompile Include="Shader\PBRCanvasVS.hlsl" />
+    <FxCompile Include="Shader\PBRCanvasPS.hlsl" />
   </ItemGroup>
 </Project>

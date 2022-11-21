@@ -24,7 +24,6 @@ struct PSout
 {
     float4 out0 : SV_Target0;
     float4 out1 : SV_Target1;
-    float4 out2 : SV_Target2;
 };
 
 // Constant normal incidence Fresnel factor for all dielectrics.
@@ -92,7 +91,7 @@ PSout main(VSout input)
     // Direct lighting calculation for analytical lights.
     float3 directLighting = 0.0;
     
-    float3 light = float3(-1, 0, 0);
+    float3 light = float3(0, 0, -1);
     
     for (uint i = 0; i < NumLights; ++i)
     {
@@ -134,23 +133,14 @@ PSout main(VSout input)
     PSout result;
     
 	// Final fragment color.
-    result.out0 = float4(directLighting, 1.0);
-    
-    return result;
-    
+    result.out0 = float4(directLighting, 1.0);//pbr
     
     /////////////////////////////////////////////////
     
     
-    float3 light0 = normalize(float3(-1, -1, 1));
+    float nDotL = dot(input.normal, light);
     
-    float nDotL = dot(input.normal, -light0);
-    
-    result.out0 = float4(float3(1, 0, 1) * nDotL, 1.0f);
-    
-    result.out1 = input.pos;
-    
-    result.out1 = float4(1, 0, 1, 1);
+    result.out1 = float4(albedo * nDotL, 1.0f);//legacy
     
     return result;
 }
