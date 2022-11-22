@@ -60,9 +60,6 @@
     <ClInclude Include="src\Graphics\ShaderResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\ShaderType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="inc\Graphics\ShaderType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -109,6 +106,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\SwapChainRenderTarget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -167,6 +167,9 @@
     <ClCompile Include="src\Graphics\SwapChainRenderTarget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Graphics\SimpleMath.inl">
@@ -174,27 +177,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shader\BoxCameraPS.hlsl" />
-    <FxCompile Include="Shader\BoxCameraVS.hlsl" />
-    <FxCompile Include="Shader\LightPS.hlsl" />
-    <FxCompile Include="Shader\LightVS.hlsl" />
-    <FxCompile Include="Shader\TriangleColorPS.hlsl" />
-    <FxCompile Include="Shader\TriangleColorVS.hlsl" />
-    <FxCompile Include="Shader\TrianglePS.hlsl" />
-    <FxCompile Include="Shader\TriangleVS.hlsl" />
-    <FxCompile Include="Shader\TextureVS.hlsl" />
-    <FxCompile Include="Shader\TexturePS.hlsl" />
-    <FxCompile Include="Shader\TextureBufferVS.hlsl" />
-    <FxCompile Include="Shader\TextureBufferPS.hlsl" />
-    <FxCompile Include="Shader\BoxVS.hlsl" />
-    <FxCompile Include="Shader\BoxPS.hlsl" />
-    <FxCompile Include="Shader\CanvasVS.hlsl" />
-    <FxCompile Include="Shader\CanvasPS.hlsl" />
     <FxCompile Include="Shader\TL_VS.hlsl" />
     <FxCompile Include="Shader\TL_PS.hlsl" />
-    <FxCompile Include="Shader\PBR_VS.hlsl" />
-    <FxCompile Include="Shader\PBR_PS.hlsl" />
-    <FxCompile Include="Shader\PBRCanvasVS.hlsl" />
-    <FxCompile Include="Shader\PBRCanvasPS.hlsl" />
   </ItemGroup>
 </Project>
