@@ -9,6 +9,8 @@
 #include "Mesh.h"
 #include "Material.h"
 
+#include "Shader.h"
+
 #include "ConstantBuffer.h"
 #include "ShaderResource.h"
 
@@ -55,6 +57,8 @@ public:
 	void SetMesh(Mesh* mesh);
 	void SetMaterial(Material* material);
 
+	void SetShader(Shader* shader);
+
 	void SetRenderTarget(RenderTarget* rtv, UINT slot);//todo : depthStencilView도 해줘야하는가? 아직 depthStencilView가 뭔지 잘 모르겠다.
 
 	void SetSwapChainRenderTargetView(UINT slot = 0);
@@ -78,6 +82,9 @@ private:
 
 	ShaderResource* currentShaderResourceVS[255];
 	ShaderResource* currentShaderResourcePS[255];
+
+	Shader* currentVSShader;
+	Shader* currentPSShader;
 
 	RenderTarget* currentRenderTarget[MAX_RENDERTARGET];
 

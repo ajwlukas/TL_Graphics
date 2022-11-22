@@ -218,6 +218,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\TL_GraphicsSample\*"</Comman
     <ClInclude Include="inc\Graphics\IMaterial.h" />
     <ClInclude Include="inc\Graphics\IMesh.h" />
     <ClInclude Include="inc\Graphics\IRenderTargetTexture.h" />
+    <ClInclude Include="inc\Graphics\IShader.h" />
     <ClInclude Include="inc\Graphics\IShaderResource.h" />
     <ClInclude Include="inc\Graphics\IVertex.h" />
     <ClInclude Include="inc\Graphics\RenderSystem.h" />

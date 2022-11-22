@@ -18,7 +18,7 @@ Mesh::Mesh(Resources* resources, Pipeline* pipeline, TL_Graphics::VertexAttribut
 	resources->inputLayouts->Get(inputLayout, desc, descSize, vsFileName);
 
 	//shader
-	shader = resources->vertexShaders->Get(vsFileName);
+	resources->vertexShaders->Get(shader, vsFileName);
 
 	//vertexBuffer;
 	D3D11_BUFFER_DESC vbd;

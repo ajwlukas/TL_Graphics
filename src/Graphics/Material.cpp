@@ -6,12 +6,12 @@
 Material::Material(Resources* resources, Pipeline* pipeline, std::wstring pixelShaderName
 	, const TL_Graphics::MaterialDesc& desc)
 	:normal{}, diffuse{}, specular{}
-	, pixelShader(nullptr)
+	, pixelShader{}
 	, pixelShaderName(pixelShaderName)
 	, resources(resources)
 	, pipeline(pipeline)
 {
-	pixelShader = resources->pixelShaders->Get(pixelShaderName);
+	 resources->pixelShaders->Get(pixelShader, pixelShaderName);
 
 	if (desc.diffuseFileName.length() > 0)
 	{ 
@@ -64,7 +64,7 @@ void Material::Set()
 void Material::SetShader(wstring fileName)
 {
 	pixelShaderName = fileName;
-	pixelShader = resources->pixelShaders->Get(fileName);
+	resources->pixelShaders->Get(pixelShader, fileName);
 }
 
 void Material::SetDiffuseMap(wstring fileName)

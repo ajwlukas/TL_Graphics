@@ -45,7 +45,7 @@ private:
 	Resources* resources;
 	Pipeline* pipeline;
 
-	ID3D11PixelShader* pixelShader;
+	Resource<	ID3D11PixelShader> pixelShader;
 	Resource<ID3D11ShaderResourceView> diffuse;
 	Resource<ID3D11ShaderResourceView> normal;
 	Resource<ID3D11ShaderResourceView> specular;

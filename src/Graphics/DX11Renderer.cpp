@@ -130,6 +130,11 @@ void DX11Renderer::Present()
     swapChain->Present(0, 0);
 }
 
+Shader* DX11Renderer::CreateShader(TL_Graphics::E_SHADER_TYPE type, std::wstring fileName)
+{
+    return new Shader(dc, resources, pipeline, type, fileName);
+}
+
 Mesh* DX11Renderer::CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, wstring fileName)
 {
     return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, fileName);

@@ -48,14 +48,16 @@ Resources::~Resources()
 	SAFE_DELETE(buffers);
 }
 
-ID3D11VertexShader* VertexShaderResources::Get(std::wstring shaderFileName)
+void VertexShaderResources::Get(Resource< ID3D11VertexShader>& dest, std::wstring shaderFileName)
 {
+	dest.Return();
+
 	if (vertexShaders.find(shaderFileName) == vertexShaders.end())//해당하는 쉐이더가 없으면
 	{
 		HRESULT hr;
 		if (Utility::ExistFileW(shaderFileName))
 		{
-			hr = resources->device->CreateVertexShader(GetBlob(shaderFileName)->GetBufferPointer(), GetBlob(shaderFileName)->GetBufferSize(), NULL, &vertexShaders[shaderFileName]);
+			hr = resources->device->CreateVertexShader(GetBlob(shaderFileName)->GetBufferPointer(), GetBlob(shaderFileName)->GetBufferSize(), NULL, &vertexShaders[shaderFileName].data);
 		}
 		else//cso로 부터 생성
 		{
@@ -63,14 +65,34 @@ ID3D11VertexShader* VertexShaderResources::Get(std::wstring shaderFileName)
 
 			std::vector<char> compiledShader = Utility::GetBinary(cso);
 
-			hr = resources->device->CreateVertexShader(compiledShader.data(), compiledShader.size(), NULL, &vertexShaders[shaderFileName]);
+			hr = resources->device->CreateVertexShader(compiledShader.data(), compiledShader.size(), NULL, &vertexShaders[shaderFileName].data);
 		}
 
 		assert(SUCCEEDED(hr));
 	}//생성
 
+	//있으면 그냥, 없으면 생성한 후
+	dest.resource = vertexShaders[shaderFileName].data;
 
-	return vertexShaders[shaderFileName];
+	// 사용 횟수 늘려주고
+	dest.Copy = [&, shaderFileName]()
+	{
+		vertexShaders[shaderFileName].refCount++;
+	};
+	dest.Copy();
+
+	//리소스 반환 정의
+	dest.Ret = [&, shaderFileName]()
+	{
+		vertexShaders[shaderFileName].refCount--;
+		if (vertexShaders[shaderFileName].refCount == 0)
+		{
+			ID3D11VertexShader* del = dest;
+			vertexShaders.erase(shaderFileName);
+			SAFE_RELEASE(del);
+		}
+	};
+
 }
 
 ID3DBlob* VertexShaderResources::GetBlob(wstring shaderFileName)
@@ -159,14 +181,16 @@ void InputLayoutResources::Release()
 		SAFE_RELEASE(inputLayout.second.data);
 }
 
-ID3D11PixelShader* PixelShaderResources::Get(wstring shaderFileName)
+void PixelShaderResources::Get(Resource< ID3D11PixelShader>& dest, wstring shaderFileName)
 {
+	dest.Return();
+
 	if (pixelShaders.find(shaderFileName) == pixelShaders.end())//해당하는 쉐이더가 없으면
 	{
 		HRESULT hr;
 		if (Utility::ExistFileW(shaderFileName))
 		{
-			hr = resources->device->CreatePixelShader(GetBlob(shaderFileName)->GetBufferPointer(), GetBlob(shaderFileName)->GetBufferSize(), NULL, &pixelShaders[shaderFileName]);
+			hr = resources->device->CreatePixelShader(GetBlob(shaderFileName)->GetBufferPointer(), GetBlob(shaderFileName)->GetBufferSize(), NULL, &pixelShaders[shaderFileName].data);
 		}
 		else//cso로 부터 생성
 		{
@@ -174,12 +198,33 @@ ID3D11PixelShader* PixelShaderResources::Get(wstring shaderFileName)
 
 			std::vector<char> compiledShader = Utility::GetBinary(cso);
 
-			hr = resources->device->CreatePixelShader(compiledShader.data(), compiledShader.size(), NULL, &pixelShaders[shaderFileName]);
+			hr = resources->device->CreatePixelShader(compiledShader.data(), compiledShader.size(), NULL, &pixelShaders[shaderFileName].data);
 		}
 		assert(SUCCEEDED(hr));
 	}//생성
 
-	return pixelShaders[shaderFileName];
+
+	//있으면 그냥, 없으면 생성한 후
+	dest.resource = pixelShaders[shaderFileName] .data;
+
+	// 사용 횟수 늘려주고
+	dest.Copy = [&, shaderFileName]()
+	{
+		pixelShaders[shaderFileName].refCount++;
+	};
+	dest.Copy();
+
+	//리소스 반환 정의
+	dest.Ret = [&, shaderFileName]()
+	{
+		pixelShaders[shaderFileName].refCount--;
+		if (pixelShaders[shaderFileName].refCount == 0)
+		{
+			ID3D11PixelShader* del = dest;
+			pixelShaders.erase(shaderFileName);
+			SAFE_RELEASE(del);
+		}
+	};
 }
 
 ID3DBlob* PixelShaderResources::GetBlob(wstring shaderFileName)

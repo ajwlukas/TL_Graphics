@@ -120,6 +120,22 @@ void Pipeline::SetMaterial(Material* material)
 	currentMaterial = material;
 }
 
+void Pipeline::SetShader(Shader* shader)
+{
+	if (shader->type == TL_Graphics::E_SHADER_TYPE::VS)
+	{
+		dc->VSSetShader(*shader,0,0);
+		currentVSShader = shader;
+	}
+
+	else if (shader->type == TL_Graphics::E_SHADER_TYPE::PS)
+	{
+		dc->PSSetShader(*shader, 0, 0);
+		currentPSShader = shader;
+	}
+
+}
+
 void Pipeline::SetRenderTarget(RenderTarget* rtv, UINT slot)
 {
 	renderTargets[slot] = rtv->rtv;

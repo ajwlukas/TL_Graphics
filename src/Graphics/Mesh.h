@@ -28,7 +28,7 @@ public:
 	void SetShader(std::wstring vsFileName) {
 		this->vsFileName = vsFileName;
 		resources->inputLayouts->Get(inputLayout, desc, descSize, vsFileName);
-		shader = resources->vertexShaders->Get(vsFileName);
+		//shader = resources->vertexShaders->Get(vsFileName);
 	}
 
 private:
@@ -45,7 +45,7 @@ private:
 	UINT offset = 0;
 	Resource<ID3D11Buffer> vertexBuffer;
 	Resource<ID3D11Buffer> indexBuffer;
-	ID3D11VertexShader* shader;
+	Resource<ID3D11VertexShader> shader;
 
 	D3D11_INPUT_ELEMENT_DESC* desc;
 	UINT descSize;

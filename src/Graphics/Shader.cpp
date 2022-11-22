@@ -1,22 +1,24 @@
 #include "pch_dx_11.h"
 #include "Shader.h"
 
+#include "Pipeline.h"
+
 Shader::Shader(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, TL_Graphics::E_SHADER_TYPE type, std::wstring fileName)
+	:type(type)
 {
-	//todo
-	/*if (type == TL_Graphics::E_SHADER_TYPE::VS)
-	{
-		resources->vertexShaders->Get(fileName);
-	}
+
+	if (type == TL_Graphics::E_SHADER_TYPE::VS)
+		resources->vertexShaders->Get(shader.vs, fileName);
 
 	else if (type == TL_Graphics::E_SHADER_TYPE::PS)
-	{
-		dc->PSSetConstantBuffers(slot, 1, constantBuffer->buffer);
-
-		currentConstantBuffersPS[slot] = constantBuffer;
-	}*/
+		resources->pixelShaders->Get(shader.ps, fileName);
 }
 
 Shader::~Shader()
 {
+}
+
+void Shader::Set()
+{
+	pipeline->SetShader(this);
 }

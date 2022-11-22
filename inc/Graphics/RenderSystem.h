@@ -2,9 +2,12 @@
 
 #include "Export.h"
 
+
 #include "IMesh.h"
 #include "IMaterial.h"
 #include "IVertex.h"
+
+#include "IShader.h"
 
 #include "IConstantBuffer.h"
 #include "ICamera.h"
@@ -31,6 +34,8 @@ namespace TL_Graphics
 		virtual void Draw() = 0;
 		virtual void DrawInstanced(UINT numInstance) = 0;
 		virtual void Present() = 0;
+
+		virtual IShader* CreateShader(TL_Graphics::E_SHADER_TYPE type, std::wstring fileName) = 0;
 
 		virtual IMesh* CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, std::wstring fileName) = 0;
 

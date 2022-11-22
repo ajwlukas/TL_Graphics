@@ -84,18 +84,25 @@ public:
 class VertexShaderResources
 {
 public:
-	ID3D11VertexShader* Get(std::wstring shaderFileName);
+	void Get(Resource< ID3D11VertexShader>& dest, std::wstring shaderFileName);
 
 	ID3DBlob* GetBlob(std::wstring shaderFileName);
-
-	void Release();
 
 private:
 	friend class Resources;
 	Resources* resources;
 	VertexShaderResources(Resources* resources) : resources(resources) {}
 
-	std::unordered_map<std::wstring, ID3D11VertexShader*> vertexShaders;
+	void Release();
+
+	struct Data
+	{
+		Data() : data(nullptr), refCount(0) {}
+		ID3D11VertexShader* data;
+		UINT refCount;
+	};
+
+	std::unordered_map<std::wstring, Data> vertexShaders;
 	std::unordered_map<std::wstring, ID3DBlob*> vertexShaderBlobs;
 	ID3DBlob* error = nullptr;
 };
@@ -124,17 +131,24 @@ private:
 class PixelShaderResources
 {
 public:
-	ID3D11PixelShader* Get(std::wstring shaderFileName);
+	void Get(Resource< ID3D11PixelShader>& dest, std::wstring shaderFileName);
 	ID3DBlob* GetBlob(std::wstring shaderFileName);
-
-	void Release();
 
 private:
 	friend class Resources;
 	Resources* resources;
 	PixelShaderResources(Resources* resources) : resources(resources) {}
 
-	std::unordered_map<std::wstring, ID3D11PixelShader*> pixelShaders;
+	void Release();
+
+	struct Data
+	{
+		Data() : data(nullptr), refCount(0) {}
+		ID3D11PixelShader* data;
+		UINT refCount;
+	};
+
+	std::unordered_map<std::wstring, Data> pixelShaders;
 	std::unordered_map<std::wstring, ID3DBlob*> pixelShaderBlobs;
 	ID3DBlob* error;
 };

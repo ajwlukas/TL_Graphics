@@ -36,6 +36,8 @@ public:
 	virtual void DrawInstanced(UINT numInstance) override;
 	virtual void Present()override;
 
+	virtual Shader* CreateShader(TL_Graphics::E_SHADER_TYPE type, std::wstring fileName) override;
+
 	virtual Mesh* CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, std::wstring fileName) override;
 
 	virtual Material* CreateMaterial(std::wstring fileName, const TL_Graphics::MaterialDesc& desc = TL_Graphics::MaterialDesc()) override;
