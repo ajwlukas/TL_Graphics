@@ -181,19 +181,19 @@
     <None Include="src\Graphics\SimpleMath.inl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="Shader\TL_IO_VS.hlsli" />
-    <None Include="Shader\TL_ConstantsVS.hlsli" />
-    <None Include="Shader\TL_Transform.hlsli" />
-    <None Include="Shader\TL_OUT_PS.hlsli" />
-    <None Include="Shader\TL_ConstantsPS.hlsli" />
-    <None Include="Shader\TL_PBR.hlsli" />
-    <None Include="Shader\TL_TexturesPS.hlsli" />
-    <None Include="Shader\TL_Samplers.hlsli" />
+    <None Include="Shader\VS\headers\TL_IO_VS.hlsli" />
+    <None Include="Shader\VS\headers\TL_ConstantsVS.hlsli" />
+    <None Include="Shader\VS\headers\TL_Transform.hlsli" />
+    <None Include="Shader\PS\headers\TL_OUT_PS.hlsli" />
+    <None Include="Shader\PS\headers\TL_ConstantsPS.hlsli" />
+    <None Include="Shader\PS\headers\TL_PBR.hlsli" />
+    <None Include="Shader\PS\headers\TL_TexturesPS.hlsli" />
+    <None Include="Shader\PS\headers\TL_Samplers.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shader\TL_PS.hlsl" />
-    <FxCompile Include="Shader\TL_StaticMeshVS.hlsl" />
-    <FxCompile Include="Shader\TL_SkinningMeshVS.hlsl" />
-    <FxCompile Include="Shader\TL_ScreenSpaceMeshVS.hlsl" />
+    <FxCompile Include="Shader\PS\TL_PS.hlsl" />
+    <FxCompile Include="Shader\VS\TL_StaticMeshVS.hlsl" />
+    <FxCompile Include="Shader\VS\TL_SkinningMeshVS.hlsl" />
+    <FxCompile Include="Shader\VS\TL_ScreenSpaceMeshVS.hlsl" />
   </ItemGroup>
 </Project>
