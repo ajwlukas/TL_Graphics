@@ -115,7 +115,7 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\Game\*"
-xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\TL_GraphicsSample\*"</Command>
+xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     </PostBuildEvent>
     <FxCompile />
     <FxCompile>
@@ -146,7 +146,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\TL_GraphicsSample\*"</Comman
     </Link>
     <PostBuildEvent>
       <Command>xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\Game\*"
-xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\TL_GraphicsSample\*"</Command>
+xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     </PostBuildEvent>
     <FxCompile />
     <FxCompile>
@@ -173,7 +173,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\TL_GraphicsSample\*"</Comman
     </Link>
     <PostBuildEvent>
       <Command>xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\Game\*"
-xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\TL_GraphicsSample\*"</Command>
+xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     </PostBuildEvent>
     <FxCompile />
     <FxCompile>
@@ -204,7 +204,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\TL_GraphicsSample\*"</Comman
     </Link>
     <PostBuildEvent>
       <Command>xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\Game\*"
-xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\TL_GraphicsSample\*"</Command>
+xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     </PostBuildEvent>
     <FxCompile />
     <FxCompile>
