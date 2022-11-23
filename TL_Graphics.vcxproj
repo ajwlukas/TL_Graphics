@@ -221,6 +221,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\TL_GraphicsSample\*"</Comman
     <ClInclude Include="inc\Graphics\IShader.h" />
     <ClInclude Include="inc\Graphics\IShaderResource.h" />
     <ClInclude Include="inc\Graphics\IVertex.h" />
+    <ClInclude Include="inc\Graphics\MeshType.h" />
     <ClInclude Include="inc\Graphics\RenderSystem.h" />
     <ClInclude Include="inc\Graphics\ShaderType.h" />
     <ClInclude Include="src\Graphics\RenderTarget.h" />
@@ -272,6 +273,14 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\TL_GraphicsSample\*"</Comman
     <ClCompile Include="src\Graphics\Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shader\TL_ConstantsPS.hlsli" />
+    <None Include="Shader\TL_ConstantsVS.hlsli" />
+    <None Include="Shader\TL_IO_VS.hlsli" />
+    <None Include="Shader\TL_OUT_PS.hlsli" />
+    <None Include="Shader\TL_PBR.hlsli" />
+    <None Include="Shader\TL_Samplers.hlsli" />
+    <None Include="Shader\TL_TexturesPS.hlsli" />
+    <None Include="Shader\TL_Transform.hlsli" />
     <None Include="src\Graphics\SimpleMath.inl" />
   </ItemGroup>
   <ItemGroup>
@@ -281,7 +290,19 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\TL_GraphicsSample\*"</Comman
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="Shader\TL_VS.hlsl">
+    <FxCompile Include="Shader\TL_ScreenSpaceMeshVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\TL_SkinningMeshVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\TL_StaticMeshVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

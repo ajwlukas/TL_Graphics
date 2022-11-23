@@ -140,6 +140,18 @@ Mesh* DX11Renderer::CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT ind
     return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, fileName);
 }
 
+Mesh* DX11Renderer::CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, TL_Graphics::E_MESH_TYPE meshType)
+{
+    if(meshType != TL_Graphics::E_MESH_TYPE::STATIC)
+        return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_StaticMeshVS");
+    else if(meshType != TL_Graphics::E_MESH_TYPE::SKINNING)
+        return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_SkinningMeshVS");
+    else if(meshType != TL_Graphics::E_MESH_TYPE::SCREENSPACE)
+        return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_ScreenSpaceMeshVS");
+
+    assert(meshType != TL_Graphics::E_MESH_TYPE::NONE);
+}
+
 Material* DX11Renderer::CreateMaterial(std::wstring fileName, const TL_Graphics::MaterialDesc& desc)
 {
     return new Material(resources, pipeline, fileName, desc);

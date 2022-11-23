@@ -1,19 +1,14 @@
-cbuffer CameraBuffer : register(b0)
-{
-    float4x4 view;
-    float4x4 proj;
-    float3 camPos;
-}
+#ifndef TL_Transform
+#define TL_Transform
 
-cbuffer World : register(b1)
-{
-    float4x4 world;
-};
+
+
+#include "TL_ConstantsVS.hlsli"
 
 ///버텍스용
-float4 LocalToWorld(float3 localPos)//로컬 포지션을 월드로
+float4 LocalToWorld(float4 localPos)//로컬 포지션을 월드로
 {
-    return mul(world, float4(localPos, 1.0f));
+    return mul(world, localPos);
 }
 
 float4 WorldToNDC(float4 worldPos)
@@ -23,7 +18,7 @@ float4 WorldToNDC(float4 worldPos)
     
     return ret;
 }
-float4 LocalToNDC(float3 localPos)//로컬 포지션을 월드로
+float4 LocalToNDC(float4 localPos)//로컬 포지션을 월드로
 {
     float4 ret = LocalToWorld(localPos);
     ret = WorldToNDC(ret);
@@ -53,21 +48,4 @@ float3 LocalToNDCDirOnly(float3 localDir)//로컬 포지션을 월드로
     return ret;
 }
 
-struct VSin
-{
-    float3 pos : POSITION;
-};
-
-struct VSout
-{
-    float4 pos : SV_POSITION;
-};
-
-VSout main(VSin input)
-{
-    VSout output;
-    
-    output.pos = LocalToNDC(input.pos);
-    
-    return output;
-}
+#endif
