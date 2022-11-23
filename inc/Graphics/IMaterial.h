@@ -10,18 +10,15 @@ namespace TL_Graphics
 {
 	struct MaterialDesc
 	{
-		TL_Math::Vector4 ambient;
-		TL_Math::Vector4 diffuse;
-		TL_Math::Vector4 specular;
-
-		std::wstring diffuseFileName;
-		std::wstring normalFileName;
+		std::wstring albedoMapFileName = L"";
+		std::wstring metallicMapFileName = L"";
+		std::wstring roughnessMapFileName = L"";
 	};
 
 	class AJW_GRAPHICS_DLLEXPORT IMaterial
 	{
 	public:
-		virtual void Set() = 0;
+		virtual void Set(UINT albdeoMapSlot = 0, UINT metallicMapSlot = 1, UINT roughnessMapSlot = 2) = 0;
 
 	};
 }

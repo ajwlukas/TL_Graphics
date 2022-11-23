@@ -55,7 +55,7 @@ public:
 		UINT slot);
 
 	void SetMesh(Mesh* mesh);
-	void SetMaterial(Material* material);
+	void SetMaterial(Material* material, UINT albdeoMapSlot = 0, UINT metallicMapSlot = 1, UINT roughnessMapSlot = 2);
 
 	void SetShader(Shader* shader);
 

@@ -38,11 +38,11 @@ namespace TL_Graphics
 
 		virtual IShader* CreateShader(TL_Graphics::E_SHADER_TYPE type, std::wstring fileName) = 0;
 
-		virtual IMesh* CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, std::wstring fileName) = 0;
+		virtual IMesh* CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, std::wstring shaderFileName) = 0;
 
 		virtual IMesh* CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, TL_Graphics::E_MESH_TYPE meshType) = 0;
 
-		virtual IMaterial* CreateMaterial(std::wstring fileName, const MaterialDesc& desc = MaterialDesc()) = 0;
+		virtual IMaterial* CreateMaterial(std::wstring shaderFileName, const MaterialDesc& desc = MaterialDesc()) = 0;
 
 		virtual IConstantBuffer* CreateConstantBuffer( void* data, size_t dataSize) = 0;
 

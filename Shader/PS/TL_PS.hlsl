@@ -10,16 +10,18 @@
 
 #include "TL_PBR.hlsli"
 
-
  //https://github.com/Nadrin/PBR/blob/master/data/shaders/hlsl/pbr.hlsl
 PS_Out main(VS_Out surface)
 {
     PS_Out ret;
     
 	// Sample input textures to get shading model params.
-    float3 albedo = albedoMap.Sample(Sampler, surface.uv);
-    float metalness = matallicMap.Sample(Sampler, surface.uv);
-    float roughness = roughnessMap.Sample(Sampler, surface.uv);
+    float3 albedo = { 1, 0, 0 };
+    //float3 albedo = albedoMap.Sample(Sampler, surface.uv);
+    //float metalness = matallicMap.Sample(Sampler, surface.uv);
+    //float roughness = roughnessMap.Sample(Sampler, surface.uv);
+    float metalness = 0.5f;
+    float roughness = 0.5f;
     
 	// Outgoing light direction (vector from world-space fragment position to the "eye").
     float3 Lo = normalize(camPos - surface.pos_world);

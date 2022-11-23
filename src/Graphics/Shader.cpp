@@ -5,6 +5,9 @@
 
 Shader::Shader(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, TL_Graphics::E_SHADER_TYPE type, std::wstring fileName)
 	:type(type)
+	, dc(dc)
+	, resources(resources)
+	, pipeline(pipeline)
 {
 
 	if (type == TL_Graphics::E_SHADER_TYPE::VS)

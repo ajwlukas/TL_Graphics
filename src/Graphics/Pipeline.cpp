@@ -113,7 +113,7 @@ void Pipeline::SetShaderResource(ShaderResource* shaderResource, TL_Graphics::E_
 	}
 }
 
-void Pipeline::SetMaterial(Material* material)
+void Pipeline::SetMaterial(Material* material, UINT albdeoMapSlot, UINT metallicMapSlot, UINT roughnessMapSlot)
 {
 	dc->PSSetShader(material->pixelShader, 0, 0);
 

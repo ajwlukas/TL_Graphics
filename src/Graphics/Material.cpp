@@ -3,82 +3,49 @@
 
 #include "Pipeline.h"
 
-Material::Material(Resources* resources, Pipeline* pipeline, std::wstring pixelShaderName
+Material::Material(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::wstring pixelShaderName
 	, const TL_Graphics::MaterialDesc& desc)
-	:normal{}, diffuse{}, specular{}
-	, pixelShader{}
+	: pixelShader{}
+	,dc(dc)
 	, pixelShaderName(pixelShaderName)
 	, resources(resources)
 	, pipeline(pipeline)
 {
 	 resources->pixelShaders->Get(pixelShader, pixelShaderName);
 
-	if (desc.diffuseFileName.length() > 0)
-	{ 
-		resources->srvs->GetFromFile(diffuse, desc.diffuseFileName);//todo : 비어있을 때 에러가 안남
-	}
+	 if(desc.albedoMapFileName.length() > 0)
+	 albedoMap = new Texture(dc, resources, pipeline, desc.albedoMapFileName);
 
-	if (desc.normalFileName.length() > 0)
-	{ 
-		resources->srvs->GetFromFile(normal, desc.normalFileName);//todo : 비어있을 때 에러가 안남
-	}
+	 if(desc.metallicMapFileName.length() > 0)
+		 metallicMap = new Texture(dc, resources, pipeline, desc.metallicMapFileName);
 
-
-	data.ambient = desc.ambient;
-	data.diffuse = desc.diffuse;
-	data.specular = desc.specular;
-
-		D3D11_BUFFER_DESC cbd;
-		cbd.Usage = D3D11_USAGE_DEFAULT;
-		cbd.ByteWidth = sizeof(Data);
-		cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		cbd.CPUAccessFlags = 0;
-		cbd.MiscFlags = 0;
-		cbd.StructureByteStride = 0;
-		D3D11_SUBRESOURCE_DATA initData;
-		initData.pSysMem = &data;
-		resources->buffers->Create(buffer, cbd, &initData);
+	 if(desc.roughnessMapFileName.length() > 0)
+		 roughnessMap = new Texture(dc, resources, pipeline, desc.roughnessMapFileName);
 }
 
 Material::~Material()
 {
+	SAFE_DELETE(albedoMap);
+	SAFE_DELETE(metallicMap);
+	SAFE_DELETE(roughnessMap);
 }
 
-void Material::Set()
-{//todo
-	/*if (diffuse.resource != nullptr)
-		dc->PSSetShaderResources(0, 1, diffuse);
-	if (normal.resource != nullptr)
-		dc->PSSetShaderResources(1, 1, normal);
-	if (specular.resource != nullptr)
-		dc->PSSetShaderResources(2, 1, specular);
-
-		dc->PSSetSamplers(0, 1, samplerState);
-		dc->PSSetShader(pixelShader,0,0);
-
-		dc->PSSetConstantBuffers(0, 1, buffer);*/
-
-		pipeline->SetMaterial(this);
-}
-
-void Material::SetShader(wstring fileName)
+void Material::Set(UINT albdeoMapSlot, UINT metallicMapSlot, UINT roughnessMapSlot)
 {
-	pixelShaderName = fileName;
-	resources->pixelShaders->Get(pixelShader, fileName);
+	pipeline->SetMaterial(this);
+
+	if(albedoMap)
+	albedoMap->Set(TL_Graphics::E_SHADER_TYPE::PS, albdeoMapSlot);
+
+	if(metallicMap)
+	metallicMap->Set(TL_Graphics::E_SHADER_TYPE::PS, metallicMapSlot);
+
+	if(roughnessMap)
+	roughnessMap->Set(TL_Graphics::E_SHADER_TYPE::PS, roughnessMapSlot);
 }
 
-void Material::SetDiffuseMap(wstring fileName)
-{
-	//return;//todo : 임시 코드
-	resources->srvs->GetFromFile(diffuse, fileName);
-}
-
-void Material::SetNormalMap(wstring fileName)
-{
-	resources->srvs->GetFromFile(normal, fileName);
-}
-
-void Material::SetSpecularMap(wstring fileName)
-{
-	resources->srvs->GetFromFile(specular, fileName);
-}
+//void Material::SetShader(wstring fileName)
+//{
+//	pixelShaderName = fileName;
+//	resources->pixelShaders->Get(pixelShader, fileName);
+//}
