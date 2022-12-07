@@ -231,7 +231,7 @@ private:
 		desc.DepthClipEnable = true;
 		desc.FillMode = D3D11_FILL_SOLID;
 		//rasterDesc.FillMode = D3D11_FILL_WIREFRAME;
-		desc.FrontCounterClockwise = false;
+		desc.FrontCounterClockwise = true;
 		desc.MultisampleEnable = false;
 		desc.ScissorEnable = false;
 		desc.SlopeScaledDepthBias = 0.0f;

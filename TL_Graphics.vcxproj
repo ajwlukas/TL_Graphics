@@ -106,7 +106,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch_dx_11.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -115,7 +115,13 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy /E /S /Y /R "$(OutputPath)*.dll" "$(OutputPath)..\_Game\*"
+xcopy /E /S /Y /R "$(OutputPath)*.pdb" "$(OutputPath)..\_Game\*"
 xcopy /E /S /Y /R "$(OutputPath)Shader\*" "$(OutputPath)..\_Game\Shader\*"
+
+xcopy /E /S /Y /R "$(OutDir)*.dll" "$(OutputPath)..\_Editor\*"
+xcopy /E /S /Y /R "$(OutDir)*.pdb" "$(OutputPath)..\_Editor\*"
+xcopy /E /S /Y /R "$(OutputPath)Shader\*" "$(OutputPath)..\_Editor\Shader\*"
+
 xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     </PostBuildEvent>
     <FxCompile />
@@ -136,7 +142,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch_dx_11.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,7 +153,13 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /E /S /Y /R "$(OutputPath)*.dll" "$(OutputPath)..\_Game\*"
+xcopy /E /S /Y /R "$(OutputPath)*.pdb" "$(OutputPath)..\_Game\*"
 xcopy /E /S /Y /R "$(OutputPath)Shader\*" "$(OutputPath)..\_Game\Shader\*"
+
+xcopy /E /S /Y /R "$(OutDir)*.dll" "$(OutputPath)..\_Editor\*"
+xcopy /E /S /Y /R "$(OutDir)*.pdb" "$(OutputPath)..\_Editor\*"
+xcopy /E /S /Y /R "$(OutputPath)Shader\*" "$(OutputPath)..\_Editor\Shader\*"
+
 xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     </PostBuildEvent>
     <FxCompile />
@@ -166,7 +178,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch_dx_11.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -175,7 +187,13 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /E /S /Y /R "$(OutputPath)*.dll" "$(OutputPath)..\_Game\*"
+xcopy /E /S /Y /R "$(OutputPath)*.pdb" "$(OutputPath)..\_Game\*"
 xcopy /E /S /Y /R "$(OutputPath)Shader\*" "$(OutputPath)..\_Game\Shader\*"
+
+xcopy /E /S /Y /R "$(OutDir)*.dll" "$(OutputPath)..\_Editor\*"
+xcopy /E /S /Y /R "$(OutDir)*.pdb" "$(OutputPath)..\_Editor\*"
+xcopy /E /S /Y /R "$(OutputPath)Shader\*" "$(OutputPath)..\_Editor\Shader\*"
+
 xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     </PostBuildEvent>
     <FxCompile />
@@ -196,7 +214,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch_dx_11.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -207,7 +225,13 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /E /S /Y /R "$(OutputPath)*.dll" "$(OutputPath)..\_Game\*"
+xcopy /E /S /Y /R "$(OutputPath)*.pdb" "$(OutputPath)..\_Game\*"
 xcopy /E /S /Y /R "$(OutputPath)Shader\*" "$(OutputPath)..\_Game\Shader\*"
+
+xcopy /E /S /Y /R "$(OutDir)*.dll" "$(OutputPath)..\_Editor\*"
+xcopy /E /S /Y /R "$(OutDir)*.pdb" "$(OutputPath)..\_Editor\*"
+xcopy /E /S /Y /R "$(OutputPath)Shader\*" "$(OutputPath)..\_Editor\Shader\*"
+
 xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     </PostBuildEvent>
     <FxCompile />
