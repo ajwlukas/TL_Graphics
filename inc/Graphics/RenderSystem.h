@@ -17,6 +17,8 @@
 
 #include "IRenderTargetTexture.h"
 
+#include "ILight.h"
+
 struct ID3D11Device;
 struct ID3D11DeviceContext;
 
@@ -60,6 +62,15 @@ namespace TL_Graphics
 		void Return(void* address);//Create한거 지우는 거
 
 		virtual void UpdateWindowSize(UINT width, UINT height) = 0;
+
+		//set Light must be done before drawing objects
+		virtual void BeginSetLight() = 0;
+
+		virtual void SetLight(TL_Graphics::DirectionalLight* light) = 0;
+		virtual void SetLight(TL_Graphics::PointLight* light) = 0;
+		virtual void SetLight(TL_Graphics::SpotLight* light) = 0;
+
+		virtual void EndSetLight() = 0;
 
 		//바로 다음 드로우콜에만 적용된다.
 		virtual void DrawWireOnce() = 0;

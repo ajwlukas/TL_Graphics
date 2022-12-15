@@ -129,7 +129,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ShaderModel>5.0</ShaderModel>
       <ObjectFileOutput>$(OutDir)Shader\%(Filename).cso</ObjectFileOutput>
       <ShaderType>Vertex</ShaderType>
-      <AdditionalIncludeDirectories>./Shader/VS/headers/;./Shader/PS/headers/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Shader/VS/headers/; ./Shader/PS/headers/;</AdditionalIncludeDirectories>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -167,7 +167,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ShaderModel>5.0</ShaderModel>
       <ObjectFileOutput>$(OutDir)Shader\%(Filename).cso</ObjectFileOutput>
       <ShaderType>Vertex</ShaderType>
-      <AdditionalIncludeDirectories>./Shader/VS/headers/;./Shader/PS/headers/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Shader/VS/headers/; ./Shader/PS/headers/;</AdditionalIncludeDirectories>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -201,7 +201,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ShaderModel>5.0</ShaderModel>
       <ObjectFileOutput>$(OutDir)Shader\%(Filename).cso</ObjectFileOutput>
       <ShaderType>Vertex</ShaderType>
-      <AdditionalIncludeDirectories>./Shader/VS/headers/;./Shader/PS/headers/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Shader/VS/headers/; ./Shader/PS/headers/;</AdditionalIncludeDirectories>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -239,7 +239,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ShaderModel>5.0</ShaderModel>
       <ObjectFileOutput>$(OutDir)Shader\%(Filename).cso</ObjectFileOutput>
       <ShaderType>Vertex</ShaderType>
-      <AdditionalIncludeDirectories>./Shader/VS/headers/;./Shader/PS/headers/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Shader/VS/headers/; ./Shader/PS/headers/;</AdditionalIncludeDirectories>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -256,6 +256,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="inc\Graphics\MeshType.h" />
     <ClInclude Include="inc\Graphics\RenderSystem.h" />
     <ClInclude Include="inc\Graphics\ShaderType.h" />
+    <ClInclude Include="src\Graphics\Light.h" />
     <ClInclude Include="src\Graphics\RenderTarget.h" />
     <ClInclude Include="src\Graphics\RenderTargetTexture.h" />
     <ClInclude Include="src\Graphics\Shader.h" />
@@ -279,6 +280,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="src\Graphics\TextureBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\Light.cpp" />
     <ClCompile Include="src\Graphics\RenderTarget.cpp" />
     <ClCompile Include="src\Graphics\RenderTargetTexture.cpp" />
     <ClCompile Include="src\Graphics\Shader.cpp" />

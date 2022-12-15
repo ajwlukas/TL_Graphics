@@ -12,6 +12,8 @@ DX11Renderer::DX11Renderer()
 
 DX11Renderer::~DX11Renderer()
 {
+    SAFE_DELETE(lights);
+
     SAFE_DELETE(pipeline);
     SAFE_DELETE(resources);
     SAFE_RELEASE(dc);
@@ -32,6 +34,7 @@ HRESULT DX11Renderer::Init()
     resources = new Resources(device);
     pipeline = new Pipeline(dc, swapChain, &onResizeNotice, resources);
 
+    lights = new Light(dc, resources, pipeline);
 
     return hr;
 }
@@ -115,6 +118,31 @@ ID3D11Device* DX11Renderer::GetDevice()
 ID3D11DeviceContext* DX11Renderer::GetDeviceContext()
 {
     return dc;
+}
+
+void DX11Renderer::BeginSetLight()
+{
+    lights->BeginLightSet();
+}
+
+void DX11Renderer::SetLight(TL_Graphics::DirectionalLight* light)
+{
+    lights->SetLight(light);
+}
+
+void DX11Renderer::SetLight(TL_Graphics::PointLight* light)
+{
+    lights->SetLight(light);
+}
+
+void DX11Renderer::SetLight(TL_Graphics::SpotLight* light)
+{
+    lights->SetLight(light);
+}
+
+void DX11Renderer::EndSetLight()
+{
+    lights->EndLightSet();
 }
 
 

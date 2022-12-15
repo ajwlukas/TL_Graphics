@@ -20,6 +20,8 @@
 
 #include "RenderTargetTexture.h"
 
+#include "Light.h"
+
 #include "Pipeline.h"
 
 
@@ -90,6 +92,16 @@ private:
 
 	virtual ID3D11DeviceContext* GetDeviceContext() override;
 
+	Light* lights;
 
+	virtual void BeginSetLight() override;
+
+	virtual void SetLight(TL_Graphics::DirectionalLight* light) override;
+
+	virtual void SetLight(TL_Graphics::PointLight* light) override;
+
+	virtual void SetLight(TL_Graphics::SpotLight* light) override;
+
+	virtual void EndSetLight() override;
 
 };

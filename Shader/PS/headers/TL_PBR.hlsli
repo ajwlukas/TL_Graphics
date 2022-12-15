@@ -8,7 +8,6 @@
 static const float PI = 3.141592;
 static const float3 Fdielectric = 0.04;
 
-static const uint NumLights = 1;
 static const float Epsilon = 0.00001;
 
 // Shlick's approximation of the Fresnel factor.

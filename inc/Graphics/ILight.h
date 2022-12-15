@@ -12,19 +12,19 @@ namespace TL_Graphics
 		const int type = 0;
 
 	private:
-		TL_Math::Vector3 position;
+		TL_Math::Vector3 position = {0,0,0};
 
 	public:
-		float intensity;
-		TL_Math::Vector3 direction;
+		float intensity = 1.0f;
+		TL_Math::Vector3 direction = { 1,0,0 };
 
 	private:
-		float range;
-		TL_Math::Vector3 attenuation;
+		float range = 0;
+		TL_Math::Vector3 attenuation = { 0,0,0 };
 
-		float spot;
+		float spot = 0;
 	public:
-		TL_Math::Vector3 color;
+		TL_Math::Vector3 color = { 1,0,1 };
 	};
 	__declspec(align(16)) struct PointLight
 	{
@@ -60,6 +60,5 @@ namespace TL_Graphics
 		float spot;
 		TL_Math::Vector3 color;
 	};
-
 
 }

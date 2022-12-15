@@ -3,7 +3,7 @@
 
 TextureBuffer::TextureBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, void* data, size_t dataSize)
 	:ShaderResource(dc, resources, pipeline)
-	,dc(dc)
+	, dc(dc)
 {
 	D3D11_BUFFER_DESC desc = {};
 	desc.Usage = D3D11_USAGE_DYNAMIC;
@@ -16,7 +16,10 @@ TextureBuffer::TextureBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipe
 	D3D11_SUBRESOURCE_DATA initData;
 	initData.pSysMem = data;
 
-	resources->buffers->Create(buffer, desc, &initData);
+	if(data)
+		resources->buffers->Create(buffer, desc, &initData);
+	else
+		resources->buffers->Create(buffer, desc, nullptr);
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 	srvDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -31,16 +34,30 @@ TextureBuffer::~TextureBuffer()
 {
 }
 
+void TextureBuffer::Map()
+{
+	ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+
+	dc->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+}
+
+void TextureBuffer::PartialUpdate(size_t offset, void* data, size_t dataSize)
+{
+	// Copy Resource Data..
+	memcpy((void*)((char*)mappedResource.pData + offset) , data, dataSize);
+}
+
 void TextureBuffer::Update(void* data, size_t dataSize)
 {
-			D3D11_MAPPED_SUBRESOURCE mappedResource;
-			ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
-	
-			dc->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	
-			// Copy Resource Data..
-			memcpy(mappedResource.pData, data, dataSize);
-	
-			// GPU Access UnLock Buffer Data..
-			dc->Unmap(buffer, 0);
+	Map();
+
+	PartialUpdate(0, data, dataSize);
+
+	UnMap();
+}
+
+void TextureBuffer::UnMap()
+{
+	// GPU Access UnLock Buffer Data..
+	dc->Unmap(buffer, 0);
 }

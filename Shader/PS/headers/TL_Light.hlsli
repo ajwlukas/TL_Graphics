@@ -1,4 +1,12 @@
-//https://github.com/KhronosGroup/glTF-Sample-Viewer/blob/master/source/Renderer/shaders/pbr.frag 참고해서 만듦
+#ifndef TL_Light
+#define TL_Light
+
+#include "TL_TexturesPS.hlsli"
+
+struct LightMetaData
+{
+    uint lightNum;
+};
 
 struct Light
 {
@@ -18,6 +26,32 @@ struct Light
 const int LightType_Directional = 0;
 const int LightType_Point = 1;
 const int LightType_Spot = 2;
+
+const int metaDataOffset = 1;
+
+Light LoadLightInfo(uint index)
+{
+    Light light;
+    
+    float4 type_position = Lights.Load(1 + 4 * index + 0);//1 for lightNum
+    float4 intensity_direction = Lights.Load(1 + 4 * index + 1);
+    float4 range_attenuation = Lights.Load(1 + 4 * index + 2);
+    float4 spot_color = Lights.Load(1 + 4 * index + 3);
+    
+    light.type = (uint)type_position.x;
+    light.position = type_position.yzw;
+    
+    light.intensity = intensity_direction.x;
+    light.direction = intensity_direction.yzw;
+    
+    light.range = range_attenuation.x;
+    light.attenuation = range_attenuation.yzw;
+    
+    light.spot = spot_color.x;
+    light.color = spot_color.yzw;
+    
+    return light;
+}
 
 float getRangeAttenuation(float range, float distance)
 {
@@ -45,3 +79,6 @@ float3 GetLighIntensity(Light light, float3 surfaceToLight)
 
     return rangeAttenuation * spotAttenuation * light.intensity * light.color;
 }
+//https://github.com/KhronosGroup/glTF-Sample-Viewer/blob/master/source/Renderer/shaders/pbr.frag 참고해서 만듦
+
+#endif

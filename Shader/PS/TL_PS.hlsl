@@ -8,6 +8,8 @@
 
 #include "TL_Samplers.hlsli"
 
+#include "TL_Light.hlsli"
+
 #include "TL_PBR.hlsli"
 
  //https://github.com/Nadrin/PBR/blob/master/data/shaders/hlsl/pbr.hlsl
@@ -44,6 +46,10 @@ PS_Out main(VS_Out surface)
     
     // Direct lighting calculation for analytical lights.
     float3 directLighting = 0.0;
+    
+    float4 tempLoad = Lights.Load(0);
+    float tempFloat = tempLoad.x;
+    uint NumLights = (uint) tempFloat;
     
     float3 light = float3(0, 0, -1);
     

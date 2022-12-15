@@ -7,7 +7,6 @@ Texture2D matallicMap : register(t1);
 Texture2D roughnessMap : register(t2);
 
 //11 ~ 20
-Buffer<float4> pointLights : register(t11);
-Buffer<float4> spotLights : register(t12);
+Buffer<float4> Lights : register(t11);//first float4 represent metaData
 
 #endif
