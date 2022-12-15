@@ -9,4 +9,15 @@ cbuffer CameraBuffer : register(b0)
 }
 
 
+cbuffer Material : register(b11)
+{
+    float4 mMetallic;
+    float4 mRoughness;
+}
+
+cbuffer lightInfo : register(b1)
+{
+    float4 directional;
+}
+
 #endif

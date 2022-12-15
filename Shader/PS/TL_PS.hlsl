@@ -17,9 +17,13 @@ PS_Out main(VS_Out surface)
     
 	// Sample input textures to get shading model params.
     //float3 albedo = albedoMap.;
-    float3 albedo = albedoMap.Sample(Sampler, surface.uv);
+    //float3 albedo = albedoMap.Sample(Sampler, surface.uv);
     //float metalness = matallicMap.Sample(Sampler, surface.uv);
     //float roughness = roughnessMap.Sample(Sampler, surface.uv);
+    //float metalness = mMetallic.r;
+    //float roughness = mRoughness.r;
+    
+    float3 albedo = float3(1, 0, 0);
     float metalness = 0.5f;
     float roughness = 0.5f;
     
@@ -46,7 +50,7 @@ PS_Out main(VS_Out surface)
     for (uint i = 0; i < NumLights; ++i)
     {
         float3 Li = light;
-        float3 Lradiance = float3(1, 1, 1);
+        float intensity = 1.0f;
 
 		// Half-vector between Li and Lo.
         float3 Lh = normalize(Li + Lo);
@@ -76,7 +80,7 @@ PS_Out main(VS_Out surface)
         float3 specularBRDF = (F * D * G) / max(Epsilon, 4.0 * cosLi * cosLo);
 
 		// Total contribution for this light.
-        directLighting += (diffuseBRDF + specularBRDF) * Lradiance * cosLi;
+        directLighting += (diffuseBRDF + specularBRDF) * intensity * cosLi;
     }
     
     

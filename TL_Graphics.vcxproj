@@ -306,6 +306,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\PS\headers\TL_ConstantsPS.hlsli" />
+    <None Include="Shader\PS\headers\TL_Light.hlsli" />
     <None Include="Shader\VS\headers\TL_ConstantsVS.hlsli" />
     <None Include="Shader\VS\headers\TL_IO_VS.hlsli" />
     <None Include="Shader\PS\headers\TL_OUT_PS.hlsli" />
