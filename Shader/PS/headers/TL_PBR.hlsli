@@ -24,8 +24,31 @@ float ndfGGX(float cosLh, float roughness)
     float alphaSq = alpha * alpha;
 
     float denom = (cosLh * cosLh) * (alphaSq - 1.0) + 1.0;
-    return alphaSq / (PI * denom * denom);
+    
+    //눈과 빛의 거울반사 각도가 작을 수록
+    //return 값 up
+    
+    //roughness가 클수록
+    //return 값 down
+    
+    return alphaSq / max(Epsilon, (PI * denom * denom));
 }
+
+float D_GGX(float a2, float NoH)
+{
+    
+    float d = (NoH * a2 - NoH) * NoH + 1;
+
+    return a2 / (PI * d * d);
+}
+float D_Beckmann(float a2, float NoH)
+{
+
+    float NoH2 = NoH * NoH;
+    return exp((NoH2 - 1) / (a2 * NoH2)) / (PI * a2 * NoH2 * NoH2);
+}
+
+
 
 // Single term for separable Schlick-GGX below.
 float gaSchlickG1(float cosTheta, float k)

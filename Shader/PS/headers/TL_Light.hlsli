@@ -63,14 +63,14 @@ float getRangeAttenuation(float range, float distance)
     return max(min(1.0 - pow(distance / range, 4.0), 1.0), 0.0) / pow(distance, 2.0);
 }
 
-float3 GetLighIntensity(Light light, float3 surfaceToLight)
+float3 GetLightIntensity(Light light, float3 pos_world)
 {
     float rangeAttenuation = 1.0;
     float spotAttenuation = 1.0;
 
     if (light.type != LightType_Directional)
     {
-        rangeAttenuation = getRangeAttenuation(light.range, length(surfaceToLight));
+        rangeAttenuation = getRangeAttenuation(light.range, length(light.position - pos_world));
     }
     //if (light.type == LightType_Spot)
     //{
@@ -78,6 +78,15 @@ float3 GetLighIntensity(Light light, float3 surfaceToLight)
     //}
 
     return rangeAttenuation * spotAttenuation * light.intensity * light.color;
+}
+
+//surface To Light
+float3 GetLightDirection(Light light, float3 pos_world)
+{
+    if(light.type == LightType_Directional)
+        return -normalize(light.direction);
+    
+    return normalize(light.position - pos_world);
 }
 //https://github.com/KhronosGroup/glTF-Sample-Viewer/blob/master/source/Renderer/shaders/pbr.frag 참고해서 만듦
 

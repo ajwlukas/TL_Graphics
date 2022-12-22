@@ -12,6 +12,12 @@
 
 #include "TL_PBR.hlsli"
 
+cbuffer material : register(b1)
+{
+    float metal;
+    float rough;
+}
+
  //https://github.com/Nadrin/PBR/blob/master/data/shaders/hlsl/pbr.hlsl
 PS_Out main(VS_Out surface)
 {
@@ -26,56 +32,73 @@ PS_Out main(VS_Out surface)
     //float roughness = mRoughness.r;
     
     float3 albedo = float3(1, 0, 0);
-    float metalness = 0.5f;
-    float roughness = 0.5f;
+    float metalness = metal;
+    float roughness = rough;
     
-	// Outgoing light direction (vector from world-space fragment position to the "eye").
-    float3 Lo = normalize(camPos - surface.pos_world);
     
-    // Get current fragment's normal and transform to world space.
-    float3 N = surface.normal_world;
     
-    // Angle between surface normal and outgoing light direction.
-    float cosLo = max(0.0, dot(N, Lo));
+    //표면으로 부터 눈으로 향하는 방향 벡터
+    float3 toEye = normalize(camPos - surface.pos_world);
     
-    // Specular reflection vector.
-    float3 Lr = 2.0 * cosLo * N - Lo;
+    //표면의 노말
+    float3 normal = surface.normal_world;
     
-    // Fresnel reflectance at normal incidence (for metals use albedo color).
+    // 노말과 눈방향의 각
+    float nDotToEye = max(0.0, dot(normal, toEye));
+    
+    // 프레넬0의 값, 메탈의 경우 albedo 값으로 대체
     float3 F0 = lerp(Fdielectric, albedo, metalness);
     
-    // Direct lighting calculation for analytical lights.
+    
+    //Light 갯수 Load from register(t11), TL_TexturesPS 확인
+    uint NumLights = (uint) Lights.Load(0).x;
+    
+    
+    // 여러 광원으로부터 직접광 (Diffuse + Specular) 더해줄 변수 선언
     float3 directLighting = 0.0;
-    
-    float4 tempLoad = Lights.Load(0);
-    float tempFloat = tempLoad.x;
-    uint NumLights = (uint) tempFloat;
-    
-    float3 light = float3(0, 0, -1);
-    
     for (uint i = 0; i < NumLights; ++i)
     {
-        float3 Li = light;
-        float intensity = 1.0f;
+        Light light = LoadLightInfo(i);
+        
+        //빛으로 향하는 벡터
+        float3 lightDir = GetLightDirection(light, surface.pos_world);
+        
+        //감쇠된 빛의 세기
+        float intensity = GetLightIntensity(light, surface.pos_world);
+        
+        //표면과 빛의 각
+        float nDotL = max(0.0, dot(normal, lightDir));
+        
+        //램버트 코사인에 의해 들어오는 조도
+        float illuminance = intensity * nDotL;
 
-		// Half-vector between Li and Lo.
-        float3 Lh = normalize(Li + Lo);
+		// 눈과 빛의 중간 벡터
+        float3 halfVec = normalize(lightDir + toEye);
 
-		// Calculate angles between surface normal and various light vectors.
-        float cosLi = max(0.0, dot(N, Li));
-        float cosLh = max(0.0, dot(N, Lh));
+		// 하프벡터와 표면노멀벡터의 각
+        float nDotH = max(0.0, dot(normal, halfVec));
 
-		// Calculate Fresnel term for direct lighting. 
-        float3 F = fresnelSchlick(F0, max(0.0, dot(Lh, Lo)));
-		// Calculate normal distribution for specular BRDF.
-        float D = ndfGGX(cosLh, roughness);
-		// Calculate geometric attenuation for specular BRDF.
-        float G = gaSchlickGGX(cosLi, cosLo, roughness);
+        // 하프벡터와 눈방향의 각
+        float hDotE = max(0.0, dot(halfVec, toEye));
+        
+        // 프레넬 항, 물질의 종류(F0가 바뀜), 눈과 표면(이경우 미세표면)의 각에 영향 받음
+        float3 F = fresnelSchlick(F0, hDotE);
+        
+        
+        // 분포함수, n을 노말로 갖고 있는 표면에 ,h를 노말로 갖고 있는 미세표면이 얼마나 있는지?
+        // 사실 아직도 확신 못하겠음
+        float D = D_Beckmann(roughness * roughness, nDotH);
+        //float D = ndfGGX(cosLh, roughness);
+        //float D = D_GGX(roughness * roughness, cosLh);
+        
+		// 기하감쇠율, masking, shadowing 으로 인한 빛의 손실율
+        float G = gaSchlickGGX(nDotL, nDotToEye, roughness);
 
-		// Diffuse scattering happens due to light being refracted multiple times by a dielectric medium.
-		// Metals on the other hand either reflect or absorb energy, so diffuse contribution is always zero.
-		// To be energy conserving we must scale diffuse BRDF contribution based on Fresnel factor & metalness.
-        float3 kd = lerp(float3(1, 1, 1) - F, float3(0, 0, 0), metalness);
+        // 빛의 굴절율, 반사율(프레넬 항)의 보수, 
+        float3 refracted = float3(1, 1, 1) - F;
+        
+        //금속의 경우 굴절된 빛을 모두 흡수해서 산란하지 않는다.
+        float3 kd = lerp(refracted, float3(0, 0, 0), metalness);
 
 		// Lambert diffuse BRDF.
 		// We don't scale by 1/PI for lighting & material units to be more convenient.
@@ -83,10 +106,10 @@ PS_Out main(VS_Out surface)
         float3 diffuseBRDF = kd * albedo;
 
 		// Cook-Torrance specular microfacet BRDF.
-        float3 specularBRDF = (F * D * G) / max(Epsilon, 4.0 * cosLi * cosLo);
+        float3 specularBRDF = (F * D * G) / max(Epsilon, 4.0 * nDotL * nDotToEye);
 
 		// Total contribution for this light.
-        directLighting += (diffuseBRDF + specularBRDF) * intensity * cosLi;
+        directLighting += illuminance * (diffuseBRDF + specularBRDF);
     }
     
     
@@ -97,9 +120,9 @@ PS_Out main(VS_Out surface)
     
     /////////////////////////////////////////////////
     
-    float nDotL = dot(surface.normal_world, light);
+    //float nDotL = dot(surface.normal_world, light);
     
-    ret.out1 = float4(albedo * nDotL, 1.0f); //legacy
+    //ret.out1 = float4(albedo * nDotL, 1.0f); //legacy
     
     return ret;
 }
