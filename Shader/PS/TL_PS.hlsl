@@ -64,13 +64,13 @@ PS_Out main(VS_Out surface)
         float3 lightDir = GetLightDirection(light, surface.pos_world);
         
         //감쇠된 빛의 세기
-        float intensity = GetLightIntensity(light, surface.pos_world);
+        float3 intensity = GetLightIntensity(light, surface.pos_world);
         
         //표면과 빛의 각
         float nDotL = max(0.0, dot(normal, lightDir));
         
         //램버트 코사인에 의해 들어오는 조도
-        float illuminance = intensity * nDotL;
+        float3 illuminance = intensity * nDotL;
 
 		// 눈과 빛의 중간 벡터
         float3 halfVec = normalize(lightDir + toEye);
