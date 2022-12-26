@@ -59,6 +59,15 @@ float getRangeAttenuation(float3 attenuation, float distance)
     return 1.0f / dot(attenuation, float3(1.0f, distance, distance * distance));
 }
 
+float getSpotAttenuation(Light light, float3 pos_world)
+{
+	float3 lightToSurface = normalize(pos_world - light.position);
+    
+	float lightCos = pow(dot(lightToSurface, normalize(light.direction)), light.spot);
+    
+	return saturate(lightCos);
+}
+
 float3 GetLightIntensity(Light light, float3 pos_world)
 {
     float rangeAttenuation = 1.0;
@@ -68,10 +77,10 @@ float3 GetLightIntensity(Light light, float3 pos_world)
     {
         rangeAttenuation = getRangeAttenuation(light.attenuation, length(light.position - pos_world));
     }
-    //if (light.type == LightType_Spot)
-    //{
-    //    spotAttenuation = getSpotAttenuation(surfaceToLight, light.direction, light.outerConeCos, light.innerConeCos);
-    //}
+    if (light.type == LightType_Spot)
+    {
+        spotAttenuation = getSpotAttenuation(light, pos_world);
+    }
 
     return rangeAttenuation * spotAttenuation * light.intensity * light.color;
 }
@@ -90,11 +99,11 @@ bool IsValid(Light light, float3 pos_world)
     if (light.type == LightType_Directional)
         return true;
     
-    if(light.type == LightType_Point)
+    if(light.type != LightType_Directional)
         return length(light.position - pos_world) < light.range;
     
     //todo : if spotlight
-    return false;
+    return true;
 }
 
 
