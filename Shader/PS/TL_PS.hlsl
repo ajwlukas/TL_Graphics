@@ -31,7 +31,7 @@ PS_Out main(VS_Out surface)
     //float metalness = mMetallic.r;
     //float roughness = mRoughness.r;
     
-    float3 albedo = float3(1, 0, 0);
+    float3 albedo = float3(1, 1, 1);
     float metalness = metal;
     float roughness = rough;
     
@@ -55,10 +55,15 @@ PS_Out main(VS_Out surface)
     
     
     // 여러 광원으로부터 직접광 (Diffuse + Specular) 더해줄 변수 선언
-    float3 directLighting = 0.0;
+    float3 directLighting = 0.0f;
+
+
     for (uint i = 0; i < NumLights; ++i)
     {
         Light light = LoadLightInfo(i);
+        
+        if (!IsValid(light, surface.pos_world))
+            continue;
         
         //빛으로 향하는 벡터
         float3 lightDir = GetLightDirection(light, surface.pos_world);
@@ -67,7 +72,10 @@ PS_Out main(VS_Out surface)
         float3 intensity = GetLightIntensity(light, surface.pos_world);
         
         //표면과 빛의 각
-        float nDotL = max(0.0, dot(normal, lightDir));
+        float nDotL = max(0.0f, dot(normal, lightDir));
+
+        if (nDotL <= 0.0f)
+            continue;
         
         //램버트 코사인에 의해 들어오는 조도
         float3 illuminance = intensity * nDotL;
@@ -76,10 +84,10 @@ PS_Out main(VS_Out surface)
         float3 halfVec = normalize(lightDir + toEye);
 
 		// 하프벡터와 표면노멀벡터의 각
-        float nDotH = max(0.0, dot(normal, halfVec));
+        float nDotH = max(0.0f, dot(normal, halfVec));
 
         // 하프벡터와 눈방향의 각
-        float hDotE = max(0.0, dot(halfVec, toEye));
+        float hDotE = max(0.0f, dot(halfVec, toEye));
         
         // 프레넬 항, 물질의 종류(F0가 바뀜), 눈과 표면(이경우 미세표면)의 각에 영향 받음
         float3 F = fresnelSchlick(F0, hDotE);
@@ -95,10 +103,10 @@ PS_Out main(VS_Out surface)
         float G = gaSchlickGGX(nDotL, nDotToEye, roughness);
 
         // 빛의 굴절율, 반사율(프레넬 항)의 보수, 
-        float3 refracted = float3(1, 1, 1) - F;
+        float3 refracted = float3(1.0f, 1.0f, 1.0f) - F;
         
         //금속의 경우 굴절된 빛을 모두 흡수해서 산란하지 않는다.
-        float3 kd = lerp(refracted, float3(0, 0, 0), metalness);
+        float3 kd = lerp(refracted, float3(0.0f, 0.0f, 0.0f), metalness);
 
 		// Lambert diffuse BRDF.
 		// We don't scale by 1/PI for lighting & material units to be more convenient.
@@ -106,15 +114,18 @@ PS_Out main(VS_Out surface)
         float3 diffuseBRDF = kd * albedo;
 
 		// Cook-Torrance specular microfacet BRDF.
-        float3 specularBRDF = (F * D * G) / max(Epsilon, 4.0 * nDotL * nDotToEye);
+        float3 specularBRDF = (F * D * G) / max(Epsilon, 4.0f * nDotL * nDotToEye);
 
 		// Total contribution for this light.
-        directLighting += illuminance * (diffuseBRDF + specularBRDF);
+        directLighting = directLighting + illuminance * (diffuseBRDF + specularBRDF);
+
+
+        int a = 0;
     }
     
     
 	// Final fragment color.
-    ret.out0 = float4(directLighting, 1.0); //pbr
+    ret.out0 = float4(directLighting, 1.0f); //pbr
     
     //ret.out0 = float4(1, 1, 1, 1);
     

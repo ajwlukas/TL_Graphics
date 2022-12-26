@@ -9,7 +9,7 @@ namespace TL_Graphics
 	 __declspec(align(16)) struct DirectionalLight
 	{
 	public:
-		const int type = 0;
+		const float type = 0;//쉐이더에서 타입 문제 때문에 float로 사용함
 
 	private:
 		TL_Math::Vector3 position = {0,0,0};
@@ -29,7 +29,7 @@ namespace TL_Graphics
 	__declspec(align(16)) struct PointLight
 	{
 	public:
-		const int type = 1;
+		const float type = 1;//쉐이더에서 타입 문제 때문에 float로 사용함
 		TL_Math::Vector3 position;
 
 		float intensity;
@@ -48,7 +48,7 @@ namespace TL_Graphics
 	__declspec(align(16)) struct SpotLight
 	{
 	public:
-		const int type = 2;
+		const float type = 2;//쉐이더에서 타입 문제 때문에 float로 사용함
 		TL_Math::Vector3 position;
 
 		float intensity;

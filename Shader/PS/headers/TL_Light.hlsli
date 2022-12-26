@@ -10,7 +10,7 @@ struct LightMetaData
 
 struct Light
 {
-    int type;
+    uint type;
     float3 position;
     
     float intensity;
@@ -23,11 +23,11 @@ struct Light
     float3 color;
 };
 
-const int LightType_Directional = 0;
-const int LightType_Point = 1;
-const int LightType_Spot = 2;
+static const uint LightType_Directional = 0;
+static const uint LightType_Point = 1;
+static const uint LightType_Spot = 2;
 
-const int metaDataOffset = 1;
+//const int metaDataOffset = 1;
 
 Light LoadLightInfo(uint index)
 {
@@ -53,14 +53,10 @@ Light LoadLightInfo(uint index)
     return light;
 }
 
-float getRangeAttenuation(float range, float distance)
+float getRangeAttenuation(float3 attenuation, float distance)
 {
-    if (range <= 0.0)
-    {
-        // negative range means unlimited
-        return 1.0 / pow(distance, 2.0);
-    }
-    return max(min(1.0 - pow(distance / range, 4.0), 1.0), 0.0) / pow(distance, 2.0);
+    
+    return 1.0f / dot(attenuation, float3(1.0f, distance, distance * distance));
 }
 
 float3 GetLightIntensity(Light light, float3 pos_world)
@@ -70,7 +66,7 @@ float3 GetLightIntensity(Light light, float3 pos_world)
 
     if (light.type != LightType_Directional)
     {
-        rangeAttenuation = getRangeAttenuation(light.range, length(light.position - pos_world));
+        rangeAttenuation = getRangeAttenuation(light.attenuation, length(light.position - pos_world));
     }
     //if (light.type == LightType_Spot)
     //{
@@ -88,6 +84,20 @@ float3 GetLightDirection(Light light, float3 pos_world)
     
     return normalize(light.position - pos_world);
 }
+
+bool IsValid(Light light, float3 pos_world)
+{
+    if (light.type == LightType_Directional)
+        return true;
+    
+    if(light.type == LightType_Point)
+        return length(light.position - pos_world) < light.range;
+    
+    //todo : if spotlight
+    return false;
+}
+
+
 //https://github.com/KhronosGroup/glTF-Sample-Viewer/blob/master/source/Renderer/shaders/pbr.frag 참고해서 만듦
 
 #endif
