@@ -1,4 +1,11 @@
-float4 main( float4 pos : POSITION ) : SV_POSITION
+#include "TL_IO_VS.hlsli"
+
+VS_Out_ScreenSpace main(VS_In_ScreenSpace v)
 {
-	return pos;
+    VS_Out_ScreenSpace ret;
+	
+    ret.pos_NDC = float4(v.pos.x, v.pos.y, float2(0.0f, 1.0f));
+    ret.uv = v.uv;
+	
+	return ret;
 }
