@@ -19,6 +19,10 @@ namespace TL_Graphics
 	{
 	public:
 		virtual void Set(UINT albdeoMapSlot = 0, UINT metallicMapSlot = 1, UINT roughnessMapSlot = 2) = 0;
+		
+		virtual void SetAlbedo(class IShaderResource*) = 0;
+		virtual void SetMetallic(class IShaderResource*) = 0;
+		virtual void SetRoughness(class IShaderResource* ) = 0;
 
 	};
 }

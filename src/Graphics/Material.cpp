@@ -44,6 +44,21 @@ void Material::Set(UINT albdeoMapSlot, UINT metallicMapSlot, UINT roughnessMapSl
 	roughnessMap->Set(TL_Graphics::E_SHADER_TYPE::PS, roughnessMapSlot);
 }
 
+void Material::SetAlbedo(class TL_Graphics::IShaderResource* albedo)
+{
+	albedoMap = reinterpret_cast<Texture*>(albedo);
+}
+
+void Material::SetMetallic(class TL_Graphics::IShaderResource* metallic)
+{
+	metallicMap = reinterpret_cast<Texture*>(metallic);
+}
+
+void Material::SetRoughness(class TL_Graphics::IShaderResource* roughness)
+{
+	roughnessMap = reinterpret_cast<Texture*>(roughness);
+}
+
 //void Material::SetShader(wstring fileName)
 //{
 //	pixelShaderName = fileName;

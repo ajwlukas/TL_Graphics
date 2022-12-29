@@ -119,8 +119,6 @@ PS_Out main(VS_Out surface)
 		// Total contribution for this light.
         directLighting = directLighting + illuminance * (diffuseBRDF + specularBRDF);
 
-
-        int a = 0;
     }
     
     

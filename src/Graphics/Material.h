@@ -28,6 +28,9 @@ public:
 
 	virtual void Set(UINT albdeoMapSlot = 0, UINT metallicMapSlot = 1, UINT roughnessMapSlot = 2) override;
 
+	virtual void SetAlbedo(class TL_Graphics::IShaderResource*) override;
+	virtual void SetMetallic(class TL_Graphics::IShaderResource*) override;
+	virtual void SetRoughness(class TL_Graphics::IShaderResource*) override;
 	//void SetShader(std::wstring fileName);
 
 	std::wstring pixelShaderName;
