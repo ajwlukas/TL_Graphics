@@ -99,7 +99,6 @@ private:
 	Resource<ID3D11RasterizerState> wireFrameRasterState;
 	Resource<ID3D11RasterizerState> solidRasterState;
 
-	Resource<ID3D11BlendState> gBufferBlendState;//Deferred에 필요한 GBuffer을 뽑을 때 쓰는 BlendState
 
 	Resource<ID3D11DepthStencilState> defaultDepthStencilState;
 	Resource<ID3D11BlendState> defaultBlendState;
@@ -114,8 +113,6 @@ private:
 	D3D11_VIEWPORT viewPort;
 
 	void CreateDefaultStates();
-
-	void CreateGBufferBlendState();
 
 	//void ResizeSwapChainRtv(UINT width, UINT height);//aka Create
 	void ResizeDepthStencilView(UINT width, UINT height);	//aka Create
