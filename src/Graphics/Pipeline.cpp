@@ -3,8 +3,8 @@
 
 Pipeline::Pipeline(ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, OnResizeNotice* resizeNotice, Resources* resources)
 	:dc(dc), currentMaterial(nullptr), currentMesh(nullptr)
-	,swapChain(swapChain)
-	,resources(resources)
+	, swapChain(swapChain)
+	, resources(resources)
 {
 	resizeNotice->AddObserver(this);
 
@@ -124,7 +124,7 @@ void Pipeline::SetShader(Shader* shader)
 {
 	if (shader->type == TL_Graphics::E_SHADER_TYPE::VS)
 	{
-		dc->VSSetShader(*shader,0,0);
+		dc->VSSetShader(*shader, 0, 0);
 		currentVSShader = shader;
 	}
 
@@ -206,11 +206,31 @@ void Pipeline::CreateDefaultStates()
 	defaultRasterState = solidRasterState;
 	//defaultRasterState = wireFrameRasterState;
 
+	CreateGBufferBlendState();
 
 
 	resources->depthStencilStates->GetDefault(defaultDepthStencilState);
 	resources->blendStates->GetDefault(defaultBlendState);
 	resources->samplerStates->GetDefault(defualtSamplerState);
+}
+
+void Pipeline::CreateGBufferBlendState()
+{
+	D3D11_BLEND_DESC desc = {};
+	for (UINT i = 0; i < MAX_RENDERTARGET; i++)
+	{
+		desc.RenderTarget[i].BlendEnable = FALSE;
+		desc.RenderTarget[i].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+		desc.RenderTarget[i].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+		desc.RenderTarget[i].BlendOp = D3D11_BLEND_OP_ADD;
+		desc.RenderTarget[i].SrcBlendAlpha = D3D11_BLEND_ONE;
+		desc.RenderTarget[i].DestBlendAlpha = D3D11_BLEND_ZERO;
+		desc.RenderTarget[i].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		desc.RenderTarget[i].RenderTargetWriteMask = 0x0f;
+	}
+
+	resources->blendStates->Get(gBufferBlendState, desc);
+
 }
 
 void Pipeline::ResizeDepthStencilView(UINT width, UINT height)
@@ -254,7 +274,7 @@ void Pipeline::DrawWireOnce()
 	SetCurrentRasterState(wireFrameRasterState);
 
 	reservations.emplace_back(
-		[&]() 
+		[&]()
 		{
 			SetCurrentRasterState(defaultRasterState);
 		}
