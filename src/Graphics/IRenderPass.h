@@ -6,15 +6,15 @@
 
 class Pipeline;
 
-class IShaderPass
+class IRenderPass
 {
 public:
-	IShaderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
-	~IShaderPass();
+	IRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
+	~IRenderPass();
 
 	virtual void Set() = 0;
 
-private:
+protected:
 	friend class Pipeline;
 	ID3D11DeviceContext* dc;
 	Resources* resources;
