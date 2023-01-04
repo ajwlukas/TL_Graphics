@@ -87,7 +87,7 @@ void VertexShaderResources::Get(Resource< ID3D11VertexShader>& dest, std::wstrin
 		vertexShaders[shaderFileName].refCount--;
 		if (vertexShaders[shaderFileName].refCount == 0)
 		{
-			ID3D11VertexShader* del = dest;
+			ID3D11VertexShader* del = vertexShaders[shaderFileName].data;
 			vertexShaders.erase(shaderFileName);
 			SAFE_RELEASE(del);
 		}
@@ -168,7 +168,7 @@ void InputLayoutResources::Get(Resource<ID3D11InputLayout>& dest, D3D11_INPUT_EL
 		inputLayouts[key].refCount--;
 		if (inputLayouts[key].refCount == 0)
 		{
-			ID3D11InputLayout* del = dest;
+			ID3D11InputLayout* del = inputLayouts[key].data;
 			inputLayouts.erase(key);
 			SAFE_RELEASE(del);
 		}
@@ -220,7 +220,7 @@ void PixelShaderResources::Get(Resource< ID3D11PixelShader>& dest, wstring shade
 		pixelShaders[shaderFileName].refCount--;
 		if (pixelShaders[shaderFileName].refCount == 0)
 		{
-			ID3D11PixelShader* del = dest;
+			ID3D11PixelShader* del = pixelShaders[shaderFileName].data;
 			pixelShaders.erase(shaderFileName);
 			SAFE_RELEASE(del);
 		}
@@ -272,7 +272,7 @@ void SRVResources::Create(Resource<ID3D11ShaderResourceView>& dest, D3D11_SHADER
 		srvs[dest].refCount--;
 		if (srvs[dest].refCount == 0)
 		{
-			ID3D11ShaderResourceView* del = dest;
+			ID3D11ShaderResourceView* del = srvs[dest].data;
 			if (srvs.find(del) != srvs.end())
 				srvs.erase(del);
 			SAFE_RELEASE(del);
@@ -319,7 +319,7 @@ void SRVResources::GetFromFile(Resource<ID3D11ShaderResourceView>& dest, wstring
 		srvsFromTexture[fileName].refCount--;
 		if (srvsFromTexture[fileName].refCount == 0)
 		{
-			ID3D11ShaderResourceView* del = dest;
+			ID3D11ShaderResourceView* del = srvsFromTexture[fileName].data;
 			srvsFromTexture.erase(fileName);
 			SAFE_RELEASE(del);
 		}
@@ -372,7 +372,7 @@ void SamplerStateResources::Get(Resource<ID3D11SamplerState>& dest, D3D11_SAMPLE
 		samplerStates[key].refCount--;
 		if (samplerStates[key].refCount == 0)
 		{
-			ID3D11SamplerState* del = dest;
+			ID3D11SamplerState* del = samplerStates[key].data;
 			samplerStates.erase(key);
 			SAFE_RELEASE(del);
 		}
@@ -431,7 +431,7 @@ void RasterizerStateResources::Get(Resource<ID3D11RasterizerState>& dest, D3D11_
 		rasterizerStates[key].refCount--;
 		if (rasterizerStates[key].refCount == 0)
 		{
-			ID3D11RasterizerState* del = dest;
+			ID3D11RasterizerState* del = rasterizerStates[key].data;
 			rasterizerStates.erase(key);
 			SAFE_RELEASE(del);
 		}
@@ -494,7 +494,7 @@ void DepthStencilStateResources::Get(Resource<ID3D11DepthStencilState>& dest, D3
 		depthStencilStates[key].refCount--;
 		if (depthStencilStates[key].refCount == 0)
 		{
-			ID3D11DepthStencilState* del = dest;
+			ID3D11DepthStencilState* del = depthStencilStates[key].data;
 			depthStencilStates.erase(key);
 			SAFE_RELEASE(del);
 		}
@@ -551,7 +551,7 @@ void BlendStateResources::Get(Resource<ID3D11BlendState>& dest, D3D11_BLEND_DESC
 		blendStates[key].refCount--;
 		if (blendStates[key].refCount == 0)
 		{
-			ID3D11BlendState* del = dest;
+			ID3D11BlendState* del = blendStates[key].data;
 			blendStates.erase(key);
 			SAFE_RELEASE(del);
 		}
@@ -593,7 +593,7 @@ void Texture2DResources::Create(Resource<ID3D11Texture2D>& dest, D3D11_TEXTURE2D
 		texture2Ds[dest].refCount--;
 		if (texture2Ds[dest].refCount == 0)
 		{
-			ID3D11Texture2D* del = dest;
+			ID3D11Texture2D* del = texture2Ds[dest].data;
 			if (texture2Ds.find(del) != texture2Ds.end())
 				texture2Ds.erase(del);
 			SAFE_RELEASE(del);
@@ -628,7 +628,7 @@ void RenderTargetViewResources::Create(Resource<ID3D11RenderTargetView>& dest, D
 		rtvs[dest].refCount--;
 		if (rtvs[dest].refCount == 0)
 		{
-			ID3D11RenderTargetView* del = dest;
+			ID3D11RenderTargetView* del = rtvs[dest].data;
 			if (rtvs.find(del) != rtvs.end())
 				rtvs.erase(del);
 			SAFE_RELEASE(del);
@@ -664,7 +664,7 @@ void DepthStencilViewResources::Create(Resource<ID3D11DepthStencilView>& dest, D
 		depthStencilViews[dest].refCount--;
 		if (depthStencilViews[dest].refCount == 0)
 		{
-			ID3D11DepthStencilView* del = dest;
+			ID3D11DepthStencilView* del = depthStencilViews[dest].data;
 			if (depthStencilViews.find(del) != depthStencilViews.end())
 				depthStencilViews.erase(del);
 			SAFE_RELEASE(del);
@@ -701,7 +701,7 @@ void BufferResources::Create(Resource<ID3D11Buffer>& dest, D3D11_BUFFER_DESC des
 		buffers[dest].refCount--;
 		if (buffers[dest].refCount == 0)
 		{
-			ID3D11Buffer* del = dest;
+			ID3D11Buffer* del = buffers[dest].data;
 			if (buffers.find(del) != buffers.end())
 				buffers.erase(del);
 			SAFE_RELEASE(del);
