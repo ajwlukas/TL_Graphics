@@ -46,8 +46,8 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
     // 여러 광원으로부터 직접광 (Diffuse + Specular) 더해줄 변수 선언
     float3 directLighting = 0.0f;
-
-
+    
+    
     for (uint i = 0; i < NumLights; ++i)
     {
         Light light = LoadLightInfo(i);

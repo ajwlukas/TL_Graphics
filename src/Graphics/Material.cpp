@@ -3,15 +3,14 @@
 
 #include "Pipeline.h"
 
-Material::Material(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::wstring pixelShaderName
+Material::Material(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline
 	, const TL_Graphics::MaterialDesc& desc)
-	: pixelShader{}
-	,dc(dc)
+	: dc(dc)
 	, pixelShaderName(pixelShaderName)
 	, resources(resources)
 	, pipeline(pipeline)
 {
-	 resources->pixelShaders->Get(pixelShader, pixelShaderName);
+	 //resources->pixelShaders->Get(pixelShader, pixelShaderName);
 
 	 if(desc.albedoMapFileName.length() > 0)
 	 albedoMap = new Texture(dc, resources, pipeline, desc.albedoMapFileName);

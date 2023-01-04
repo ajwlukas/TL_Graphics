@@ -217,9 +217,9 @@ Mesh* DX11Renderer::CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT ind
     assert(meshType != TL_Graphics::E_MESH_TYPE::NONE);
 }
 
-Material* DX11Renderer::CreateMaterial(std::wstring fileName, const TL_Graphics::MaterialDesc& desc)
+Material* DX11Renderer::CreateMaterial(const TL_Graphics::MaterialDesc& desc)
 {
-    return new Material(dc, resources, pipeline, fileName, desc);
+    return new Material(dc, resources, pipeline, desc);
 }
 
 ConstantBuffer* DX11Renderer::CreateConstantBuffer(void* data, size_t dataSize)

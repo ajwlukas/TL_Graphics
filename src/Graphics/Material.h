@@ -22,7 +22,7 @@ class Pipeline;
 class Material : public TL_Graphics::IMaterial
 {
 public:
-	Material(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::wstring pixelShaderName
+	Material(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline
 		,const TL_Graphics::MaterialDesc& desc = TL_Graphics::MaterialDesc());
 	virtual ~Material();
 
@@ -40,7 +40,7 @@ private:
 	Resources* resources;
 	Pipeline* pipeline;
 
-	Resource<	ID3D11PixelShader> pixelShader;
+	//Resource<	ID3D11PixelShader> pixelShader;
 
 
 	Texture* albedoMap	 = nullptr;

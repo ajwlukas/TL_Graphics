@@ -50,7 +50,7 @@ namespace TL_Graphics
 
 		virtual IMesh* CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, TL_Graphics::E_MESH_TYPE meshType) = 0;
 
-		virtual IMaterial* CreateMaterial(std::wstring shaderFileName, const MaterialDesc& desc = MaterialDesc()) = 0;
+		virtual IMaterial* CreateMaterial(const MaterialDesc& desc = MaterialDesc()) = 0;
 
 		virtual IConstantBuffer* CreateConstantBuffer( void* data, size_t dataSize) = 0;
 
