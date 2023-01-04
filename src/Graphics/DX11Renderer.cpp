@@ -13,6 +13,10 @@ DX11Renderer::DX11Renderer()
 
 DX11Renderer::~DX11Renderer()
 {
+    SAFE_DELETE(screenMesh);
+
+    SAFE_DELETE(deferredRenderPass);
+
     SAFE_DELETE(gBufferRenderPass);
 
     SAFE_DELETE(lights);
@@ -40,6 +44,10 @@ HRESULT DX11Renderer::Init()
     lights = new Light(dc, resources, pipeline);
 
     gBufferRenderPass = new GBufferRenderPass(dc, resources, pipeline, &onResizeNotice);
+
+    screenMesh = new ScreenMesh(dc, resources, pipeline);
+
+    deferredRenderPass = new DeferredRenderPass(dc, resources, pipeline, &onResizeNotice);
 
     return hr;
 }
@@ -152,14 +160,25 @@ void DX11Renderer::EndSetLight()
 
 void DX11Renderer::PreRender()
 {
-    gBufferRenderPass->Set();
+    gBufferRenderPass->ClearRenderTargets();
+    deferredRenderPass->ClearRenderTargets();
+
+    gBufferRenderPass->Set();//화면 기하정보 뽑아냄
 }
 
 void DX11Renderer::PostRender()
 {
+    screenMesh->Set();
+
     pipeline->SetStatesDefualt();
 
+    UnSetAllRenderTargets();
+
+    SetSwapChainRenderTargetView();
+
     gBufferRenderPass->SetGBuffers();
+
+    deferredRenderPass->Execute();
 
 }
 
@@ -191,9 +210,9 @@ Mesh* DX11Renderer::CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT ind
     if(meshType == TL_Graphics::E_MESH_TYPE::STATIC)
         return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_StaticMeshVS.hlsl");
     else if(meshType == TL_Graphics::E_MESH_TYPE::SKINNING)
-        return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_SkinningMeshVS");
+        return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_SkinningMeshVS.hlsl");
     else if(meshType == TL_Graphics::E_MESH_TYPE::SCREENSPACE)
-        return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_ScreenSpaceMeshVS");
+        return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_ScreenSpaceMeshVS.hlsl");
 
     assert(meshType != TL_Graphics::E_MESH_TYPE::NONE);
 }

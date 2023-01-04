@@ -6,6 +6,8 @@
 DeferredRenderPass::DeferredRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
 	:IRenderPass(dc, resources, pipeline)
 {
+	CreateRenderTarget(resizeNotice);
+	CreateShader();
 }
 
 DeferredRenderPass::~DeferredRenderPass()
@@ -16,9 +18,21 @@ DeferredRenderPass::~DeferredRenderPass()
 
 void DeferredRenderPass::Set()
 {
+	//일단은 이렇게 할 예정, 
 	pipeline->SetSwapChainRenderTargetView();
-	rtt->SetRT(0);
+	//rtt->SetRT(0);
 	shaderPS->Set();
+}
+
+void DeferredRenderPass::Execute()
+{
+	Set();
+	pipeline->Draw();
+}
+
+void DeferredRenderPass::ClearRenderTargets()
+{
+	rtt->Clear();
 }
 
 void DeferredRenderPass::CreateRenderTarget(OnResizeNotice* resizeNotice)

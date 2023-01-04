@@ -14,6 +14,10 @@ public:
 
 	virtual void Set() = 0;
 
+	virtual void Execute() {};
+
+	virtual void ClearRenderTargets() = 0;
+
 protected:
 	friend class Pipeline;
 	ID3D11DeviceContext* dc;

@@ -21,9 +21,10 @@ public:
 
 	// IRenderPass을(를) 통해 상속됨
 	virtual void Set() override;
+	virtual void ClearRenderTargets() override;
+
 	void SetGBuffers();
 
-	void ClearRenderTargets();
 
 
 private:

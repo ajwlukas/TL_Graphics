@@ -25,7 +25,11 @@
 #include "Pipeline.h"
 
 
+#include "ScreenMesh.h"
+
 #include "GBufferRenderPass.h"
+
+#include "DeferredRenderPass.h"
 
 
 class  DX11Renderer : public TL_Graphics::RenderSystem
@@ -114,4 +118,8 @@ private:
 
 
 	GBufferRenderPass* gBufferRenderPass;
+
+	ScreenMesh* screenMesh;
+
+	DeferredRenderPass* deferredRenderPass;
 };
