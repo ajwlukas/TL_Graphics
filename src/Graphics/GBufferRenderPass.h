@@ -23,6 +23,8 @@ public:
 	virtual void Set() override;
 	void SetGBuffers();
 
+	void ClearRenderTargets();
+
 
 private:
 	RenderTargetTexture* rtts[8];

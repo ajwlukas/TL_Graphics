@@ -47,6 +47,14 @@ void GBufferRenderPass::SetGBuffers()
 	}
 }
 
+void GBufferRenderPass::ClearRenderTargets()
+{
+	for (UINT i = 0; i < 8; i++)
+	{
+		rtts[i]->Clear();
+	}
+}
+
 void GBufferRenderPass::CreateRenderTargets(OnResizeNotice* resizeNotice)
 {
 	for (UINT i = 0; i < 8; i++)
