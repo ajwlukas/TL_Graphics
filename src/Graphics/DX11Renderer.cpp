@@ -2,6 +2,7 @@
 
 #include "DX11Renderer.h"
 
+
 DX11Renderer::DX11Renderer()
     :device(nullptr), dc(nullptr), hWnd(0)
     
@@ -12,6 +13,8 @@ DX11Renderer::DX11Renderer()
 
 DX11Renderer::~DX11Renderer()
 {
+    SAFE_DELETE(gBufferRenderPass);
+
     SAFE_DELETE(lights);
 
     SAFE_DELETE(pipeline);
@@ -35,6 +38,8 @@ HRESULT DX11Renderer::Init()
     pipeline = new Pipeline(dc, swapChain, &onResizeNotice, resources);
 
     lights = new Light(dc, resources, pipeline);
+
+    gBufferRenderPass = new GBufferRenderPass(dc, resources, pipeline, &onResizeNotice);
 
     return hr;
 }
@@ -143,6 +148,19 @@ void DX11Renderer::SetLight(TL_Graphics::SpotLight* light)
 void DX11Renderer::EndSetLight()
 {
     lights->EndLightSet();
+}
+
+void DX11Renderer::PreRender()
+{
+    gBufferRenderPass->Set();
+}
+
+void DX11Renderer::PostRender()
+{
+    pipeline->SetStatesDefualt();
+
+    gBufferRenderPass->SetGBuffers();
+
 }
 
 

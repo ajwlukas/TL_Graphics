@@ -66,6 +66,14 @@ void Pipeline::ClearRenderTarget(RenderTarget* renderTarget, TL_Math::Vector4 co
 
 }
 
+void Pipeline::SetStatesDefualt()
+{
+	SetCurrentRasterState(defaultRasterState);
+	SetCurrentDepthStencilState(defaultDepthStencilState);
+	SetCurrentBlendState(defaultBlendState);
+	SetCurrentSamplerState(defualtSamplerState);
+}
+
 void Pipeline::SetCurrentRasterState(Resource<ID3D11RasterizerState> state)
 {
 	dc->RSSetState(state);

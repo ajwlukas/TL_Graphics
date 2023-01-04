@@ -42,6 +42,9 @@ public:
 	void Clear(float color[4]);
 	void ClearRenderTarget(RenderTarget* renderTarget, TL_Math::Vector4 color);
 
+
+	void SetStatesDefualt();
+
 	void SetCurrentRasterState(Resource<ID3D11RasterizerState> state);
 	void SetCurrentDepthStencilState(Resource<ID3D11DepthStencilState> state);
 	void SetCurrentBlendState(Resource<ID3D11BlendState> state);
@@ -92,9 +95,7 @@ private:
 	Resource<ID3D11DepthStencilState> currentDepthStencilState;
 	Resource<ID3D11BlendState> currentBlendState;
 
-	/// <summary>
 	/// //////////////////////////////////////////////
-	/// </summary>
 	Resource<ID3D11RasterizerState> defaultRasterState;
 	Resource<ID3D11RasterizerState> wireFrameRasterState;
 	Resource<ID3D11RasterizerState> solidRasterState;
@@ -124,6 +125,7 @@ public:
 
 	void SetSolidModeAsDefualt();
 	void SetWireModeAsDefualt();
+
 
 private:
 	vector<function<void()>> reservations;//calls after one drawcall

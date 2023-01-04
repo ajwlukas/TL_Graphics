@@ -3,6 +3,8 @@
 
 #include "Pipeline.h"
 
+#define GBufferSlotStartPoint 20
+
 GBufferRenderPass::GBufferRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
 	: 
 	IRenderPass(dc, resources, pipeline)
@@ -35,6 +37,14 @@ void GBufferRenderPass::Set()
 	shaderPS->Set();
 
 	pipeline->SetCurrentBlendState(blendState);
+}
+
+void GBufferRenderPass::SetGBuffers()
+{
+	for (UINT i = 0; i < 8; i++)
+	{
+		rtts[i]->SetT(TL_Graphics::E_SHADER_TYPE::PS, GBufferSlotStartPoint + i);
+	}
 }
 
 void GBufferRenderPass::CreateRenderTargets(OnResizeNotice* resizeNotice)

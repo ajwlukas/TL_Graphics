@@ -256,7 +256,8 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="inc\Graphics\MeshType.h" />
     <ClInclude Include="inc\Graphics\RenderSystem.h" />
     <ClInclude Include="inc\Graphics\ShaderType.h" />
-    <ClInclude Include="src\Graphics\IShaderPass.h" />
+    <ClInclude Include="src\Graphics\GBufferRenderPass.h" />
+    <ClInclude Include="src\Graphics\IRenderPass.h" />
     <ClInclude Include="src\Graphics\Light.h" />
     <ClInclude Include="src\Graphics\RenderTarget.h" />
     <ClInclude Include="src\Graphics\RenderTargetTexture.h" />
@@ -281,7 +282,8 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="src\Graphics\TextureBuffer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Graphics\IShaderPass.cpp" />
+    <ClCompile Include="src\Graphics\GBufferRenderPass.cpp" />
+    <ClCompile Include="src\Graphics\IRenderPass.cpp" />
     <ClCompile Include="src\Graphics\Light.cpp" />
     <ClCompile Include="src\Graphics\RenderTarget.cpp" />
     <ClCompile Include="src\Graphics\RenderTargetTexture.cpp" />

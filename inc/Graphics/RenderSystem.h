@@ -34,8 +34,14 @@ namespace TL_Graphics
 		virtual HRESULT Init() = 0;
 
 		virtual void Clear() = 0;
+
+		virtual void PreRender() = 0;
+
 		virtual void Draw() = 0;
 		virtual void DrawInstanced(UINT numInstance) = 0;
+
+		virtual void PostRender() = 0;
+
 		virtual void Present() = 0;
 
 		virtual IShader* CreateShader(TL_Graphics::E_SHADER_TYPE type, std::wstring fileName) = 0;

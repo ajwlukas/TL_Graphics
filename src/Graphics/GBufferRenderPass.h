@@ -18,10 +18,10 @@ public:
 	GBufferRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
 	~GBufferRenderPass();
 
-	void ClearRenderTargets();
 
 	// IRenderPass을(를) 통해 상속됨
 	virtual void Set() override;
+	void SetGBuffers();
 
 
 private:

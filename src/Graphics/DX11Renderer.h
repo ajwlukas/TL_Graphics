@@ -25,6 +25,9 @@
 #include "Pipeline.h"
 
 
+#include "GBufferRenderPass.h"
+
+
 class  DX11Renderer : public TL_Graphics::RenderSystem
 {
 public:
@@ -33,10 +36,15 @@ public:
 
 	virtual HRESULT Init() override;
 
+	// RenderSystem을(를) 통해 상속됨
+	virtual void PreRender() override;
+
 	virtual void Clear()override;
 	virtual void Draw() override;
 	virtual void DrawInstanced(UINT numInstance) override;
 	virtual void Present()override;
+
+	virtual void PostRender() override;
 
 	virtual Shader* CreateShader(TL_Graphics::E_SHADER_TYPE type, std::wstring fileName) override;
 
@@ -104,4 +112,6 @@ private:
 
 	virtual void EndSetLight() override;
 
+
+	GBufferRenderPass* gBufferRenderPass;
 };
