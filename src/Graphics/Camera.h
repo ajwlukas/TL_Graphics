@@ -26,6 +26,8 @@ private:
 	{
 		TL_Math::Matrix view;
 		TL_Math::Matrix  proj;
+		TL_Math::Matrix  viewInv;
+		TL_Math::Matrix  projInv;
 		TL_Math::Vector3 camPos;
 	}data;
 

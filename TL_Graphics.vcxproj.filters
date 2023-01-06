@@ -228,5 +228,6 @@
     <FxCompile Include="Shader\VS\TL_ScreenSpaceMeshVS.hlsl" />
     <FxCompile Include="Shader\PS\TL_G_Buffers.hlsl" />
     <FxCompile Include="Shader\PS\TL_DeferredPS.hlsl" />
+    <FxCompile Include="Shader\PS\TL_Grid.hlsl" />
   </ItemGroup>
 </Project>

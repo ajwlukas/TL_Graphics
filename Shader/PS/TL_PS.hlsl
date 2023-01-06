@@ -23,6 +23,8 @@ PS_Out main(VS_Out surface)
 {
     PS_Out ret;
     
+    
+    
 	// Sample input textures to get shading model params.
     //float3 albedo = albedoMap.;
     //float3 albedo = albedoMap.Sample(Sampler, surface.uv);

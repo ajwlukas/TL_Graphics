@@ -15,6 +15,9 @@ Camera::Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline
 
 	data.view = XMMatrixInverse(nullptr, XMMatrixIdentity());
 	data.proj = XMMatrixPerspectiveFovLH(fovInRadian, resizeNotice->GetWidth() / (float)resizeNotice->GetHeight(), frustumNear, frustumFar);
+	data.viewInv = XMMatrixInverse(nullptr, data.view);
+	data.projInv = XMMatrixInverse(nullptr, data.proj);
+
 
 	data.camPos = { 0,0,0 };
 
@@ -43,6 +46,7 @@ void Camera::Update(TL_Math::Vector3 pos, TL_Math::Vector3 rot)
 	m *= T;
 
 	data.view = XMMatrixInverse(nullptr, m);
+	data.viewInv = XMMatrixInverse(nullptr, data.view);
 
 	data.camPos = pos;
 
@@ -60,6 +64,7 @@ void Camera::Update(TL_Math::Vector3 pos, TL_Math::Quaternion rot)
 	m *= T;
 
 	data.view = XMMatrixInverse(nullptr, m);
+	data.viewInv = XMMatrixInverse(nullptr, data.view);
 
 	data.camPos = pos;
 
@@ -69,6 +74,7 @@ void Camera::Update(TL_Math::Vector3 pos, TL_Math::Quaternion rot)
 void Camera::Update(TL_Math::Matrix m)
 {
 	data.view = XMMatrixInverse(nullptr, m);
+	data.viewInv = XMMatrixInverse(nullptr, data.view);
 
 	XMVECTOR p, r, s;
 
@@ -83,6 +89,7 @@ void Camera::Update(TL_Math::Matrix m)
 void Camera::OnResize(UINT width, UINT height)
 {
 	data.proj = XMMatrixPerspectiveFovLH(fovInRadian, width / (float)height, frustumNear, frustumFar);
+	data.projInv = XMMatrixInverse(nullptr, data.proj);
 
 	viewprojBuffer->Update(&data, sizeof(Data));
 }
