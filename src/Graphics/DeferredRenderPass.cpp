@@ -43,5 +43,6 @@ void DeferredRenderPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 void DeferredRenderPass::CreateShader()
 {
 
-	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_DeferredPS.hlsl");
+	//shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_DeferredPS.hlsl");
+	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_Grid.hlsl");
 }
