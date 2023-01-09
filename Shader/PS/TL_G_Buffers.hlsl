@@ -25,12 +25,15 @@ PS_Out main(VS_Out surface)
     float metalness = metal;
     float roughness = rough;
     
+    float4 basecolor_opacity = baseColor_opcityMap.Sample(Sampler, surface.uv);
     
-    ret.out0 = float4(albedo, 1.0f); //albedo
+    float4 r_s_m_ao = roughness_specular_metallic_AOMap.Sample(Sampler, surface.uv);
+    
+    ret.out0 = basecolor_opacity; //albedo
     ret.out1 = float4(surface.normal_world, 1.0f); //normal_world
     ret.out2 = float4(surface.pos_world, 1.0f); //pos_world
-    ret.out3 = float4(metal, 1.0f, 1.0f, 0.0f); //metalness
-    ret.out4 = float4(rough, 0.0f, 0.0f, 0.0f); //roughness
+    ret.out3 = float4(r_s_m_ao.b, 1.0f, 1.0f, 0.0f); //metalness
+    ret.out4 = float4(r_s_m_ao.r, 0.0f, 0.0f, 0.0f); //roughness
     
     
     return ret;
