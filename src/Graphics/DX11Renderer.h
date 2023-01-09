@@ -31,6 +31,8 @@
 
 #include "DeferredRenderPass.h"
 
+#include "GridPass.h"
+
 
 class  DX11Renderer : public TL_Graphics::RenderSystem
 {
@@ -122,4 +124,6 @@ private:
 	ScreenMesh* screenMesh;
 
 	DeferredRenderPass* deferredRenderPass;
+
+	GridPass* gridPass;
 };

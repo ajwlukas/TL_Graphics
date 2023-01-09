@@ -12,7 +12,7 @@ public:
 
 	void Init(uint32_t width, uint32_t height);
 
-	virtual void Set(UINT slot = 0) override;
+	virtual void Set(UINT slot = 0, bool depthEnabled = true) override;
 
 
 	// OnResize_Observer을(를) 통해 상속됨

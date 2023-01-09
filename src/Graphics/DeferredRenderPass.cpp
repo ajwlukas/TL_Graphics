@@ -19,7 +19,7 @@ DeferredRenderPass::~DeferredRenderPass()
 void DeferredRenderPass::Set()
 {
 	//일단은 이렇게 할 예정, 
-	pipeline->SetSwapChainRenderTargetView();
+	pipeline->SetSwapChainRenderTargetView(0, false);
 	//rtt->SetRT(0);
 	shaderPS->Set();
 }
@@ -44,5 +44,4 @@ void DeferredRenderPass::CreateShader()
 {
 
 	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_DeferredPS.hlsl");
-	//shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_Grid.hlsl");
 }

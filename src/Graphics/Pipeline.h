@@ -62,9 +62,9 @@ public:
 
 	void SetShader(Shader* shader);
 
-	void SetRenderTarget(RenderTarget* rtv, UINT slot);//todo : depthStencilView도 해줘야하는가? 아직 depthStencilView가 뭔지 잘 모르겠다.
+	void SetRenderTarget(RenderTarget* rtv, UINT slot, bool depthEnabled = true);//todo : depthStencilView도 해줘야하는가? 아직 depthStencilView가 뭔지 잘 모르겠다.
 
-	void SetSwapChainRenderTargetView(UINT slot = 0);
+	void SetSwapChainRenderTargetView(UINT slot = 0, bool depthEnabled = true);
 
 	void UnSetAllRenderTargets();
 

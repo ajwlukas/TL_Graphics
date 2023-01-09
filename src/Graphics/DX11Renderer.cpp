@@ -13,6 +13,8 @@ DX11Renderer::DX11Renderer()
 
 DX11Renderer::~DX11Renderer()
 {
+    SAFE_DELETE(gridPass)
+
     SAFE_DELETE(screenMesh);
 
     SAFE_DELETE(deferredRenderPass);
@@ -48,6 +50,8 @@ HRESULT DX11Renderer::Init()
     screenMesh = new ScreenMesh(dc, resources, pipeline);
 
     deferredRenderPass = new DeferredRenderPass(dc, resources, pipeline, &onResizeNotice);
+
+    gridPass = new GridPass(dc, resources, pipeline, &onResizeNotice);
 
     return hr;
 }
@@ -175,6 +179,8 @@ void DX11Renderer::PostRender()
     UnSetAllRenderTargets();
 
     SetSwapChainRenderTargetView();
+
+    gridPass->Execute();
 
     gBufferRenderPass->SetGBuffers();
 

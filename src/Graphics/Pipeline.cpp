@@ -144,18 +144,22 @@ void Pipeline::SetShader(Shader* shader)
 
 }
 
-void Pipeline::SetRenderTarget(RenderTarget* rtv, UINT slot)
+void Pipeline::SetRenderTarget(RenderTarget* rtv, UINT slot, bool depthEnabled)
 {
 	renderTargets[slot] = rtv->rtv;
 
-	dc->OMSetRenderTargets(MAX_RENDERTARGET, renderTargets, depthStencilView);
+	if(depthEnabled)
+		dc->OMSetRenderTargets(MAX_RENDERTARGET, renderTargets, depthStencilView);
+	else
+		dc->OMSetRenderTargets(MAX_RENDERTARGET, renderTargets, nullptr);
+
 
 	currentRenderTarget[slot] = rtv;
 }
 
-void Pipeline::SetSwapChainRenderTargetView(UINT slot)
+void Pipeline::SetSwapChainRenderTargetView(UINT slot, bool depthEnabled )
 {
-	swapChainRtv->Set(slot);
+	swapChainRtv->Set(slot, depthEnabled);
 }
 
 void Pipeline::UnSetAllRenderTargets()

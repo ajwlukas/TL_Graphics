@@ -18,9 +18,9 @@ void SwapChainRenderTarget::Init(uint32_t width, uint32_t height)
 	OnResize(width, height);
 }
 
-void SwapChainRenderTarget::Set(UINT slot)
+void SwapChainRenderTarget::Set(UINT slot, bool depthEnabled )
 {
-	pipeline->SetRenderTarget(this, slot);
+	pipeline->SetRenderTarget(this, slot, depthEnabled);
 }
 
 void SwapChainRenderTarget::OnResize(uint32_t width, uint32_t height)

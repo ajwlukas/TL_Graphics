@@ -258,6 +258,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="inc\Graphics\ShaderType.h" />
     <ClInclude Include="src\Graphics\DeferredRenderPass.h" />
     <ClInclude Include="src\Graphics\GBufferRenderPass.h" />
+    <ClInclude Include="src\Graphics\GridPass.h" />
     <ClInclude Include="src\Graphics\IRenderPass.h" />
     <ClInclude Include="src\Graphics\Light.h" />
     <ClInclude Include="src\Graphics\RenderTarget.h" />
@@ -286,6 +287,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
   <ItemGroup>
     <ClCompile Include="src\Graphics\DeferredRenderPass.cpp" />
     <ClCompile Include="src\Graphics\GBufferRenderPass.cpp" />
+    <ClCompile Include="src\Graphics\GridPass.cpp" />
     <ClCompile Include="src\Graphics\IRenderPass.cpp" />
     <ClCompile Include="src\Graphics\Light.cpp" />
     <ClCompile Include="src\Graphics\RenderTarget.cpp" />
