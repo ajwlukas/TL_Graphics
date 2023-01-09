@@ -10,53 +10,80 @@ Material::Material(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipe
 	, resources(resources)
 	, pipeline(pipeline)
 {
-	 //resources->pixelShaders->Get(pixelShader, pixelShaderName);
+	//resources->pixelShaders->Get(pixelShader, pixelShaderName);
 
-	 if(desc.albedoMapFileName.length() > 0)
-	 albedoMap = new Texture(dc, resources, pipeline, desc.albedoMapFileName);
+	if (desc.baseColor_opcityFilePath.length() > 0)
+		baseColor_opcityMap = new Texture(dc, resources, pipeline, desc.baseColor_opcityFilePath);
 
-	 if(desc.metallicMapFileName.length() > 0)
-		 metallicMap = new Texture(dc, resources, pipeline, desc.metallicMapFileName);
+	if (desc.roughness_specular_metallic_AOFilePath.length() > 0)
+		roughness_specular_metallic_AOMap = new Texture(dc, resources, pipeline, desc.roughness_specular_metallic_AOFilePath);
 
-	 if(desc.roughnessMapFileName.length() > 0)
-		 roughnessMap = new Texture(dc, resources, pipeline, desc.roughnessMapFileName);
+	if (desc.normalFilePath.length() > 0)
+		normalMap = new Texture(dc, resources, pipeline, desc.normalFilePath);
+
+	if (desc.emissiveFilePath.length() > 0)
+		emissiveMap = new Texture(dc, resources, pipeline, desc.emissiveFilePath);
 }
 
 Material::~Material()
 {
-	SAFE_DELETE(albedoMap);
-	SAFE_DELETE(metallicMap);
-	SAFE_DELETE(roughnessMap);
+	SAFE_DELETE(baseColor_opcityMap);
+	SAFE_DELETE(roughness_specular_metallic_AOMap);
+	SAFE_DELETE(normalMap);
+	SAFE_DELETE(emissiveMap);
 }
 
-void Material::Set(UINT albdeoMapSlot, UINT metallicMapSlot, UINT roughnessMapSlot)
+void Material::Set(UINT baseColor_opcityMapSlot, UINT roughness_specular_metallic_AOMapSlot, UINT normalMapSlot, UINT emssiveMapSlot)
 {
 	pipeline->SetMaterial(this);
 
-	if(albedoMap)
-	albedoMap->Set(TL_Graphics::E_SHADER_TYPE::PS, albdeoMapSlot);
+	if (baseColor_opcityMap)
+		baseColor_opcityMap->Set(TL_Graphics::E_SHADER_TYPE::PS, baseColor_opcityMapSlot);
 
-	if(metallicMap)
-	metallicMap->Set(TL_Graphics::E_SHADER_TYPE::PS, metallicMapSlot);
+	if (roughness_specular_metallic_AOMap)
+		roughness_specular_metallic_AOMap->Set(TL_Graphics::E_SHADER_TYPE::PS, roughness_specular_metallic_AOMapSlot);
 
-	if(roughnessMap)
-	roughnessMap->Set(TL_Graphics::E_SHADER_TYPE::PS, roughnessMapSlot);
+	if (normalMap)
+		normalMap->Set(TL_Graphics::E_SHADER_TYPE::PS, normalMapSlot);
+
+	if (emissiveMap)
+		emissiveMap->Set(TL_Graphics::E_SHADER_TYPE::PS, emssiveMapSlot);
 }
 
-void Material::SetAlbedo(class TL_Graphics::IShaderResource* albedo)
+void Material::SetBaseColor_Opacity(TL_Graphics::IShaderResource* baseColor_opacity)
 {
-	albedoMap = reinterpret_cast<Texture*>(albedo);
+	baseColor_opcityMap = reinterpret_cast<Texture*>(baseColor_opacity);
 }
 
-void Material::SetMetallic(class TL_Graphics::IShaderResource* metallic)
+void Material::SetRoughness_Specular_Metallic_AO(TL_Graphics::IShaderResource* roughness_specular_metallic_ao)
 {
-	metallicMap = reinterpret_cast<Texture*>(metallic);
+	roughness_specular_metallic_AOMap = reinterpret_cast<Texture*>(roughness_specular_metallic_ao);
 }
 
-void Material::SetRoughness(class TL_Graphics::IShaderResource* roughness)
+void Material::SetNormal(TL_Graphics::IShaderResource* normal)
 {
-	roughnessMap = reinterpret_cast<Texture*>(roughness);
+	normalMap = reinterpret_cast<Texture*>(normal);
 }
+
+void Material::SetEmissive(TL_Graphics::IShaderResource* emissive)
+{
+	emissiveMap = reinterpret_cast<Texture*>(emissive);
+}
+//
+//void Material::SetAlbedo(class TL_Graphics::IShaderResource* albedo)
+//{
+//	albedoMap = reinterpret_cast<Texture*>(albedo);
+//}
+//
+//void Material::SetMetallic(class TL_Graphics::IShaderResource* metallic)
+//{
+//	metallicMap = reinterpret_cast<Texture*>(metallic);
+//}
+//
+//void Material::SetRoughness(class TL_Graphics::IShaderResource* roughness)
+//{
+//	roughnessMap = reinterpret_cast<Texture*>(roughness);
+//}
 
 //void Material::SetShader(wstring fileName)
 //{

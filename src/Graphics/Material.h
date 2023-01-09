@@ -26,11 +26,12 @@ public:
 		,const TL_Graphics::MaterialDesc& desc = TL_Graphics::MaterialDesc());
 	virtual ~Material();
 
-	virtual void Set(UINT albdeoMapSlot = 0, UINT metallicMapSlot = 1, UINT roughnessMapSlot = 2) override;
+	virtual void Set(UINT baseColor_opcityMapSlot = 0, UINT roughness_specular_metallic_AOMapSlot = 1, UINT normalMapSlot = 2, UINT emssiveMapSlot = 3) override;
 
-	virtual void SetAlbedo(class TL_Graphics::IShaderResource*) override;
-	virtual void SetMetallic(class TL_Graphics::IShaderResource*) override;
-	virtual void SetRoughness(class TL_Graphics::IShaderResource*) override;
+	virtual void SetBaseColor_Opacity(class TL_Graphics::IShaderResource*) override;
+	virtual void SetRoughness_Specular_Metallic_AO(class TL_Graphics::IShaderResource*) override;
+	virtual void SetNormal(class TL_Graphics::IShaderResource*) override;
+	virtual void SetEmissive(class TL_Graphics::IShaderResource*) override;
 	//void SetShader(std::wstring fileName);
 
 	std::wstring pixelShaderName;
@@ -43,9 +44,10 @@ private:
 	//Resource<	ID3D11PixelShader> pixelShader;
 
 
-	Texture* albedoMap	 = nullptr;
-	Texture* metallicMap = nullptr;
-	Texture* roughnessMap = nullptr;
+	Texture* baseColor_opcityMap= nullptr;
+	Texture* roughness_specular_metallic_AOMap = nullptr;
+	Texture* normalMap = nullptr;
+	Texture* emissiveMap = nullptr;
 
 
 	Resource<ID3D11Buffer> buffer;
