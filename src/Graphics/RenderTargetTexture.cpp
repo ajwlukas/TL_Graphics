@@ -10,6 +10,8 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
     , resources(resources)
     , pipeline(pipeline)
 {
+
+    resizeNotice->AddObserver(this);
     OnResize(width, height);
 }
 
@@ -22,6 +24,10 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
     , resources(resources)
     , pipeline(pipeline)
 {
+
+
+    resizeNotice->AddObserver(this);
+
     OnResize(resizeNotice->GetWidth() * widthRatio, resizeNotice->GetHeight() * heightRatio);
 }
 
