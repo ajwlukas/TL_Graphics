@@ -1,6 +1,7 @@
 #include "pch_dx_11.h"
 #include "Texture.h"
 
+#include "Pipeline.h"
 
 Texture::Texture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::wstring fileName)
 	:ShaderResource(dc, resources, pipeline)
@@ -32,4 +33,9 @@ Texture::Texture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeli
 
 Texture::~Texture()
 {
+}
+
+void Texture::Set(TL_Graphics::E_SHADER_TYPE type, UINT slot)
+{
+	pipeline->SetTexture(this, type, slot);
 }

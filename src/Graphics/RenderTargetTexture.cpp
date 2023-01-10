@@ -29,11 +29,13 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
     resizeNotice->AddObserver(this);
 
     OnResize(resizeNotice->GetWidth() * widthRatio, resizeNotice->GetHeight() * heightRatio);
+
+    sizeX = resizeNotice->GetWidth();
+    sizeY = resizeNotice->GetHeight();
 }
 
 RenderTargetTexture::~RenderTargetTexture()
 {
-    int a = 01;
 }
 
 void RenderTargetTexture::SetRT(UINT slot)
@@ -43,7 +45,7 @@ void RenderTargetTexture::SetRT(UINT slot)
 
 void RenderTargetTexture::SetT(TL_Graphics::E_SHADER_TYPE type, UINT slot)
 {
-    ShaderResource::Set(type, slot);
+    Texture::Set(type, slot);
 }
 
 void RenderTargetTexture::Clear(TL_Math::Vector4 color)
@@ -54,6 +56,9 @@ void RenderTargetTexture::Clear(TL_Math::Vector4 color)
 void RenderTargetTexture::OnResize(uint32_t width, uint32_t height)
 {
     if (!isBasedWindowSize) return;
+
+    sizeX = width * widthRatio;
+    sizeY = height * heightRatio;
 
     D3D11_TEXTURE2D_DESC desc = {};
     desc.Width = width * widthRatio;

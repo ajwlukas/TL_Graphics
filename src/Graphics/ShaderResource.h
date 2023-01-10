@@ -20,12 +20,11 @@ public:
 		UINT slot) override;
 	virtual void Update(void* data, size_t dataSize) override {};
 
-private:
+protected:
 	friend class Pipeline;
 	ID3D11DeviceContext* dc;
 	Resources* resources;
 	Pipeline* pipeline;
 
-protected:
 	Resource<ID3D11ShaderResourceView> srv;
 };

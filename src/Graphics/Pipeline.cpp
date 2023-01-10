@@ -12,10 +12,13 @@ Pipeline::Pipeline(ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, OnResizeN
 
 	Init(resizeNotice->GetWidth(), resizeNotice->GetHeight());
 
+	texInfoBuffer = new ConstantBuffer(dc, resources, this, texInfos, sizeof(TexInfo));
 }
 
 Pipeline::~Pipeline()
 {
+	SAFE_DELETE(texInfoBuffer);
+
 	SAFE_DELETE(swapChainRtv);
 }
 
@@ -127,10 +130,18 @@ void Pipeline::SetTexture(Texture* texture, TL_Graphics::E_SHADER_TYPE type, UIN
 {
 	TexInfo info = {};
 
+	info.texX = texture->GetSizeX();
+	info.texY = texture->GetSizeY();
+	info.texXInv = 1 / (float)info.texX;
+	info.texYInv = 1 / (float)info.texY;
 
 	texInfos[slot] = info;
 
 	SetShaderResource(texture, type, slot);
+
+	texInfoBuffer->Update(texInfos, sizeof(TexInfo));
+
+	texInfoBuffer->Set(TL_Graphics::E_SHADER_TYPE::PS, 3);
 }
 
 void Pipeline::SetMaterial(Material* material, UINT albdeoMapSlot, UINT metallicMapSlot, UINT roughnessMapSlot)
