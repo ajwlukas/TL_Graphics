@@ -1,6 +1,7 @@
 #include "pch_dx_11.h"
 #include "Light.h"
 
+#include "ShaderResourceSlotPS.h"
 
 Light::Light(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
 	:maxLightNum (100)
@@ -45,5 +46,5 @@ void Light::EndLightSet()
 	textureBuffer->PartialUpdate(0, &metaData, sizeof(MetaData));//맨앞에 라이트 갯수 적는다.
 	textureBuffer->UnMap();
 
-	textureBuffer->Set(TL_Graphics::E_SHADER_TYPE::PS, 11);
+	textureBuffer->Set(TL_Graphics::E_SHADER_TYPE::PS, LightsSlot);
 }

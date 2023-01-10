@@ -3,7 +3,8 @@
 
 #include "Pipeline.h"
 
-#define GBufferSlotStartPoint 20
+#include "ShaderResourceSlotPS.h"
+
 
 GBufferRenderPass::GBufferRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
 	: 
@@ -43,7 +44,7 @@ void GBufferRenderPass::SetGBuffers()
 {
 	for (UINT i = 0; i < 8; i++)
 	{
-		rtts[i]->SetT(TL_Graphics::E_SHADER_TYPE::PS, GBufferSlotStartPoint + i);
+		rtts[i]->SetT(TL_Graphics::E_SHADER_TYPE::PS, albedo_DeferredSlot + i);
 	}
 }
 

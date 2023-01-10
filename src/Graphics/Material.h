@@ -9,6 +9,8 @@
 
 #include "Texture.h"
 
+#include "ShaderResourceSlotPS.h"
+
 /// <summary>
 /// Material 생성하는 2가지 방법,
 /// 1. MaterialDesc에 데이터를 작성해서 Material 생성자에 넣어줘서 생성
@@ -26,7 +28,7 @@ public:
 		,const TL_Graphics::MaterialDesc& desc = TL_Graphics::MaterialDesc());
 	virtual ~Material();
 
-	virtual void Set(UINT baseColor_opcityMapSlot = 0, UINT roughness_specular_metallic_AOMapSlot = 1, UINT normalMapSlot = 2, UINT emssiveMapSlot = 3) override;
+	virtual void Set(UINT _baseColor_opcityMapSlot = baseColor_opacityMapSlot, UINT _roughness_specular_metallic_AOMapSlot = roughness_specular_metallic_AOMapSlot, UINT _normalMapSlot = normalMapSlot, UINT _emssiveMapSlot = emissiveMapSlot) override;
 
 	virtual void SetBaseColor_Opacity(class TL_Graphics::IShaderResource*) override;
 	virtual void SetRoughness_Specular_Metallic_AO(class TL_Graphics::IShaderResource*) override;
