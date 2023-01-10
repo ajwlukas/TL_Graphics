@@ -23,10 +23,7 @@ void Pipeline::Init(UINT width, UINT height)
 {
 	CreateDefaultStates();
 
-	SetCurrentRasterState(defaultRasterState);
-	SetCurrentDepthStencilState(defaultDepthStencilState);
-	SetCurrentBlendState(defaultBlendState);
-	SetCurrentSamplerState(defualtSamplerState);
+	SetStatesDefualt();
 
 	OnResize(width, height);
 
@@ -68,10 +65,15 @@ void Pipeline::ClearRenderTarget(RenderTarget* renderTarget, TL_Math::Vector4 co
 
 void Pipeline::SetStatesDefualt()
 {
+
 	SetCurrentRasterState(defaultRasterState);
 	SetCurrentDepthStencilState(defaultDepthStencilState);
 	SetCurrentBlendState(defaultBlendState);
-	SetCurrentSamplerState(defualtSamplerState);
+	SetCurrentSamplerState(wrapSamplerState, 0);
+	SetCurrentSamplerState(mirrorSamplerState, 1);
+	SetCurrentSamplerState(clampSamplerState, 2);
+	SetCurrentSamplerState(borderSamplerState, 3);
+
 }
 
 void Pipeline::SetCurrentRasterState(Resource<ID3D11RasterizerState> state)
@@ -183,10 +185,11 @@ void Pipeline::SetCurrentBlendState(Resource<ID3D11BlendState> state)
 	currentBlendState = state;
 }
 
-void Pipeline::SetCurrentSamplerState(Resource<ID3D11SamplerState> state)
+void Pipeline::SetCurrentSamplerState(Resource<ID3D11SamplerState> state, UINT slot)
 {
-	dc->PSSetSamplers(0, 1, state);
-	defualtSamplerState = state;
+	currentSamplerStates[slot] = state;
+
+	dc->PSSetSamplers(0, 4, currentSamplerStates);
 }
 
 
@@ -222,7 +225,11 @@ void Pipeline::CreateDefaultStates()
 
 	resources->depthStencilStates->GetDefault(defaultDepthStencilState);
 	resources->blendStates->GetDefault(defaultBlendState);
-	resources->samplerStates->GetDefault(defualtSamplerState);
+
+	resources->samplerStates->GetWrap(wrapSamplerState);
+	resources->samplerStates->GetMirror(mirrorSamplerState);
+	resources->samplerStates->GetClamp(clampSamplerState);
+	resources->samplerStates->GetBorder(borderSamplerState);
 }
 
 void Pipeline::ResizeDepthStencilView(UINT width, UINT height)

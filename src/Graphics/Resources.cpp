@@ -379,9 +379,24 @@ void SamplerStateResources::Get(Resource<ID3D11SamplerState>& dest, D3D11_SAMPLE
 	};
 }
 
-void SamplerStateResources::SetDefault(D3D11_SAMPLER_DESC desc)
+void SamplerStateResources::SetWrap(D3D11_SAMPLER_DESC desc)
 {
-	defaultDesc = desc;
+	wrapDesc = desc;
+}
+
+void SamplerStateResources::SetMirror(D3D11_SAMPLER_DESC desc)
+{
+	mirrorDesc = desc;
+}
+
+void SamplerStateResources::SetClamp(D3D11_SAMPLER_DESC desc)
+{
+	clampDesc = desc;
+}
+
+void SamplerStateResources::SetBorder(D3D11_SAMPLER_DESC desc)
+{
+	borderDesc = desc;
 }
 
 void SamplerStateResources::Release()

@@ -33,21 +33,21 @@ Material::~Material()
 	SAFE_DELETE(emissiveMap);
 }
 
-void Material::Set(UINT baseColor_opcityMapSlot, UINT roughness_specular_metallic_AOMapSlot, UINT normalMapSlot, UINT emssiveMapSlot)
+void Material::Set(UINT _baseColor_opcityMapSlot, UINT _roughness_specular_metallic_AOMapSlot, UINT _normalMapSlot, UINT _emssiveMapSlot)
 {
 	pipeline->SetMaterial(this);
 
 	if (baseColor_opcityMap)
-		baseColor_opcityMap->Set(TL_Graphics::E_SHADER_TYPE::PS, baseColor_opcityMapSlot);
+		baseColor_opcityMap->Set(TL_Graphics::E_SHADER_TYPE::PS, _baseColor_opcityMapSlot);
 
 	if (roughness_specular_metallic_AOMap)
-		roughness_specular_metallic_AOMap->Set(TL_Graphics::E_SHADER_TYPE::PS, roughness_specular_metallic_AOMapSlot);
+		roughness_specular_metallic_AOMap->Set(TL_Graphics::E_SHADER_TYPE::PS, _roughness_specular_metallic_AOMapSlot);
 
 	if (normalMap)
-		normalMap->Set(TL_Graphics::E_SHADER_TYPE::PS, normalMapSlot);
+		normalMap->Set(TL_Graphics::E_SHADER_TYPE::PS, _normalMapSlot);
 
 	if (emissiveMap)
-		emissiveMap->Set(TL_Graphics::E_SHADER_TYPE::PS, emssiveMapSlot);
+		emissiveMap->Set(TL_Graphics::E_SHADER_TYPE::PS, _emssiveMapSlot);
 }
 
 void Material::SetBaseColor_Opacity(TL_Graphics::IShaderResource* baseColor_opacity)

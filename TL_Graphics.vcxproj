@@ -265,6 +265,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="src\Graphics\RenderTargetTexture.h" />
     <ClInclude Include="src\Graphics\ScreenMesh.h" />
     <ClInclude Include="src\Graphics\Shader.h" />
+    <ClInclude Include="src\Graphics\ShaderResourceSlotPS.h" />
     <ClInclude Include="src\Graphics\SwapChainRenderTarget.h" />
     <ClInclude Include="src\Graphics\Texture.h" />
     <ClInclude Include="src\Graphics\Camera.h" />

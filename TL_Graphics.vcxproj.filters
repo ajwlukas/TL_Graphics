@@ -135,6 +135,9 @@
     <ClInclude Include="src\Graphics\GridPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\ShaderResourceSlotPS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Graphics\Camera.cpp">

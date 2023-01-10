@@ -10,6 +10,7 @@
 
 /// <summary>
 /// Deferred에 필요한 텍스쳐를 뽑아주는 데 필요한 것들 의 묶음
+/// written by Ssreppa 230110
 /// </summary>
 
 class GBufferRenderPass : public IRenderPass

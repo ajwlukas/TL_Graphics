@@ -48,7 +48,7 @@ public:
 	void SetCurrentRasterState(Resource<ID3D11RasterizerState> state);
 	void SetCurrentDepthStencilState(Resource<ID3D11DepthStencilState> state);
 	void SetCurrentBlendState(Resource<ID3D11BlendState> state);
-	void SetCurrentSamplerState(Resource<ID3D11SamplerState> state);
+	void SetCurrentSamplerState(Resource<ID3D11SamplerState> state, UINT slot);
 
 	void SetViewPort();
 
@@ -100,10 +100,14 @@ private:
 	Resource<ID3D11RasterizerState> wireFrameRasterState;
 	Resource<ID3D11RasterizerState> solidRasterState;
 
+	ID3D11SamplerState* currentSamplerStates[4];
 
 	Resource<ID3D11DepthStencilState> defaultDepthStencilState;
 	Resource<ID3D11BlendState> defaultBlendState;
-	Resource<ID3D11SamplerState> defualtSamplerState;
+	Resource<ID3D11SamplerState> wrapSamplerState;
+	Resource<ID3D11SamplerState> mirrorSamplerState;
+	Resource<ID3D11SamplerState> clampSamplerState;
+	Resource<ID3D11SamplerState> borderSamplerState;
 
 	Resource<ID3D11DepthStencilView> depthStencilView;
 	Resource<ID3D11Texture2D> depthStencilBuffer;

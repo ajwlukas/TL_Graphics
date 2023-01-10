@@ -22,12 +22,12 @@ cbuffer material : register(b1)
 float4 main(VS_Out_ScreenSpace surface) : SV_Target0
 {
     
-    float3 albedo = albedo_Deferred.Sample(Sampler, surface.uv).rgb;
-    float opacity = albedo_Deferred.Sample(Sampler, surface.uv).a;
-    float metalness = metalness_Deferred.Sample(Sampler, surface.uv).r;
-    float roughness = roughness_Deferred.Sample(Sampler, surface.uv).r;
-    float3 pos_world = pos_world_Deferred.Sample(Sampler, surface.uv).rgb;
-    float3 normal = normal_world_Deferred.Sample(Sampler, surface.uv).rgb;
+    float3 albedo = albedo_Deferred.Sample(Sampler_Wrap, surface.uv).rgb;
+    float opacity = albedo_Deferred.Sample(Sampler_Wrap, surface.uv).a;
+    float metalness = metalness_Deferred.Sample(Sampler_Wrap, surface.uv).r;
+    float roughness = roughness_Deferred.Sample(Sampler_Wrap, surface.uv).r;
+    float3 pos_world = pos_world_Deferred.Sample(Sampler_Wrap, surface.uv).rgb;
+    float3 normal = normal_world_Deferred.Sample(Sampler_Wrap, surface.uv).rgb;
     
     
     //표면으로 부터 눈으로 향하는 방향 벡터

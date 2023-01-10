@@ -126,7 +126,7 @@ private:
 		UINT refCount;
 	};
 	std::unordered_map<std::string, Data> inputLayouts;
-} ;
+};
 
 class PixelShaderResources
 {
@@ -177,24 +177,56 @@ private:
 };
 
 /// States for DX
+///todo : SamplerState에 AddressMode 말고 적용 아직 안함.
 class SamplerStateResources
 {
 public:
 	void Get(Resource< ID3D11SamplerState>& dest, D3D11_SAMPLER_DESC desc);
-	void GetDefault(Resource< ID3D11SamplerState>& dest) { Get(dest, defaultDesc); }
 
-	void SetDefault(D3D11_SAMPLER_DESC desc);
+	void GetWrap(Resource< ID3D11SamplerState>& dest) { Get(dest, wrapDesc); }
+	void GetMirror(Resource< ID3D11SamplerState>& dest) { Get(dest, wrapDesc); }
+	void GetClamp(Resource< ID3D11SamplerState>& dest) { Get(dest, wrapDesc); }
+	void GetBorder(Resource< ID3D11SamplerState>& dest) { Get(dest, wrapDesc); }
+
+	void SetWrap(D3D11_SAMPLER_DESC desc);
+	void SetMirror(D3D11_SAMPLER_DESC desc);
+	void SetClamp(D3D11_SAMPLER_DESC desc);
+	void SetBorder(D3D11_SAMPLER_DESC desc);
 private:
 	friend class Resources;
 	Resources* resources;
-	SamplerStateResources(Resources* resources) : resources(resources) 
+	SamplerStateResources(Resources* resources) : resources(resources)
 	{
 		D3D11_SAMPLER_DESC desc = {};
 		desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 		desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 		desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 
-		SetDefault(desc);
+		SetWrap(desc);
+
+		desc.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
+		desc.AddressV = D3D11_TEXTURE_ADDRESS_MIRROR;
+		desc.AddressW = D3D11_TEXTURE_ADDRESS_MIRROR;
+
+		SetMirror(desc);
+
+		desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+		desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+		desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+
+		SetClamp(desc);
+
+		desc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+		desc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+		desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+
+
+		desc.BorderColor[0] = 1.0f;
+		desc.BorderColor[1] = 0.0f;
+		desc.BorderColor[2] = 1.0f;
+		desc.BorderColor[3] = 1.0f;
+
+		SetBorder(desc);
 	}
 
 	void Release();
@@ -205,7 +237,10 @@ private:
 		ID3D11SamplerState* data;
 		UINT refCount;
 	};
-	D3D11_SAMPLER_DESC defaultDesc;
+	D3D11_SAMPLER_DESC wrapDesc;
+	D3D11_SAMPLER_DESC mirrorDesc;
+	D3D11_SAMPLER_DESC clampDesc;
+	D3D11_SAMPLER_DESC borderDesc;
 	std::unordered_map<std::string, Data> samplerStates;
 };
 
@@ -258,7 +293,7 @@ private:
 class DepthStencilStateResources
 {
 public:
-	void Get(Resource< ID3D11DepthStencilState>& dest,D3D11_DEPTH_STENCIL_DESC desc);
+	void Get(Resource< ID3D11DepthStencilState>& dest, D3D11_DEPTH_STENCIL_DESC desc);
 
 	void GetDefault(Resource< ID3D11DepthStencilState>& dest) { Get(dest, defaultDesc); }
 	void SetDefault(D3D11_DEPTH_STENCIL_DESC desc);
@@ -344,7 +379,7 @@ private:
 class Texture2DResources
 {
 public:
-	 void Create(Resource<ID3D11Texture2D>& dest, D3D11_TEXTURE2D_DESC desc,const D3D11_SUBRESOURCE_DATA* pInitData = NULL);
+	void Create(Resource<ID3D11Texture2D>& dest, D3D11_TEXTURE2D_DESC desc, const D3D11_SUBRESOURCE_DATA* pInitData = NULL);
 
 private:
 	friend class Resources;
@@ -365,7 +400,7 @@ private:
 class BufferResources
 {
 public:
-	 void Create(Resource<ID3D11Buffer>& dest, D3D11_BUFFER_DESC desc,const D3D11_SUBRESOURCE_DATA* pInitData = NULL);
+	void Create(Resource<ID3D11Buffer>& dest, D3D11_BUFFER_DESC desc, const D3D11_SUBRESOURCE_DATA* pInitData = NULL);
 
 private:
 	friend class Resources;
@@ -386,10 +421,10 @@ private:
 class RenderTargetViewResources
 {
 public:
-	void Create(Resource<ID3D11RenderTargetView>& dest,D3D11_RENDER_TARGET_VIEW_DESC desc, ID3D11Resource* buffer);
+	void Create(Resource<ID3D11RenderTargetView>& dest, D3D11_RENDER_TARGET_VIEW_DESC desc, ID3D11Resource* buffer);
 
 	void CreateDefault(Resource<ID3D11RenderTargetView>& dest, ID3D11Resource* buffer) { Create(dest, defaultDesc, buffer); };
-	void SetDefault(D3D11_RENDER_TARGET_VIEW_DESC desc) {	defaultDesc = desc;};
+	void SetDefault(D3D11_RENDER_TARGET_VIEW_DESC desc) { defaultDesc = desc; };
 private:
 	friend class Resources;
 	Resources* resources;
@@ -418,10 +453,10 @@ private:
 class DepthStencilViewResources
 {
 public:
-	void Create(Resource<ID3D11DepthStencilView>& dest,D3D11_DEPTH_STENCIL_VIEW_DESC desc, ID3D11Resource* buffer);
+	void Create(Resource<ID3D11DepthStencilView>& dest, D3D11_DEPTH_STENCIL_VIEW_DESC desc, ID3D11Resource* buffer);
 
 	void CreateDefault(Resource<ID3D11DepthStencilView>& dest, ID3D11Resource* buffer) { Create(dest, defaultDesc, buffer); };
-	void SetDefault(D3D11_DEPTH_STENCIL_VIEW_DESC desc) {	defaultDesc = desc;};
+	void SetDefault(D3D11_DEPTH_STENCIL_VIEW_DESC desc) { defaultDesc = desc; };
 private:
 	friend class Resources;
 	Resources* resources;
