@@ -4,7 +4,7 @@
 #include "Pipeline.h"
 
 RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, UINT width, UINT height)
-	:ShaderResource(dc, resources, pipeline), RenderTarget(dc, resources, pipeline)
+	:Texture(dc, resources, pipeline), RenderTarget(dc, resources, pipeline)
     , isBasedWindowSize(false)
     ,dc(dc)
     , resources(resources)
@@ -16,7 +16,7 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
 }
 
 RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, float widthRatio, float heightRatio)
-    : ShaderResource(dc, resources, pipeline), RenderTarget(dc, resources, pipeline)
+    : Texture(dc, resources, pipeline), RenderTarget(dc, resources, pipeline)
     ,widthRatio(widthRatio)
     , heightRatio(heightRatio)
     ,isBasedWindowSize(true)

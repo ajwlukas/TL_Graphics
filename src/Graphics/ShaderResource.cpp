@@ -17,5 +17,9 @@ ShaderResource::~ShaderResource()
 void ShaderResource::Set(TL_Graphics::E_SHADER_TYPE type,
 	UINT slot)
 {
+
+	//D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+	//srv.resource->GetDesc(&desc);
+
 	pipeline->SetShaderResource(this, type, slot);
 }

@@ -7,6 +7,27 @@ Texture::Texture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeli
 	, fileName(fileName)
 {
 	resources->srvs->GetFromFile(srv, fileName);
+
+
+	ID3D11Resource* pResource;
+	srv.resource->GetResource(&pResource);
+
+	ID3D11Texture2D* pTexture;
+	//QueryInterface 함수 잘모름, ChatGPT에서 가져옴
+	pResource->QueryInterface(__uuidof(ID3D11Texture2D), (void**)&pTexture);
+
+	D3D11_TEXTURE2D_DESC desc;
+
+	pTexture->GetDesc(&desc);
+
+	sizeX = desc.Width;
+	sizeY = desc.Height;
+}
+
+Texture::Texture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
+	:ShaderResource(dc, resources, pipeline)
+	, fileName{}
+{
 }
 
 Texture::~Texture()

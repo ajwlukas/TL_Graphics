@@ -56,6 +56,9 @@ public:
 		UINT slot);
 	void SetShaderResource(ShaderResource* shaderResource, TL_Graphics::E_SHADER_TYPE type,
 		UINT slot);
+	void SetTexture(Texture* texture, TL_Graphics::E_SHADER_TYPE type,
+		UINT slot);
+
 
 	void SetMesh(Mesh* mesh);
 	void SetMaterial(Material* material, UINT albdeoMapSlot = 0, UINT metallicMapSlot = 1, UINT roughnessMapSlot = 2);
@@ -133,4 +136,15 @@ public:
 
 private:
 	vector<function<void()>> reservations;//calls after one drawcall
+
+private:
+	__declspec(align(16)) struct TexInfo
+	{
+		unsigned int texX;//as Pixel
+		unsigned int texY;
+		float texXInv;//as UV
+		float texYInv;
+	}texInfos[4096];
+
+	ConstantBuffer* texInfoBuffer;
 };

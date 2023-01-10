@@ -10,6 +10,24 @@ cbuffer CameraBuffer : register(b0)
     float3 camPos;
 }
 
+struct TextureInfo
+{
+    uint texX;//as Pixel
+    uint texY;
+    float texXInv;//as UV
+    float texYInv;
+};
+
+cbuffer RenderTargetTexInfo : register(b2)//¾²·Á³ª...? ÀÏ´Ü ¹Ì·ï³ð
+{
+    TextureInfo rttInfo[8]; //index means slot of renderTarget
+}
+
+cbuffer RenderTargetTexInfo : register(b3)
+{
+    TextureInfo texInfo[4096];//index means slot of texture ref TL_TexturePS
+}
+
 
 cbuffer Material : register(b11)
 {

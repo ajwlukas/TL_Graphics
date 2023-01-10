@@ -123,6 +123,16 @@ void Pipeline::SetShaderResource(ShaderResource* shaderResource, TL_Graphics::E_
 	}
 }
 
+void Pipeline::SetTexture(Texture* texture, TL_Graphics::E_SHADER_TYPE type, UINT slot)
+{
+	TexInfo info = {};
+
+
+	texInfos[slot] = info;
+
+	SetShaderResource(texture, type, slot);
+}
+
 void Pipeline::SetMaterial(Material* material, UINT albdeoMapSlot, UINT metallicMapSlot, UINT roughnessMapSlot)
 {
 	//dc->PSSetShader(material->pixelShader, 0, 0);

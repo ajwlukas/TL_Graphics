@@ -6,7 +6,9 @@
 #include "RenderTarget.h"
 #include "OnResize.h"
 
-class RenderTargetTexture : public TL_Graphics::IRenderTargetTexture,  public ShaderResource, public OnResize_Observer,  public RenderTarget
+#include "Texture.h"
+
+class RenderTargetTexture : public TL_Graphics::IRenderTargetTexture,  public Texture, public OnResize_Observer,  public RenderTarget
 {
 public:
 	RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, UINT width, UINT height);
