@@ -7,6 +7,11 @@
 #include "OnResize.h"
 
 #include "Texture.h"
+/// <summary>
+/// 
+/// 
+/// 주의점 : SetRT로 그린 텍스쳐를 사용하기(SetT) 전에 RenderTarget을 UnSet해야한다.(pipeline->UnSetRenderTarget
+/// </summary>
 
 class RenderTargetTexture : public TL_Graphics::IRenderTargetTexture,  public Texture, public OnResize_Observer,  public RenderTarget
 {

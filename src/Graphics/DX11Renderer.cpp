@@ -173,8 +173,6 @@ void DX11Renderer::EndSetLight()
 void DX11Renderer::PreRender()
 {
     gBufferRenderPass->ClearRenderTargets();
-    deferredRenderPass->ClearRenderTargets();
-
     gBufferRenderPass->Set();//화면 기하정보 뽑아냄
 
     pipeline->SetDepthEnabled();

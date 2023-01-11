@@ -25,11 +25,14 @@ void DownSamplerPass::Set()
 
 void DownSamplerPass::Execute()
 {
-	pipeline->ResizeViewPort(resizeNotice->GetWidth() * 0.25f, resizeNotice->GetHeight() * 0.25f);
+	ClearRenderTargets();
+
+	pipeline->ResizeViewPort(resizeNotice->GetWidth() * 0.125f, resizeNotice->GetHeight() * 0.125f);
 
 	Set();
 	pipeline->Draw();
-	rtt->SetT(TL_Graphics::E_SHADER_TYPE::PS, 0);
+	pipeline->UnSetRenderTarget(0);
+	rtt->SetT(TL_Graphics::E_SHADER_TYPE::PS, interPassSlot);
 
 
 	pipeline->ResizeViewPort(resizeNotice->GetWidth(), resizeNotice->GetHeight());
@@ -42,7 +45,7 @@ void DownSamplerPass::ClearRenderTargets()
 
 void DownSamplerPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
-	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 0.25f, 0.25f);
+	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 0.125f, 0.125f);
 }
 
 void DownSamplerPass::CreateShader()
