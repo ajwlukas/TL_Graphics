@@ -15,9 +15,9 @@ RenderTarget::~RenderTarget()
 {
 }
 
-void RenderTarget::Set(UINT slot, bool depthEnabled)
+void RenderTarget::Set(UINT slot)
 {
-	pipeline->SetRenderTarget(this, slot, depthEnabled);
+	pipeline->SetRenderTarget(this, slot);
 }
 
 void RenderTarget::Clear(TL_Math::Vector4 color)

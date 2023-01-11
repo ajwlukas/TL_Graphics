@@ -20,6 +20,7 @@ public:
 	virtual void ClearRenderTargets() override;
 
 private:
+	OnResizeNotice* resizeNotice;
 	RenderTargetTexture* rtt;
 
 	Shader* shaderPS;
@@ -27,4 +28,5 @@ private:
 	void CreateRenderTarget(OnResizeNotice* resizeNotice);
 
 	void CreateShader();
+
 };

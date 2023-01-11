@@ -38,9 +38,9 @@ RenderTargetTexture::~RenderTargetTexture()
 {
 }
 
-void RenderTargetTexture::SetRT(UINT slot, bool depthEnabled)
+void RenderTargetTexture::SetRT(UINT slot)
 {
-    RenderTarget::Set(slot, depthEnabled);
+    RenderTarget::Set(slot);
 }
 
 void RenderTargetTexture::SetT(TL_Graphics::E_SHADER_TYPE type, UINT slot)

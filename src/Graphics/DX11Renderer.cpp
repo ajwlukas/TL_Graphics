@@ -176,6 +176,8 @@ void DX11Renderer::PreRender()
     deferredRenderPass->ClearRenderTargets();
 
     gBufferRenderPass->Set();//화면 기하정보 뽑아냄
+
+    pipeline->SetDepthEnabled();
 }
 
 void DX11Renderer::PostRender()
@@ -188,6 +190,8 @@ void DX11Renderer::PostRender()
 
     SetSwapChainRenderTargetView();
 
+    pipeline->SetDepthDisabled();
+
     gridPass->Execute();
 
     gBufferRenderPass->SetGBuffers();
@@ -197,6 +201,8 @@ void DX11Renderer::PostRender()
     downSamplerPass->Execute();
 
     finalPass->Execute();
+
+
 }
 
 

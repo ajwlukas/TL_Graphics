@@ -26,7 +26,7 @@ void DeferredRenderPass::Execute()
 {
 	Set();
 	pipeline->Draw();
-	rtt->SetT(TL_Graphics::E_SHADER_TYPE::PS, interPassSlot);
+	rtt->SetT(TL_Graphics::E_SHADER_TYPE::PS, 0);
 }
 
 void DeferredRenderPass::ClearRenderTargets()

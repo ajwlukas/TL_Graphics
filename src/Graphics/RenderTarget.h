@@ -14,7 +14,7 @@ public:
 	RenderTarget(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	virtual ~RenderTarget();
 
-	virtual void Set(UINT slot, bool depthEnabled = true) ;
+	virtual void Set(UINT slot) ;
 	
 	void Clear(TL_Math::Vector4 color = { 0,0,0,0 });
 

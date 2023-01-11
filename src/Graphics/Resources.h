@@ -295,8 +295,11 @@ class DepthStencilStateResources
 public:
 	void Get(Resource< ID3D11DepthStencilState>& dest, D3D11_DEPTH_STENCIL_DESC desc);
 
-	void GetDefault(Resource< ID3D11DepthStencilState>& dest) { Get(dest, defaultDesc); }
-	void SetDefault(D3D11_DEPTH_STENCIL_DESC desc);
+	void GetDepthEnabled(Resource< ID3D11DepthStencilState>& dest) { Get(dest, depthEnabledDesc); }
+	void SetDepthEnabled(D3D11_DEPTH_STENCIL_DESC desc);
+
+	void GetDepthDisabled(Resource< ID3D11DepthStencilState>& dest) { Get(dest, depthDisabledDesc); }
+	void SetDepthDisabled(D3D11_DEPTH_STENCIL_DESC desc);
 
 private:
 	friend class Resources;
@@ -322,7 +325,9 @@ private:
 		desc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 		desc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
-		SetDefault(desc);
+		SetDepthEnabled(desc);
+
+		desc.DepthEnable = false;
 	}
 
 	void Release();
@@ -333,7 +338,8 @@ private:
 		ID3D11DepthStencilState* data;
 		UINT refCount;
 	};
-	D3D11_DEPTH_STENCIL_DESC defaultDesc;
+	D3D11_DEPTH_STENCIL_DESC depthEnabledDesc;
+	D3D11_DEPTH_STENCIL_DESC depthDisabledDesc;
 	std::unordered_map<std::string, Data> depthStencilStates;
 };
 
@@ -360,6 +366,7 @@ private:
 		desc.RenderTarget[0].RenderTargetWriteMask = 0x0f;
 
 		SetDefault(desc);
+
 	}
 
 	void Release();
@@ -462,6 +469,7 @@ private:
 	Resources* resources;
 	DepthStencilViewResources(Resources* resources) : resources(resources) {
 		D3D11_DEPTH_STENCIL_VIEW_DESC desc = {};
+
 
 		desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 		desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;

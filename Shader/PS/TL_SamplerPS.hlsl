@@ -7,6 +7,6 @@
 float4 main(VS_Out_ScreenSpace surface) : SV_TARGET0
 {
 	
-    return interPass.Sample(Sampler_Wrap, surface.uv);
+    return baseColor_opcityMap.Sample(Sampler_Wrap, surface.uv);
 
 }

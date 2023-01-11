@@ -16,7 +16,7 @@ FinalPass::~FinalPass()
 
 void FinalPass::Set()
 {
-	pipeline->SetSwapChainRenderTargetView(0, false);
+	pipeline->SetSwapChainRenderTargetView(0);
 	shaderPS->Set();
 }
 

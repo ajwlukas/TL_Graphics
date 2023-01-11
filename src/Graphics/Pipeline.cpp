@@ -38,7 +38,6 @@ void Pipeline::OnResize(uint32_t width, uint32_t height)
 	ResizeDepthStencilView(width, height);
 	ResizeViewPort(width, height);
 
-	SetViewPort();
 }
 
 void Pipeline::SetMesh(Mesh* mesh)
@@ -70,7 +69,7 @@ void Pipeline::SetStatesDefualt()
 {
 
 	SetCurrentRasterState(defaultRasterState);
-	SetCurrentDepthStencilState(defaultDepthStencilState);
+	SetCurrentDepthStencilState(depthEnabledDepthStencilState);
 	SetCurrentBlendState(defaultBlendState);
 	SetCurrentSamplerState(wrapSamplerState, 0);
 	SetCurrentSamplerState(mirrorSamplerState, 1);
@@ -167,22 +166,18 @@ void Pipeline::SetShader(Shader* shader)
 
 }
 
-void Pipeline::SetRenderTarget(RenderTarget* rtv, UINT slot, bool depthEnabled)
+void Pipeline::SetRenderTarget(RenderTarget* rtv, UINT slot)
 {
 	renderTargets[slot] = rtv->rtv;
 
-	if(depthEnabled)
 		dc->OMSetRenderTargets(MAX_RENDERTARGET, renderTargets, depthStencilView);
-	else
-		dc->OMSetRenderTargets(MAX_RENDERTARGET, renderTargets, nullptr);
-
 
 	currentRenderTarget[slot] = rtv;
 }
 
-void Pipeline::SetSwapChainRenderTargetView(UINT slot, bool depthEnabled )
+void Pipeline::SetSwapChainRenderTargetView(UINT slot)
 {
-	swapChainRtv->Set(slot, depthEnabled);
+	swapChainRtv->Set(slot);
 }
 
 void Pipeline::UnSetAllRenderTargets()
@@ -244,7 +239,8 @@ void Pipeline::CreateDefaultStates()
 
 
 
-	resources->depthStencilStates->GetDefault(defaultDepthStencilState);
+	resources->depthStencilStates->GetDepthEnabled(depthEnabledDepthStencilState);
+	resources->depthStencilStates->GetDepthDisabled(depthDisabledDepthStencilState);
 	resources->blendStates->GetDefault(defaultBlendState);
 
 	resources->samplerStates->GetWrap(wrapSamplerState);
@@ -287,6 +283,8 @@ void Pipeline::ResizeViewPort(UINT width, UINT height)
 	viewPort.MaxDepth = 1.0f;
 	viewPort.TopLeftX = 0.0f;
 	viewPort.TopLeftY = 0.0f;
+
+	SetViewPort();
 }
 
 void Pipeline::DrawWireOnce()
@@ -324,4 +322,14 @@ void Pipeline::SetWireModeAsDefualt()
 {
 	defaultRasterState = wireFrameRasterState;
 	SetCurrentRasterState(defaultRasterState);
+}
+
+void Pipeline::SetDepthEnabled()
+{
+	SetCurrentDepthStencilState(depthEnabledDepthStencilState);
+}
+
+void Pipeline::SetDepthDisabled()
+{
+	SetCurrentDepthStencilState(depthDisabledDepthStencilState);
 }

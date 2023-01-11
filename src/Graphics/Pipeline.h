@@ -65,9 +65,9 @@ public:
 
 	void SetShader(Shader* shader);
 
-	void SetRenderTarget(RenderTarget* rtv, UINT slot, bool depthEnabled = true);//todo : depthStencilView도 해줘야하는가? 아직 depthStencilView가 뭔지 잘 모르겠다.
+	void SetRenderTarget(RenderTarget* rtv, UINT slot);//todo : depthStencilView도 해줘야하는가? 아직 depthStencilView가 뭔지 잘 모르겠다.
 
-	void SetSwapChainRenderTargetView(UINT slot = 0, bool depthEnabled = true);
+	void SetSwapChainRenderTargetView(UINT slot = 0);
 
 	void UnSetAllRenderTargets();
 
@@ -105,7 +105,9 @@ private:
 
 	ID3D11SamplerState* currentSamplerStates[4];
 
-	Resource<ID3D11DepthStencilState> defaultDepthStencilState;
+	Resource<ID3D11DepthStencilState> depthEnabledDepthStencilState;
+	Resource<ID3D11DepthStencilState> depthDisabledDepthStencilState;
+
 	Resource<ID3D11BlendState> defaultBlendState;
 	Resource<ID3D11SamplerState> wrapSamplerState;
 	Resource<ID3D11SamplerState> mirrorSamplerState;
@@ -124,6 +126,8 @@ private:
 
 	//void ResizeSwapChainRtv(UINT width, UINT height);//aka Create
 	void ResizeDepthStencilView(UINT width, UINT height);	//aka Create
+
+	friend class DownSamplerPass;
 	void ResizeViewPort(UINT width, UINT height);//aka Create
 
 public:
@@ -133,6 +137,8 @@ public:
 	void SetSolidModeAsDefualt();
 	void SetWireModeAsDefualt();
 
+	void SetDepthEnabled();
+	void SetDepthDisabled();
 
 private:
 	vector<function<void()>> reservations;//calls after one drawcall

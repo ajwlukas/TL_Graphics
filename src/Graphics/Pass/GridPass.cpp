@@ -18,7 +18,7 @@ GridPass::~GridPass()
 
 void GridPass::Set()
 {
-	pipeline->SetSwapChainRenderTargetView(0, false);
+	pipeline->SetSwapChainRenderTargetView(0);
 	shaderPS->Set();
 }
 

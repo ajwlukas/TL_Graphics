@@ -516,9 +516,14 @@ void DepthStencilStateResources::Get(Resource<ID3D11DepthStencilState>& dest, D3
 	};
 }
 
-void DepthStencilStateResources::SetDefault(D3D11_DEPTH_STENCIL_DESC desc)
+void DepthStencilStateResources::SetDepthEnabled(D3D11_DEPTH_STENCIL_DESC desc)
 {
-	defaultDesc = desc;
+	depthEnabledDesc = desc;
+}
+
+void DepthStencilStateResources::SetDepthDisabled(D3D11_DEPTH_STENCIL_DESC desc)
+{
+	depthDisabledDesc = desc;
 }
 
 void DepthStencilStateResources::Release()
