@@ -18,9 +18,7 @@ DeferredRenderPass::~DeferredRenderPass()
 
 void DeferredRenderPass::Set()
 {
-	//일단은 이렇게 할 예정, 
-	pipeline->SetSwapChainRenderTargetView(0, false);
-	//rtt->SetRT(0);
+	rtt->SetRT(0);
 	shaderPS->Set();
 }
 
@@ -28,6 +26,7 @@ void DeferredRenderPass::Execute()
 {
 	Set();
 	pipeline->Draw();
+	rtt->SetT(TL_Graphics::E_SHADER_TYPE::PS, interPassSlot);
 }
 
 void DeferredRenderPass::ClearRenderTargets()
@@ -42,6 +41,5 @@ void DeferredRenderPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 
 void DeferredRenderPass::CreateShader()
 {
-
 	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_DeferredPS.hlsl");
 }

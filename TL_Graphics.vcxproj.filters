@@ -120,22 +120,28 @@
     <ClInclude Include="src\Graphics\Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\IRenderPass.h">
+    <ClInclude Include="src\Graphics\Pass\IRenderPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\GBufferRenderPass.h">
+    <ClInclude Include="src\Graphics\Pass\GBufferRenderPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\DeferredRenderPass.h">
+    <ClInclude Include="src\Graphics\Pass\DeferredRenderPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\ScreenMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\GridPass.h">
+    <ClInclude Include="src\Graphics\Pass\GridPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\ShaderResourceSlotPS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Pass\DownSamplerPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Pass\FinalPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -200,19 +206,25 @@
     <ClCompile Include="src\Graphics\Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\IRenderPass.cpp">
+    <ClCompile Include="src\Graphics\Pass\IRenderPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\GBufferRenderPass.cpp">
+    <ClCompile Include="src\Graphics\Pass\GBufferRenderPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\DeferredRenderPass.cpp">
+    <ClCompile Include="src\Graphics\Pass\DeferredRenderPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\ScreenMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\GridPass.cpp">
+    <ClCompile Include="src\Graphics\Pass\GridPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Pass\DownSamplerPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Pass\FinalPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -238,5 +250,6 @@
     <FxCompile Include="Shader\PS\TL_G_Buffers.hlsl" />
     <FxCompile Include="Shader\PS\TL_DeferredPS.hlsl" />
     <FxCompile Include="Shader\PS\TL_Grid.hlsl" />
+    <FxCompile Include="Shader\PS\TL_SamplerPS.hlsl" />
   </ItemGroup>
 </Project>

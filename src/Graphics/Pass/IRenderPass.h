@@ -4,6 +4,8 @@
 
 #include "Resources.h"
 
+#include "ShaderResourceSlotPS.h"
+
 class Pipeline;
 
 class IRenderPass

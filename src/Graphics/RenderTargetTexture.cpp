@@ -28,19 +28,19 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
 
     resizeNotice->AddObserver(this);
 
-    OnResize(resizeNotice->GetWidth() * widthRatio, resizeNotice->GetHeight() * heightRatio);
+    OnResize(resizeNotice->GetWidth(), resizeNotice->GetHeight());
 
-    sizeX = resizeNotice->GetWidth();
-    sizeY = resizeNotice->GetHeight();
+    sizeX = resizeNotice->GetWidth() * widthRatio;
+    sizeY = resizeNotice->GetHeight() * heightRatio;
 }
 
 RenderTargetTexture::~RenderTargetTexture()
 {
 }
 
-void RenderTargetTexture::SetRT(UINT slot)
+void RenderTargetTexture::SetRT(UINT slot, bool depthEnabled)
 {
-    RenderTarget::Set(slot);
+    RenderTarget::Set(slot, depthEnabled);
 }
 
 void RenderTargetTexture::SetT(TL_Graphics::E_SHADER_TYPE type, UINT slot)

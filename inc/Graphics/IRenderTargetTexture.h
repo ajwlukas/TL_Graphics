@@ -13,7 +13,7 @@ namespace TL_Graphics
 	public:
 		virtual ~IRenderTargetTexture() {};
 
-		virtual void SetRT(UINT slot) = 0;
+		virtual void SetRT(UINT slot, bool depthEnabled = true) = 0;
 		virtual void Clear(TL_Math::Vector4 color = {0,0,0,0}) = 0;
 
 		virtual void SetT(TL_Graphics::E_SHADER_TYPE type, UINT slot) = 0;

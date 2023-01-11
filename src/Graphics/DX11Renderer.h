@@ -27,11 +27,15 @@
 
 #include "ScreenMesh.h"
 
-#include "GBufferRenderPass.h"
+#include "Pass/GBufferRenderPass.h"
 
-#include "DeferredRenderPass.h"
+#include "Pass/DeferredRenderPass.h"
 
-#include "GridPass.h"
+#include "Pass/GridPass.h"
+
+#include "Pass/DownSamplerPass.h"
+
+#include "Pass/FinalPass.h"
 
 
 class  DX11Renderer : public TL_Graphics::RenderSystem
@@ -126,4 +130,8 @@ private:
 	DeferredRenderPass* deferredRenderPass;
 
 	GridPass* gridPass;
+
+	DownSamplerPass* downSamplerPass;
+
+	FinalPass* finalPass;
 };

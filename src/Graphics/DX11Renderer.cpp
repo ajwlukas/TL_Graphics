@@ -13,6 +13,10 @@ DX11Renderer::DX11Renderer()
 
 DX11Renderer::~DX11Renderer()
 {
+    SAFE_DELETE(finalPass);
+
+    SAFE_DELETE(downSamplerPass);
+
     SAFE_DELETE(gridPass)
 
     SAFE_DELETE(screenMesh);
@@ -52,6 +56,10 @@ HRESULT DX11Renderer::Init()
     deferredRenderPass = new DeferredRenderPass(dc, resources, pipeline, &onResizeNotice);
 
     gridPass = new GridPass(dc, resources, pipeline, &onResizeNotice);
+
+    downSamplerPass = new DownSamplerPass(dc, resources, pipeline, &onResizeNotice);
+
+    finalPass = new FinalPass(dc, resources, pipeline, &onResizeNotice);
 
     return hr;
 }
@@ -186,6 +194,9 @@ void DX11Renderer::PostRender()
 
     deferredRenderPass->Execute();
 
+    downSamplerPass->Execute();
+
+    finalPass->Execute();
 }
 
 

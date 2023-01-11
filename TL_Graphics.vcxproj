@@ -256,10 +256,12 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="inc\Graphics\MeshType.h" />
     <ClInclude Include="inc\Graphics\RenderSystem.h" />
     <ClInclude Include="inc\Graphics\ShaderType.h" />
-    <ClInclude Include="src\Graphics\DeferredRenderPass.h" />
-    <ClInclude Include="src\Graphics\GBufferRenderPass.h" />
-    <ClInclude Include="src\Graphics\GridPass.h" />
-    <ClInclude Include="src\Graphics\IRenderPass.h" />
+    <ClInclude Include="src\Graphics\Pass\DeferredRenderPass.h" />
+    <ClInclude Include="src\Graphics\Pass\DownSamplerPass.h" />
+    <ClInclude Include="src\Graphics\Pass\FinalPass.h" />
+    <ClInclude Include="src\Graphics\Pass\GBufferRenderPass.h" />
+    <ClInclude Include="src\Graphics\Pass\GridPass.h" />
+    <ClInclude Include="src\Graphics\Pass\IRenderPass.h" />
     <ClInclude Include="src\Graphics\Light.h" />
     <ClInclude Include="src\Graphics\RenderTarget.h" />
     <ClInclude Include="src\Graphics\RenderTargetTexture.h" />
@@ -286,10 +288,12 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="src\Graphics\TextureBuffer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Graphics\DeferredRenderPass.cpp" />
-    <ClCompile Include="src\Graphics\GBufferRenderPass.cpp" />
-    <ClCompile Include="src\Graphics\GridPass.cpp" />
-    <ClCompile Include="src\Graphics\IRenderPass.cpp" />
+    <ClCompile Include="src\Graphics\Pass\DeferredRenderPass.cpp" />
+    <ClCompile Include="src\Graphics\Pass\DownSamplerPass.cpp" />
+    <ClCompile Include="src\Graphics\Pass\FinalPass.cpp" />
+    <ClCompile Include="src\Graphics\Pass\GBufferRenderPass.cpp" />
+    <ClCompile Include="src\Graphics\Pass\GridPass.cpp" />
+    <ClCompile Include="src\Graphics\Pass\IRenderPass.cpp" />
     <ClCompile Include="src\Graphics\Light.cpp" />
     <ClCompile Include="src\Graphics\RenderTarget.cpp" />
     <ClCompile Include="src\Graphics\RenderTargetTexture.cpp" />
@@ -349,6 +353,12 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Shader\PS\TL_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\PS\TL_SamplerPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
