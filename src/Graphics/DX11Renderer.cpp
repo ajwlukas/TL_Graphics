@@ -57,7 +57,7 @@ HRESULT DX11Renderer::Init()
 
     gridPass = new GridPass(dc, resources, pipeline, &onResizeNotice);
 
-    downSamplerPass = new DownSamplerPass(dc, resources, pipeline, &onResizeNotice);
+    downSamplerPass = new DownSamplerPass(dc, resources, pipeline, &onResizeNotice,0.1f, 0.1f);
 
     finalPass = new FinalPass(dc, resources, pipeline, &onResizeNotice);
 

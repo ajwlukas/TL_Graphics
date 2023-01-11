@@ -9,7 +9,7 @@
 class DownSamplerPass : public IRenderPass
 {
 public:
-	DownSamplerPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	DownSamplerPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, float widthRatio = 1.0f, float heightRatio = 1.0f);
 	~DownSamplerPass();
 
 	// IRenderPass을(를) 통해 상속됨
@@ -29,4 +29,6 @@ private:
 
 	void CreateShader();
 
+
+	float widthRatio, heightRatio;
 };

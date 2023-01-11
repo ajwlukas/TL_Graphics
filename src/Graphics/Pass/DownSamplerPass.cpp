@@ -3,9 +3,11 @@
 
 #include "Pipeline.h"
 
-DownSamplerPass::DownSamplerPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
+DownSamplerPass::DownSamplerPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, float widthRatio, float heightRatio)
 	:IRenderPass(dc, resources, pipeline)
 	,resizeNotice(resizeNotice)
+	,widthRatio(widthRatio)
+	,heightRatio(heightRatio)
 {
 	CreateRenderTarget(resizeNotice);
 	CreateShader();
@@ -27,7 +29,7 @@ void DownSamplerPass::Execute()
 {
 	ClearRenderTargets();
 
-	pipeline->ResizeViewPort(resizeNotice->GetWidth() * 0.125f, resizeNotice->GetHeight() * 0.125f);
+	pipeline->ResizeViewPort(resizeNotice->GetWidth() * widthRatio, resizeNotice->GetHeight() * heightRatio);
 
 	Set();
 	pipeline->Draw();
@@ -45,7 +47,7 @@ void DownSamplerPass::ClearRenderTargets()
 
 void DownSamplerPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
-	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 0.125f, 0.125f);
+	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, widthRatio, heightRatio);
 }
 
 void DownSamplerPass::CreateShader()
