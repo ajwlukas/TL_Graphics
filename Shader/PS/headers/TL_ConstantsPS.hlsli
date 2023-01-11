@@ -23,9 +23,9 @@ cbuffer RenderTargetTexInfo : register(b2)//¾²·Á³ª...? ÀÏ´Ü ¹Ì·ï³ð
     TextureInfo rttInfo[8]; //index means slot of renderTarget
 }
 
-cbuffer RenderTargetTexInfo : register(b3)
+cbuffer TexInfo : register(b3)
 {
-    TextureInfo texInfo[4096];//index means slot of texture ref TL_TexturePS
+    TextureInfo texInfo[4096]; //index means slot of texture ref TL_TexturePS
 }
 
 

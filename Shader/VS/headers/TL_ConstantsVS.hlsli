@@ -13,7 +13,11 @@ cbuffer CameraBuffer : register(b0)
 cbuffer World : register(b1)
 {
     float4x4 world;
-};
+}
 
+cbuffer SkinnedObject : register(b2)
+{
+    matrix g_BoneTransforms[128];
+}
 
 #endif

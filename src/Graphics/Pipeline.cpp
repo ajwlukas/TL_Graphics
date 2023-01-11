@@ -12,7 +12,7 @@ Pipeline::Pipeline(ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, OnResizeN
 
 	Init(resizeNotice->GetWidth(), resizeNotice->GetHeight());
 
-	texInfoBuffer = new ConstantBuffer(dc, resources, this, texInfos, sizeof(TexInfo));
+	texInfoBuffer = new ConstantBuffer(dc, resources, this, texInfos, sizeof(TexInfo) * 4096);
 }
 
 Pipeline::~Pipeline()
@@ -139,7 +139,7 @@ void Pipeline::SetTexture(Texture* texture, TL_Graphics::E_SHADER_TYPE type, UIN
 
 	SetShaderResource(texture, type, slot);
 
-	texInfoBuffer->Update(texInfos, sizeof(TexInfo));
+	texInfoBuffer->Update(texInfos, sizeof(TexInfo) * 4096);
 
 	texInfoBuffer->Set(TL_Graphics::E_SHADER_TYPE::PS, 3);
 }
