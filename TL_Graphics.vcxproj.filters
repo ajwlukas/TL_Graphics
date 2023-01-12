@@ -250,6 +250,7 @@
     <None Include="Shader\PS\headers\TL_TexturesPS.hlsli" />
     <None Include="Shader\PS\headers\TL_Samplers.hlsli" />
     <None Include="Shader\PS\headers\TL_Light.hlsli" />
+    <None Include="Shader\PS\headers\TL_GammaCorrection.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\PS\TL_PS.hlsl" />

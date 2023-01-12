@@ -13,6 +13,6 @@ namespace TL_Graphics
 	{
 		bool doGrid = true;
 
-		bool doDownSample = true;
+		bool doDownSample = false;
 	};
 }

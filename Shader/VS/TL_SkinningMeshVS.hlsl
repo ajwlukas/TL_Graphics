@@ -23,10 +23,10 @@ VS_Out main(VS_In_SkinningMesh v)
         if (boneIndex > -1 && boneIndex < 128)
         {
             totalWeight += boneWeight;
-
-            posW += boneWeight * mul(float4(v.pos_local, 1.0f), g_BoneTransforms[boneIndex]).xyz;
-            normalL += boneWeight * mul(v.normal_local, (float3x3) g_BoneTransforms[boneIndex]).xyz;
-            tangentL += boneWeight * mul(v.tangent_local, (float3x3) g_BoneTransforms[boneIndex]).xyz;
+            
+            posW += boneWeight * mul(g_BoneTransforms[boneIndex], float4(v.pos_local, 1.0f)).xyz;
+            normalL += boneWeight * mul((float3x3) g_BoneTransforms[boneIndex], v.normal_local).xyz;
+            tangentL += boneWeight * mul((float3x3) g_BoneTransforms[boneIndex], v.tangent_local).xyz;
         }
     }
 

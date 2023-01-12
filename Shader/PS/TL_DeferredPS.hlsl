@@ -12,6 +12,8 @@
 
 #include "TL_PBR.hlsli"
 
+#include "TL_GammaCorrection.hlsli"
+
 cbuffer material : register(b1)
 {
     float metal;
@@ -29,6 +31,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     float3 pos_world = pos_world_Deferred.Sample(Sampler_Wrap, surface.uv).rgb;
     float3 normal = normal_world_Deferred.Sample(Sampler_Wrap, surface.uv).rgb;
     
+    albedo = sRGBtoLinear(albedo);
     
     //표면으로 부터 눈으로 향하는 방향 벡터
     float3 toEye = normalize(camPos - pos_world);
@@ -109,8 +112,9 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
 
 		// Total contribution for this light.
         directLighting = directLighting + illuminance * (diffuseBRDF + specularBRDF);
-        
     }
+    
+    directLighting = LinearTosRGB(directLighting);
     
     
     return float4(directLighting, opacity);

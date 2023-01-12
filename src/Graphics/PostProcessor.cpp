@@ -35,7 +35,7 @@ void PostProcessor::Execute()
     pipeline->SetDepthDisabled();
 
     if(control.doGrid)
-    gridPass->Execute();
+      gridPass->Execute();
 
     deferredRenderPass->Execute();
 
