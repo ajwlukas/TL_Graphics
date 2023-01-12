@@ -7,9 +7,12 @@
 /// 연관 파일 : PostProcessor.h
 /// </summary>
 
-struct ControlPanel
+namespace TL_Graphics
 {
-	bool doGrid = true;
+	struct ControlPanel
+	{
+		bool doGrid = true;
 
-	bool doDownSample = true;
-};
+		bool doDownSample = true;
+	};
+}

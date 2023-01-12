@@ -298,3 +298,8 @@ void DX11Renderer::DrawInstanced(UINT numInstance)
 {
     pipeline->DrawInstanced(numInstance);
 }
+
+TL_Graphics::ControlPanel* DX11Renderer::GetControlPanel()
+{
+    return &postProcessor->control;
+}

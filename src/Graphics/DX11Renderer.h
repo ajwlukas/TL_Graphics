@@ -81,6 +81,8 @@ public:
 
 	virtual void UpdateWindowSize(UINT width, UINT height) override;
 
+	virtual TL_Graphics::ControlPanel* GetControlPanel() override;
+
 private:
 	HWND hWnd;
 
@@ -138,4 +140,5 @@ private:
 	DownSamplerPass* downSamplerPass;
 
 	FinalPass* finalPass;
+
 };
