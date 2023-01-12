@@ -24,6 +24,7 @@
 
 #include "Pipeline.h"
 
+#include "PostProcessor.h"
 
 #include "ScreenMesh.h"
 
@@ -51,6 +52,7 @@ public:
 
 	virtual void Clear()override;
 	virtual void Draw() override;
+	virtual void Draw(UINT indexCount, UINT startIndexLocation) override;
 	virtual void DrawInstanced(UINT numInstance) override;
 	virtual void Present()override;
 
@@ -124,6 +126,8 @@ private:
 
 
 	GBufferRenderPass* gBufferRenderPass;
+
+	PostProcessor* postProcessor;
 
 	ScreenMesh* screenMesh;
 

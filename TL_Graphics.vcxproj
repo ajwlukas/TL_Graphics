@@ -243,6 +243,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="inc\Graphics\ControlPanel.h" />
     <ClInclude Include="inc\Graphics\Export.h" />
     <ClInclude Include="inc\Graphics\ICamera.h" />
     <ClInclude Include="inc\Graphics\IConstantBuffer.h" />
@@ -263,6 +264,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="src\Graphics\Pass\GridPass.h" />
     <ClInclude Include="src\Graphics\Pass\IRenderPass.h" />
     <ClInclude Include="src\Graphics\Light.h" />
+    <ClInclude Include="src\Graphics\PostProcessor.h" />
     <ClInclude Include="src\Graphics\RenderTarget.h" />
     <ClInclude Include="src\Graphics\RenderTargetTexture.h" />
     <ClInclude Include="src\Graphics\ScreenMesh.h" />
@@ -295,6 +297,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClCompile Include="src\Graphics\Pass\GridPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\IRenderPass.cpp" />
     <ClCompile Include="src\Graphics\Light.cpp" />
+    <ClCompile Include="src\Graphics\PostProcessor.cpp" />
     <ClCompile Include="src\Graphics\RenderTarget.cpp" />
     <ClCompile Include="src\Graphics\RenderTargetTexture.cpp" />
     <ClCompile Include="src\Graphics\ScreenMesh.cpp" />

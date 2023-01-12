@@ -38,6 +38,7 @@ namespace TL_Graphics
 		virtual void PreRender() = 0;
 
 		virtual void Draw() = 0;
+		virtual void Draw(UINT indexCount, UINT startIndexLocation) = 0;
 		virtual void DrawInstanced(UINT numInstance) = 0;
 
 		virtual void PostRender() = 0;

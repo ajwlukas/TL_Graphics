@@ -224,6 +224,15 @@ void Pipeline::Draw()
 	reservations.clear();
 }
 
+void Pipeline::Draw(UINT indexCount, UINT startIndexLocation)
+{
+	dc->DrawIndexed(indexCount, startIndexLocation, 0);
+
+	for (auto reserve : reservations)
+		reserve();
+	reservations.clear();
+}
+
 void Pipeline::DrawInstanced(UINT numInstance)
 {
 	dc->DrawIndexedInstanced(currentMesh->GetIndexCount(), numInstance, 0, 0, 0);

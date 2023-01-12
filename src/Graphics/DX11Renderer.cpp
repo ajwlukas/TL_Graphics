@@ -13,7 +13,8 @@ DX11Renderer::DX11Renderer()
 
 DX11Renderer::~DX11Renderer()
 {
-    SAFE_DELETE(finalPass);
+    SAFE_DELETE(postProcessor);
+    /*SAFE_DELETE(finalPass);
 
     SAFE_DELETE(downSamplerPass);
 
@@ -21,7 +22,7 @@ DX11Renderer::~DX11Renderer()
 
     SAFE_DELETE(screenMesh);
 
-    SAFE_DELETE(deferredRenderPass);
+    SAFE_DELETE(deferredRenderPass);*/
 
     SAFE_DELETE(gBufferRenderPass);
 
@@ -51,7 +52,9 @@ HRESULT DX11Renderer::Init()
 
     gBufferRenderPass = new GBufferRenderPass(dc, resources, pipeline, &onResizeNotice);
 
-    screenMesh = new ScreenMesh(dc, resources, pipeline);
+    postProcessor = new PostProcessor(dc, resources, pipeline, &onResizeNotice);
+
+    /*screenMesh = new ScreenMesh(dc, resources, pipeline);
 
     deferredRenderPass = new DeferredRenderPass(dc, resources, pipeline, &onResizeNotice);
 
@@ -59,7 +62,7 @@ HRESULT DX11Renderer::Init()
 
     downSamplerPass = new DownSamplerPass(dc, resources, pipeline, &onResizeNotice,0.1f, 0.1f);
 
-    finalPass = new FinalPass(dc, resources, pipeline, &onResizeNotice);
+    finalPass = new FinalPass(dc, resources, pipeline, &onResizeNotice);*/
 
     return hr;
 }
@@ -180,27 +183,25 @@ void DX11Renderer::PreRender()
 
 void DX11Renderer::PostRender()
 {
-    screenMesh->Set();
-
     pipeline->SetStatesDefualt();
-
     UnSetAllRenderTargets();
+    gBufferRenderPass->SetGBuffers();
 
     SetSwapChainRenderTargetView();
+
+    postProcessor->Execute();
+
+   /* screenMesh->Set();
 
     pipeline->SetDepthDisabled();
 
     gridPass->Execute();
 
-    gBufferRenderPass->SetGBuffers();
-
     deferredRenderPass->Execute();
 
     downSamplerPass->Execute();
 
-    finalPass->Execute();
-
-
+    finalPass->Execute();*/
 }
 
 
@@ -286,6 +287,11 @@ void DX11Renderer::UpdateWindowSize(UINT width, UINT height)
 void DX11Renderer::Draw()
 {
     pipeline->Draw();
+}
+
+void DX11Renderer::Draw(UINT indexCount, UINT startIndexLocation)
+{
+    pipeline->Draw(indexCount, startIndexLocation);
 }
 
 void DX11Renderer::DrawInstanced(UINT numInstance)

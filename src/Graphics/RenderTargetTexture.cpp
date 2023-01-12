@@ -30,8 +30,8 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
 
     OnResize(resizeNotice->GetWidth(), resizeNotice->GetHeight());
 
-    sizeX = resizeNotice->GetWidth() * widthRatio;
-    sizeY = resizeNotice->GetHeight() * heightRatio;
+    sizeX = resizeNotice->GetWidth() * widthRatio < 1 ? 1 : resizeNotice->GetWidth() * widthRatio;
+    sizeY = resizeNotice->GetHeight() * heightRatio < 1 ? 1 : resizeNotice->GetHeight();
 }
 
 RenderTargetTexture::~RenderTargetTexture()
@@ -57,12 +57,12 @@ void RenderTargetTexture::OnResize(uint32_t width, uint32_t height)
 {
     if (!isBasedWindowSize) return;
 
-    sizeX = width * widthRatio;
-    sizeY = height * heightRatio;
+    sizeX = width * widthRatio < 1 ? 1 : width * widthRatio;
+    sizeY = height * heightRatio < 1 ? 1 : height * heightRatio;
 
     D3D11_TEXTURE2D_DESC desc = {};
-    desc.Width = width * widthRatio;
-    desc.Height = height * heightRatio;
+    desc.Width = sizeX;
+    desc.Height = sizeY;
     desc.MipLevels = 1;
     desc.ArraySize = 1;
     desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;

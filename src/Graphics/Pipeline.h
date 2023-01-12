@@ -73,7 +73,8 @@ public:
 
 	void UnSetRenderTarget(UINT slot);//렌더타겟을 빼준다.
 
-	void Draw();
+	void Draw();//일반적인 메쉬는 이거
+	void Draw(UINT indexCount, UINT startIndexLocation);//SubMesh 그리기용
 	void DrawInstanced(UINT numInstance);
 private:
 	ID3D11DeviceContext* dc;
