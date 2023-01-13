@@ -26,3 +26,7 @@ constexpr unsigned int roughness_DeferredSlot = 24;
 
 //31 ~ 40
 constexpr unsigned int interPassSlot = 30;
+
+
+//40 ~ 49
+constexpr unsigned int LUTSlot = 40;

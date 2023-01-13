@@ -16,15 +16,18 @@ PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipe
 
     downSamplerPass = new DownSamplerPass(dc, resources, pipeline, resizeNotice, 0.1f, 0.1f);
 
+    colorGradingPass = new ColorGradingPass(dc, resources, pipeline, resizeNotice);
+
     finalPass = new FinalPass(dc, resources, pipeline, resizeNotice);
 }
 
 PostProcessor::~PostProcessor()
 {
-    SAFE_DELETE(screenMesh);
-    SAFE_DELETE(deferredRenderPass);
-    SAFE_DELETE(gridPass);
+    SAFE_DELETE(finalPass);
+    SAFE_DELETE(colorGradingPass);
     SAFE_DELETE(downSamplerPass);
+    SAFE_DELETE(gridPass);
+    SAFE_DELETE(deferredRenderPass);
     SAFE_DELETE(screenMesh);
 }
 
@@ -39,8 +42,10 @@ void PostProcessor::Execute()
 
     deferredRenderPass->Execute();
 
-    if(control.doDownSample)
-    downSamplerPass->Execute();
+    //downSamplerPass->Execute();
+
+    if (control.doDownSample)
+    colorGradingPass->Execute();
 
     finalPass->Execute();
 }

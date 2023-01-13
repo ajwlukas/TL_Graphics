@@ -12,6 +12,8 @@
 
 #include "Pass/DownSamplerPass.h"
 
+#include "Pass/ColorGradingPass.h"
+
 #include "Pass/FinalPass.h"
 
 /// <summary>
@@ -40,6 +42,8 @@ private:
 	DeferredRenderPass* deferredRenderPass;
 
 	DownSamplerPass* downSamplerPass;
+
+	ColorGradingPass* colorGradingPass;
 
 	FinalPass* finalPass;
 

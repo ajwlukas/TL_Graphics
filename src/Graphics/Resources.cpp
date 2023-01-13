@@ -298,6 +298,7 @@ void SRVResources::GetFromFile(Resource<ID3D11ShaderResourceView>& dest, wstring
 		else
 			hr = CreateWICTextureFromFile(resources->device, path.c_str(), &res, &srvsFromTexture[fileName].data);
 
+
 		res->Release();
 
 		assert(SUCCEEDED(hr));

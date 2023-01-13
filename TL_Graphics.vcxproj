@@ -257,6 +257,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="inc\Graphics\MeshType.h" />
     <ClInclude Include="inc\Graphics\RenderSystem.h" />
     <ClInclude Include="inc\Graphics\ShaderType.h" />
+    <ClInclude Include="src\Graphics\Pass\ColorGradingPass.h" />
     <ClInclude Include="src\Graphics\Pass\DeferredRenderPass.h" />
     <ClInclude Include="src\Graphics\Pass\DownSamplerPass.h" />
     <ClInclude Include="src\Graphics\Pass\FinalPass.h" />
@@ -290,6 +291,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="src\Graphics\TextureBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\Pass\ColorGradingPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\DeferredRenderPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\DownSamplerPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\FinalPass.cpp" />
@@ -338,6 +340,12 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <None Include="src\Graphics\SimpleMath.inl" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Shader\PS\TL_ColorGrading.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="Shader\PS\TL_DeferredPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>

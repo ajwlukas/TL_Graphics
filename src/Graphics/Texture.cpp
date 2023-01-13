@@ -21,6 +21,9 @@ Texture::Texture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeli
 
 	pTexture->GetDesc(&desc);
 
+	SAFE_RELEASE(pTexture);
+	SAFE_RELEASE(pResource);
+
 	sizeX = desc.Width;
 	sizeY = desc.Height;
 }

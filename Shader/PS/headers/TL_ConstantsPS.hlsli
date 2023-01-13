@@ -1,6 +1,9 @@
 #ifndef TL_ConstantsPS
 #define TL_ConstantsPS
 
+
+//00 ~ 09 : commonBuffers
+
 cbuffer CameraBuffer : register(b0)
 {
     float4x4 view;
@@ -29,10 +32,7 @@ cbuffer TexInfo : register(b3)
 }
 
 
-cbuffer Material : register(b11)
-{
-    float4 mMetallic;
-    float4 mRoughness;
-}
+
+//10 ~ 15 : define by each shader
 
 #endif

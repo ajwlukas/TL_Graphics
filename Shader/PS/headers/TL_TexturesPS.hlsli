@@ -27,4 +27,8 @@ Texture2D roughness_Deferred: register(t24);
 
 //30 ~ 39
 Texture2D interPass : register(t30);
+
+
+//40 ~ 49
+Texture2D LUT : register(t40);
 #endif
