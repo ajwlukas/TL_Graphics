@@ -12,9 +12,18 @@ VS_Out main(VS_In_StaticMesh v)
     
     ret.uv = v.uv;
     
-    ret.normal_world = LocalToWorldDirOnly(v.normal_local);
-    ret.tangent_world = LocalToWorldDirOnly(v.tangent_local);
-    ret.bitangent_world = LocalToWorldDirOnly(v.bitangent_local);
+    
+    float3 normal = normalize(v.normal_local);
+    
+    float3 tangent = normalize(v.tangent_local - (dot(v.tangent_local, v.normal_local) * v.normal_local));
+    
+    float3 bitangent = normalize(cross(tangent, v.normal_local));
+    
+    
+    ret.normal_world = LocalToWorldDirOnly(normal);
+    ret.tangent_world = LocalToWorldDirOnly(tangent);
+    ret.bitangent_world = LocalToWorldDirOnly(bitangent);
+    
     
 	return ret;
 }

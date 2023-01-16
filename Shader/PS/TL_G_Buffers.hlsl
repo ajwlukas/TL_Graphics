@@ -31,10 +31,23 @@ PS_Out main(VS_Out surface)
     
     float4 r_s_m_ao = roughness_specular_metallic_AOMap.Sample(Sampler_Wrap, surface.uv);
     
+    
+    //normal Mapping
+    float3 normal = normalMap.Sample(Sampler_Wrap, surface.uv);
+    
+    normal = (normal * 2.0f) - 1.0f;
+    
+    float3x3 TBN = float3x3(surface.tangent_world, surface.bitangent_world, surface.normal_world);
+    
+    normal = normalize(mul(normal, TBN));
+    ///
+    
     //todo : 추후 opacity 추가할 것
     //ret.out0 = basecolor_opacity; //albedo
     ret.out0 = float4(basecolor_opacity.rgb, 1.0f); //albedo
-    ret.out1 = float4(surface.normal_world, 1.0f); //normal_world
+
+    ret.out1 = float4(normal, 1.0f); //normal_world
+    
     ret.out2 = float4(surface.pos_world, 1.0f); //pos_world
     ret.out3 = float4(r_s_m_ao.b, 1.0f, 1.0f, 0.0f); //metalness
     ret.out4 = float4(r_s_m_ao.r, 0.0f, 0.0f, 0.0f); //roughness
