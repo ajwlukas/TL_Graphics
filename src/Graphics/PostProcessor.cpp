@@ -4,48 +4,60 @@
 #include "Pipeline.h"
 
 PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
-    :dc(dc)
-    ,resources(resources)
-    ,pipeline(pipeline)
+	:dc(dc)
+	, resources(resources)
+	, pipeline(pipeline)
 {
-    screenMesh = new ScreenMesh(dc, resources, pipeline);
+	screenMesh = new ScreenMesh(dc, resources, pipeline);
 
-    deferredRenderPass = new DeferredRenderPass(dc, resources, pipeline, resizeNotice);
+	deferredRenderPass = new DeferredRenderPass(dc, resources, pipeline, resizeNotice);
 
-    gridPass = new GridPass(dc, resources, pipeline, resizeNotice);
+	gridPass = new GridPass(dc, resources, pipeline, resizeNotice);
 
-    downSamplerPass = new DownSamplerPass(dc, resources, pipeline, resizeNotice, 0.1f, 0.1f);
+	downSamplerPass = new DownSamplerPass(dc, resources, pipeline, resizeNotice, 0.1f, 0.1f);
 
-    colorGradingPass = new ColorGradingPass(dc, resources, pipeline, resizeNotice);
+	colorGradingPass = new ColorGradingPass(dc, resources, pipeline, resizeNotice);
 
-    finalPass = new FinalPass(dc, resources, pipeline, resizeNotice);
+	gaussianBlurPassX = new GaussianBlurPass(dc, resources, pipeline, resizeNotice, { 1,0 });
+
+	gaussianBlurPassY = new GaussianBlurPass(dc, resources, pipeline, resizeNotice, { 0,1 });
+
+	finalPass = new FinalPass(dc, resources, pipeline, resizeNotice);
 }
 
 PostProcessor::~PostProcessor()
 {
-    SAFE_DELETE(finalPass);
-    SAFE_DELETE(colorGradingPass);
-    SAFE_DELETE(downSamplerPass);
-    SAFE_DELETE(gridPass);
-    SAFE_DELETE(deferredRenderPass);
-    SAFE_DELETE(screenMesh);
+	SAFE_DELETE(finalPass);
+
+	SAFE_DELETE(gaussianBlurPassX);
+	SAFE_DELETE(gaussianBlurPassY);
+	SAFE_DELETE(colorGradingPass);
+	SAFE_DELETE(downSamplerPass);
+	SAFE_DELETE(gridPass);
+	SAFE_DELETE(deferredRenderPass);
+	SAFE_DELETE(screenMesh);
 }
 
 void PostProcessor::Execute()
 {
-    screenMesh->Set();
+	screenMesh->Set();
 
-    pipeline->SetDepthDisabled();
+	pipeline->SetDepthDisabled();
 
-    if(control.doGrid)
-      gridPass->Execute();
+	if (control.doGrid)
+		gridPass->Execute();
 
-    deferredRenderPass->Execute();
+	deferredRenderPass->Execute();
 
-    //downSamplerPass->Execute();
+	//downSamplerPass->Execute();
 
-    if (control.doDownSample)
-    colorGradingPass->Execute();
+	//colorGradingPass->Execute();
 
-    finalPass->Execute();
+	if (control.doDownSample)
+	{
+		gaussianBlurPassX->Execute();
+		gaussianBlurPassY->Execute();
+	}
+
+	finalPass->Execute();
 }

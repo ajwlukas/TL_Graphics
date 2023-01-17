@@ -261,6 +261,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="src\Graphics\Pass\DeferredRenderPass.h" />
     <ClInclude Include="src\Graphics\Pass\DownSamplerPass.h" />
     <ClInclude Include="src\Graphics\Pass\FinalPass.h" />
+    <ClInclude Include="src\Graphics\Pass\GaussianBlurPass.h" />
     <ClInclude Include="src\Graphics\Pass\GBufferRenderPass.h" />
     <ClInclude Include="src\Graphics\Pass\GridPass.h" />
     <ClInclude Include="src\Graphics\Pass\IRenderPass.h" />
@@ -295,6 +296,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClCompile Include="src\Graphics\Pass\DeferredRenderPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\DownSamplerPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\FinalPass.cpp" />
+    <ClCompile Include="src\Graphics\Pass\GaussianBlurPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\GBufferRenderPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\GridPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\IRenderPass.cpp" />
@@ -340,6 +342,18 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <None Include="src\Graphics\SimpleMath.inl" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Shader\PS\Accumulator.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\PS\GaussianBlur.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="Shader\PS\TL_ColorGrading.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>

@@ -33,6 +33,6 @@ cbuffer TexInfo : register(b3)
 
 
 
-//10 ~ 15 : define by each shader
+//10 ~ 15 : define by each shader don't define slot here
 
 #endif

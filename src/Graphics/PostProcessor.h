@@ -14,6 +14,8 @@
 
 #include "Pass/ColorGradingPass.h"
 
+#include "Pass/GaussianBlurPass.h"
+
 #include "Pass/FinalPass.h"
 
 /// <summary>
@@ -44,6 +46,9 @@ private:
 	DownSamplerPass* downSamplerPass;
 
 	ColorGradingPass* colorGradingPass;
+
+	GaussianBlurPass* gaussianBlurPassX;
+	GaussianBlurPass* gaussianBlurPassY;
 
 	FinalPass* finalPass;
 

@@ -31,4 +31,7 @@ Texture2D interPass : register(t30);
 
 //40 ~ 49
 Texture2D LUT : register(t40);
+
+Texture2D accumulateA : register(t41);
+Texture2D accumulateB : register(t42);
 #endif

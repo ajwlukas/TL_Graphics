@@ -153,6 +153,9 @@
     <ClInclude Include="src\Graphics\Pass\ColorGradingPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\Pass\GaussianBlurPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Graphics\Camera.cpp">
@@ -242,6 +245,9 @@
     <ClCompile Include="src\Graphics\Pass\ColorGradingPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Pass\GaussianBlurPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Graphics\SimpleMath.inl">
@@ -268,5 +274,7 @@
     <FxCompile Include="Shader\PS\TL_Grid.hlsl" />
     <FxCompile Include="Shader\PS\TL_SamplerPS.hlsl" />
     <FxCompile Include="Shader\PS\TL_ColorGrading.hlsl" />
+    <FxCompile Include="Shader\PS\GaussianBlur.hlsl" />
+    <FxCompile Include="Shader\PS\Accumulator.hlsl" />
   </ItemGroup>
 </Project>
