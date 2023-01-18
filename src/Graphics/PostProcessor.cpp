@@ -51,13 +51,14 @@ void PostProcessor::Execute()
 
 	//downSamplerPass->Execute();
 
-	//colorGradingPass->Execute();
-
 	if (control.doDownSample)
+	colorGradingPass->Execute();
+
+	/*if (control.doDownSample)
 	{
 		gaussianBlurPassX->Execute();
 		gaussianBlurPassY->Execute();
-	}
+	}*/
 
 	finalPass->Execute();
 }

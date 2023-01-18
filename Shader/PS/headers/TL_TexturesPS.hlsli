@@ -23,6 +23,7 @@ Texture2D normal_world_Deferred : register(t21);
 Texture2D pos_world_Deferred : register(t22);
 Texture2D metalness_Deferred: register(t23);
 Texture2D roughness_Deferred: register(t24);
+Texture2D depth_Deferred: register(t25);
 
 
 //30 ~ 39
@@ -30,7 +31,7 @@ Texture2D interPass : register(t30);
 
 
 //40 ~ 49
-Texture2D LUT : register(t40);
+Texture3D LUT : register(t40);
 
 Texture2D accumulateA : register(t41);
 Texture2D accumulateB : register(t42);

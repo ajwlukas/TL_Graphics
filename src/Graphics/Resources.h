@@ -184,9 +184,9 @@ public:
 	void Get(Resource< ID3D11SamplerState>& dest, D3D11_SAMPLER_DESC desc);
 
 	void GetWrap(Resource< ID3D11SamplerState>& dest) { Get(dest, wrapDesc); }
-	void GetMirror(Resource< ID3D11SamplerState>& dest) { Get(dest, wrapDesc); }
-	void GetClamp(Resource< ID3D11SamplerState>& dest) { Get(dest, wrapDesc); }
-	void GetBorder(Resource< ID3D11SamplerState>& dest) { Get(dest, wrapDesc); }
+	void GetMirror(Resource< ID3D11SamplerState>& dest) { Get(dest, mirrorDesc); }
+	void GetClamp(Resource< ID3D11SamplerState>& dest) { Get(dest, clampDesc); }
+	void GetBorder(Resource< ID3D11SamplerState>& dest) { Get(dest, borderDesc); }
 
 	void SetWrap(D3D11_SAMPLER_DESC desc);
 	void SetMirror(D3D11_SAMPLER_DESC desc);
@@ -202,6 +202,11 @@ private:
 		desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 		desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 
+		//desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		desc.Filter = D3D11_FILTER_ANISOTROPIC;
+		desc.MaxAnisotropy = 16;
+		//desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+
 		SetWrap(desc);
 
 		desc.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
@@ -213,6 +218,8 @@ private:
 		desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 		desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 		desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+
+
 
 		SetClamp(desc);
 

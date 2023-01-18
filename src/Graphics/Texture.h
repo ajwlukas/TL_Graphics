@@ -18,5 +18,8 @@ public:
 protected:
 	std::wstring fileName;
 
-	UINT sizeX = 0, sizeY = 0;
+
+	void LoadTexInfo();
+	///if sizeZ = 0; 2d, sizeZ >= 1 3d
+	UINT sizeX = 0, sizeY = 0, sizeZ = 0;
 };

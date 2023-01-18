@@ -276,5 +276,6 @@
     <FxCompile Include="Shader\PS\TL_ColorGrading.hlsl" />
     <FxCompile Include="Shader\PS\GaussianBlur.hlsl" />
     <FxCompile Include="Shader\PS\Accumulator.hlsl" />
+    <FxCompile Include="Shader\PS\TL_DOF.hlsl" />
   </ItemGroup>
 </Project>
