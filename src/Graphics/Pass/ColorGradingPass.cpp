@@ -26,21 +26,16 @@ ColorGradingPass::ColorGradingPass(ID3D11DeviceContext* dc, Resources* resources
 	//lut_info.height = 16;
 
 	LUT = new Texture(dc, resources, pipeline, L"Texture/volumeTexture_Rainbow.dds");
-	lut_info.width = 16;
-	lut_info.height = 1;
-
-	/*LUT = new Texture(dc, resources, pipeline, L"Texture/white_black.png");
-	lut_info.width = 16;
-	lut_info.height = 1;*/
+	LUT = new Texture(dc, resources, pipeline, L"Texture/volumeTexture_Greenish.dds");
+	//LUT = new Texture(dc, resources, pipeline, L"Texture/volumeTexture_Sepia.dds");
 
 
-
-	LUT_Info_buffer = new ConstantBuffer(dc, resources, pipeline, &lut_info, sizeof(LUT_Info));
+	//LUT_Info_buffer = new ConstantBuffer(dc, resources, pipeline, &lut_info, sizeof(LUT_Info));
 }
 
 ColorGradingPass::~ColorGradingPass()
 {
-	SAFE_DELETE(LUT_Info_buffer);
+	//SAFE_DELETE(LUT_Info_buffer);
 
 	SAFE_DELETE(LUT);
 
@@ -52,7 +47,7 @@ void ColorGradingPass::Set()
 {
 	LUT->Set(TL_Graphics::E_SHADER_TYPE::PS, LUTSlot);
 
-	LUT_Info_buffer->Set(TL_Graphics::E_SHADER_TYPE::PS, 10);
+	//LUT_Info_buffer->Set(TL_Graphics::E_SHADER_TYPE::PS, 10);
 
 	rtt->SetRT(0);
 	shaderPS->Set();

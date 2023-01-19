@@ -8,22 +8,6 @@
 
 
 
-cbuffer Test : register(b11)
-{
-    float flt;
-};
-
-
-//float4 main(VS_Out_ScreenSpace surface) : SV_TARGET0
-//{
-//    return float4(LUT.Sample(Sampler_Clamp, float2(flt, 0.5f)).rgb, 1.0f);
-
-//}
-
-
-
-
-
 float4 main(VS_Out_ScreenSpace surface) : SV_TARGET0
 {
     float4 ret;

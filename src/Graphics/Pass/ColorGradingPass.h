@@ -29,13 +29,13 @@ private:
 
 	Texture* LUT;
 
-	__declspec(align(16)) struct LUT_Info
-	{
-		UINT width;
-		UINT height;
-	}lut_info;
+	//__declspec(align(16)) struct LUT_Info
+	//{
+	//	UINT width;
+	//	UINT height;
+	//}lut_info;
 
-	ConstantBuffer* LUT_Info_buffer;
+	//ConstantBuffer* LUT_Info_buffer;
 private:
 	void CreateRenderTarget(OnResizeNotice* resizeNotice);
 
