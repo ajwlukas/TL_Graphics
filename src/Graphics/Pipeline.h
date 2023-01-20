@@ -128,7 +128,7 @@ private:
 	//void ResizeSwapChainRtv(UINT width, UINT height);//aka Create
 	void ResizeDepthStencilView(UINT width, UINT height);	//aka Create
 
-	friend class DownSamplerPass;
+	friend class SamplerPass;
 	void ResizeViewPort(UINT width, UINT height);//aka Create
 
 public:
