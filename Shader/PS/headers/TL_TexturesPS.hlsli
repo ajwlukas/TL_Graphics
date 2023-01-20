@@ -27,7 +27,10 @@ Texture2D depth_Deferred: register(t25);
 
 
 //30 ~ 39
-Texture2D interPass : register(t30);
+Texture2D mainRender: register(t30);
+
+Texture2D interPass : register(t31);
+Texture2D sampledTexture : register(t32);
 
 
 //40 ~ 49
