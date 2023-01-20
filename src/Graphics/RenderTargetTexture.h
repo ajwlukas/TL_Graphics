@@ -42,7 +42,7 @@ private:
 	// OnResize_Observer을(를) 통해 상속됨
 	virtual void OnResize(uint32_t width, uint32_t height) override;
 
-
+	bool initialized = false;
 
 
 };
