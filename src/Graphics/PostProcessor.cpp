@@ -14,7 +14,8 @@ PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipe
 
 	gridPass = new GridPass(dc, resources, pipeline, resizeNotice);
 
-	downSamplerPass = new DownSamplerPass(dc, resources, pipeline, resizeNotice, 0.1f, 0.1f);
+	//downSamplerPass = new SamplerPass(dc, resources, pipeline, resizeNotice, 0.1f, 0.1f);
+	downSamplerPass = new SamplerPass(dc, resources, pipeline, resizeNotice, (UINT)1, (UINT)1);
 
 	colorGradingPass = new ColorGradingPass(dc, resources, pipeline, resizeNotice);
 
@@ -22,12 +23,16 @@ PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipe
 
 	gaussianBlurPassY = new GaussianBlurPass(dc, resources, pipeline, resizeNotice, { 0,1 });
 
+	lightAdaptionPass = new LightAdaptionPass(dc, resources, pipeline, resizeNotice);
+
 	finalPass = new FinalPass(dc, resources, pipeline, resizeNotice);
 }
 
 PostProcessor::~PostProcessor()
 {
 	SAFE_DELETE(finalPass);
+
+	SAFE_DELETE(lightAdaptionPass);
 
 	SAFE_DELETE(gaussianBlurPassX);
 	SAFE_DELETE(gaussianBlurPassY);
@@ -49,16 +54,20 @@ void PostProcessor::Execute()
 
 	deferredRenderPass->Execute();
 
+	//if (control.doDownSample)
 	//downSamplerPass->Execute();
 
-	if (control.doDownSample)
-	colorGradingPass->Execute();
+	//if (control.doDownSample)
+	//colorGradingPass->Execute();
 
 	/*if (control.doDownSample)
 	{
 		gaussianBlurPassX->Execute();
 		gaussianBlurPassY->Execute();
 	}*/
+	if (control.doDownSample)
+
+	lightAdaptionPass->Execute();
 
 	finalPass->Execute();
 }

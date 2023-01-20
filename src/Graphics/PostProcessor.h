@@ -10,11 +10,13 @@
 
 #include "Pass/GridPass.h"
 
-#include "Pass/DownSamplerPass.h"
+#include "Pass/SamplerPass.h"
 
 #include "Pass/ColorGradingPass.h"
 
 #include "Pass/GaussianBlurPass.h"
+
+#include "Pass/LightAdaptionPass.h"
 
 #include "Pass/FinalPass.h"
 
@@ -43,12 +45,14 @@ private:
 
 	DeferredRenderPass* deferredRenderPass;
 
-	DownSamplerPass* downSamplerPass;
+	SamplerPass* downSamplerPass;
 
 	ColorGradingPass* colorGradingPass;
 
 	GaussianBlurPass* gaussianBlurPassX;
 	GaussianBlurPass* gaussianBlurPassY;
+
+	LightAdaptionPass* lightAdaptionPass;
 
 	FinalPass* finalPass;
 
