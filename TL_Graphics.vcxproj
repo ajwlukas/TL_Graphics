@@ -259,13 +259,14 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="inc\Graphics\ShaderType.h" />
     <ClInclude Include="src\Graphics\Pass\ColorGradingPass.h" />
     <ClInclude Include="src\Graphics\Pass\DeferredRenderPass.h" />
-    <ClInclude Include="src\Graphics\Pass\DownSamplerPass.h" />
+    <ClInclude Include="src\Graphics\Pass\SamplerPass.h" />
     <ClInclude Include="src\Graphics\Pass\FinalPass.h" />
     <ClInclude Include="src\Graphics\Pass\GaussianBlurPass.h" />
     <ClInclude Include="src\Graphics\Pass\GBufferRenderPass.h" />
     <ClInclude Include="src\Graphics\Pass\GridPass.h" />
     <ClInclude Include="src\Graphics\Pass\IRenderPass.h" />
     <ClInclude Include="src\Graphics\Light.h" />
+    <ClInclude Include="src\Graphics\Pass\LightAdaptionPass.h" />
     <ClInclude Include="src\Graphics\PostProcessor.h" />
     <ClInclude Include="src\Graphics\RenderTarget.h" />
     <ClInclude Include="src\Graphics\RenderTargetTexture.h" />
@@ -294,13 +295,14 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
   <ItemGroup>
     <ClCompile Include="src\Graphics\Pass\ColorGradingPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\DeferredRenderPass.cpp" />
-    <ClCompile Include="src\Graphics\Pass\DownSamplerPass.cpp" />
+    <ClCompile Include="src\Graphics\Pass\SamplerPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\FinalPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\GaussianBlurPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\GBufferRenderPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\GridPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\IRenderPass.cpp" />
     <ClCompile Include="src\Graphics\Light.cpp" />
+    <ClCompile Include="src\Graphics\Pass\LightAdaptionPass.cpp" />
     <ClCompile Include="src\Graphics\PostProcessor.cpp" />
     <ClCompile Include="src\Graphics\RenderTarget.cpp" />
     <ClCompile Include="src\Graphics\RenderTargetTexture.cpp" />
@@ -332,6 +334,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <None Include="Shader\PS\headers\TL_ConstantsPS.hlsli" />
     <None Include="Shader\PS\headers\TL_GammaCorrection.hlsli" />
     <None Include="Shader\PS\headers\TL_Light.hlsli" />
+    <None Include="Shader\PS\headers\TL_Reinhard.hlsli" />
     <None Include="Shader\VS\headers\TL_ConstantsVS.hlsli" />
     <None Include="Shader\VS\headers\TL_IO_VS.hlsli" />
     <None Include="Shader\PS\headers\TL_OUT_PS.hlsli" />
@@ -372,6 +375,12 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
+    <FxCompile Include="Shader\PS\TL_DownSampler3x3Average.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="Shader\PS\TL_Grid.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -384,6 +393,18 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
+    <FxCompile Include="Shader\PS\TL_LightAdaptionPass.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\PS\TL_Luminance.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="Shader\PS\TL_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -391,6 +412,12 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Shader\PS\TL_SamplerPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\PS\TL_ToneMapping.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>

@@ -10,25 +10,20 @@ ColorGradingPass::ColorGradingPass(ID3D11DeviceContext* dc, Resources* resources
 	CreateRenderTarget(resizeNotice);
 	CreateShader();
 
-	//LUT = new Texture(dc, resources, pipeline, L"Texture/RGBTable16x1.png");
-	/*LUT = new Texture(dc, resources, pipeline, L"Texture/LUT_Sepia.png");
-	lut_info.width = 16;
+	//LUT = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/RGBTable16x1.png");
+	//LUT = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/LUT_Sepia.png");
+	/*lut_info.width = 16;
 	lut_info.height = 1;*/
 
 
-	/*LUT = new Texture(dc, resources, pipeline, L"Texture/black_LUT.jpg");
-	lut_info.width = 8;
+	LUT = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/black_LUT.jpg");
+	/*lut_info.width = 8;
 	lut_info.height = 8;*/
 	
-	//LUT = new Texture(dc, resources, pipeline, L"Texture/rainbow.jpg");
-	//LUT = new Texture(dc, resources, pipeline, L"Texture/night.jpg");
+	//LUT = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/rainbow.jpg");
+	//LUT = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/night.jpg");
 	//lut_info.width = 16;
 	//lut_info.height = 16;
-
-	LUT = new Texture(dc, resources, pipeline, L"Texture/volumeTexture_Rainbow.dds");
-	LUT = new Texture(dc, resources, pipeline, L"Texture/volumeTexture_Greenish.dds");
-	//LUT = new Texture(dc, resources, pipeline, L"Texture/volumeTexture_Sepia.dds");
-
 
 	//LUT_Info_buffer = new ConstantBuffer(dc, resources, pipeline, &lut_info, sizeof(LUT_Info));
 }

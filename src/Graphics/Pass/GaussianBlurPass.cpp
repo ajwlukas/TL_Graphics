@@ -57,5 +57,5 @@ void GaussianBlurPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 void GaussianBlurPass::CreateShader()
 {
 	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/GaussianBlur.hlsl");
-
+\
 }
