@@ -14,8 +14,8 @@ PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipe
 
 	gridPass = new GridPass(dc, resources, pipeline, resizeNotice);
 
-	//downSamplerPass = new SamplerPass(dc, resources, pipeline, resizeNotice, 0.1f, 0.1f);
-	downSamplerPass = new SamplerPass(dc, resources, pipeline, resizeNotice, (UINT)1, (UINT)1);
+	downSamplerPass = new SamplerPass(dc, resources, pipeline, resizeNotice, 0.5f, 0.5f);
+	//downSamplerPass = new SamplerPass(dc, resources, pipeline, resizeNotice, (UINT)1, (UINT)1);
 
 	colorGradingPass = new ColorGradingPass(dc, resources, pipeline, resizeNotice);
 
@@ -54,20 +54,20 @@ void PostProcessor::Execute()
 
 	deferredRenderPass->Execute();
 
-	//if (control.doDownSample)
-	//downSamplerPass->Execute();
+	if (control.doDownSample)
+	downSamplerPass->Execute();
 
-	//if (control.doDownSample)
-	//colorGradingPass->Execute();
+	if (control.doColorGrading)
+	colorGradingPass->Execute();
 
-	/*if (control.doDownSample)
+	if (control.doGaussianBlur)
 	{
 		gaussianBlurPassX->Execute();
 		gaussianBlurPassY->Execute();
-	}*/
-	if (control.doDownSample)
+	}
+	/*if (control.doDownSample)
 
-	lightAdaptionPass->Execute();
+	lightAdaptionPass->Execute();*/
 
 	finalPass->Execute();
 }
