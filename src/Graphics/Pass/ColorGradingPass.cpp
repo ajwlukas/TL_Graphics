@@ -16,7 +16,7 @@ ColorGradingPass::ColorGradingPass(ID3D11DeviceContext* dc, Resources* resources
 	lut_info.height = 1;*/
 
 
-	LUT = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/black_LUT.jpg");
+	LUT = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/volumeTexture_Greenish.dds");
 	/*lut_info.width = 8;
 	lut_info.height = 8;*/
 	
