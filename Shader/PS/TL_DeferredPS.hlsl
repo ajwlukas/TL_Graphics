@@ -28,6 +28,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     float opacity = albedo_Deferred.Sample(Sampler_Wrap, surface.uv).a;
     float metalness = metalness_Deferred.Sample(Sampler_Wrap, surface.uv).r;
     float roughness = roughness_Deferred.Sample(Sampler_Wrap, surface.uv).r;
+    roughness = max(0.001f, roughness);
     float3 pos_world = pos_world_Deferred.Sample(Sampler_Wrap, surface.uv).rgb;
     float3 normal = normal_world_Deferred.Sample(Sampler_Wrap, surface.uv).rgb;
     
