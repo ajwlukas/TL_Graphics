@@ -14,5 +14,9 @@ namespace TL_Graphics
 		bool doGrid = true;
 
 		bool doDownSample = false;
+
+		bool doGaussianBlur = false;
+
+		bool doColorGrading = false;
 	};
 }

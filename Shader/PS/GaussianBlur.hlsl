@@ -14,11 +14,6 @@ cbuffer Dir_Info : register(b10)
     float2 dir;
 };
 
-cbuffer Test : register(b11)
-{
-    float flt;
-};
-
 // XπÊ«‚ Gaussian Blur
 float4 main(VS_Out_ScreenSpace surface) : SV_Target0
 {
@@ -38,9 +33,9 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     float indices[POSTEFFECT_BLUR_SAMPLING_COUNT] = { -4, -3, -2, -1, 0, +1, +2, +3, +4 };
     
     
-    TextureInfo tex = texInfo[30];
+    TextureInfo tex = texInfo[31];//interPass SlotNumber
     
-    float2 step = float2(dir.x * tex.texXInv, dir.y * tex.texYInv) * (uint)flt;
+    float2 step = float2(dir.x * tex.texXInv, dir.y * tex.texYInv);
     
     float4 Result = 0.0f;
     
