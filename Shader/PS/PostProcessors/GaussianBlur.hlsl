@@ -35,7 +35,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
     TextureInfo tex = texInfo[31];//interPass SlotNumber
     
-    float2 step = float2(dir.x * tex.texXInv, dir.y * tex.texYInv);
+    float2 step = float2(dir.x * tex.texXInv, dir.y * tex.texYInv) * 3.0f;
     
     float4 Result = 0.0f;
     
