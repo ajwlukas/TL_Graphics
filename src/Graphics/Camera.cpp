@@ -73,8 +73,8 @@ void Camera::Update(TL_Math::Vector3 pos, TL_Math::Quaternion rot)
 
 void Camera::Update(TL_Math::Matrix m)
 {
+	data.viewInv = m;
 	data.view = XMMatrixInverse(nullptr, m);
-	data.viewInv = XMMatrixInverse(nullptr, data.view);
 
 	XMVECTOR p, r, s;
 
