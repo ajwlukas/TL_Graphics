@@ -26,6 +26,9 @@
 
 #include "PostProcessor.h"
 
+#include "TopologyType.h"
+
+#include "Line.h"
 
 
 class  DX11Renderer : public TL_Graphics::RenderSystem
@@ -71,6 +74,8 @@ public:
 	virtual void UpdateWindowSize(UINT width, UINT height) override;
 
 	virtual TL_Graphics::ControlPanel* GetControlPanel() override;
+
+	virtual Line* CreateLine(TL_Math::Vector3 startPoint, TL_Math::Vector3 endPoint) override;
 
 private:
 	HWND hWnd;
@@ -129,5 +134,7 @@ private:
 	SamplerPass* downSamplerPass;
 
 	FinalPass* finalPass;
+
+
 
 };

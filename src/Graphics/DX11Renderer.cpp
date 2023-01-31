@@ -173,6 +173,11 @@ void DX11Renderer::EndSetLight()
     lights->EndLightSet();
 }
 
+Line* DX11Renderer::CreateLine(TL_Math::Vector3 startPoint, TL_Math::Vector3 endPoint)
+{
+    return new Line(dc, resources, pipeline, startPoint, endPoint);
+}
+
 void DX11Renderer::PreRender()
 {
     gBufferRenderPass->ClearRenderTargets();

@@ -21,6 +21,8 @@
 
 #include "ControlPanel.h"
 
+#include "ILine.h"
+
 struct ID3D11Device;
 struct ID3D11DeviceContext;
 
@@ -94,6 +96,8 @@ namespace TL_Graphics
 		virtual ID3D11DeviceContext* GetDeviceContext() = 0;
 
 		virtual ControlPanel* GetControlPanel() = 0;//후처리 제어용 변수 모음 구조체
+
+		virtual ILine* CreateLine( TL_Math::Vector3 startPoint, TL_Math::Vector3 endPoint) = 0;
 	};
 
 }

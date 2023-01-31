@@ -159,6 +159,15 @@
     <ClInclude Include="src\Graphics\Pass\LightAdaptionPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Graphics\TopologyType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Line.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Graphics\ILine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Graphics\Camera.cpp">
@@ -254,6 +263,9 @@
     <ClCompile Include="src\Graphics\Pass\LightAdaptionPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Line.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Graphics\SimpleMath.inl">
@@ -278,15 +290,17 @@
     <FxCompile Include="Shader\VS\TL_ScreenSpaceMeshVS.hlsl" />
     <FxCompile Include="Shader\PS\TL_G_Buffers.hlsl" />
     <FxCompile Include="Shader\PS\TL_DeferredPS.hlsl" />
-    <FxCompile Include="Shader\PS\TL_Grid.hlsl" />
-    <FxCompile Include="Shader\PS\TL_SamplerPS.hlsl" />
-    <FxCompile Include="Shader\PS\TL_ColorGrading.hlsl" />
-    <FxCompile Include="Shader\PS\GaussianBlur.hlsl" />
-    <FxCompile Include="Shader\PS\Accumulator.hlsl" />
-    <FxCompile Include="Shader\PS\TL_DOF.hlsl" />
-    <FxCompile Include="Shader\PS\TL_ToneMapping.hlsl" />
-    <FxCompile Include="Shader\PS\TL_LightAdaptionPass.hlsl" />
-    <FxCompile Include="Shader\PS\TL_DownSampler3x3Average.hlsl" />
-    <FxCompile Include="Shader\PS\TL_Luminance.hlsl" />
+    <FxCompile Include="Shader\PS\PostProcessors\TL_Grid.hlsl" />
+    <FxCompile Include="Shader\PS\PostProcessors\TL_SamplerPS.hlsl" />
+    <FxCompile Include="Shader\PS\PostProcessors\TL_ColorGrading.hlsl" />
+    <FxCompile Include="Shader\PS\PostProcessors\GaussianBlur.hlsl" />
+    <FxCompile Include="Shader\PS\PostProcessors\Accumulator.hlsl" />
+    <FxCompile Include="Shader\PS\PostProcessors\TL_DOF.hlsl" />
+    <FxCompile Include="Shader\PS\PostProcessors\TL_ToneMapping.hlsl" />
+    <FxCompile Include="Shader\PS\PostProcessors\TL_LightAdaptionPass.hlsl" />
+    <FxCompile Include="Shader\PS\PostProcessors\TL_DownSampler3x3Average.hlsl" />
+    <FxCompile Include="Shader\PS\PostProcessors\TL_Luminance.hlsl" />
+    <FxCompile Include="Shader\PS\NotePad.hlsl" />
+    <FxCompile Include="Shader\PS\TestObjectGBuffers.hlsl" />
   </ItemGroup>
 </Project>
