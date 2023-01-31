@@ -10,20 +10,10 @@
 
 #include "TL_PBR.hlsli"
 
-cbuffer material : register(b1)
-{
-    float metal;
-    float rough;
-}
-
 
 PS_Out main(VS_Out surface)
 {
     PS_Out ret;
-    
-    float3 albedo = float3(1, 1, 1);
-    float metalness = metal;
-    float roughness = rough;
     
     float4 basecolor_opacity = baseColor_opcityMap.Sample(Sampler_Wrap, surface.uv);
     
