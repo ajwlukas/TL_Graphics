@@ -7,8 +7,8 @@ VS_Out main(VS_In_StaticMesh v)
 {
     VS_Out ret;
     
-    ret.pos_world = LocalToWorld(float4(v.pos_local, 1.0f));
-    ret.pos_NDC = WorldToNDC(float4(ret.pos_world, 1.0f));
+	ret.pos_world = LocalToWorld(v.pos_local);
+	ret.pos_NDC = WorldToNDC(ret.pos_world);
     
     ret.uv = v.uv;
     

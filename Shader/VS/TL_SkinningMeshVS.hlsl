@@ -36,7 +36,7 @@ VS_Out main(VS_In_SkinningMesh v)
     tangentL /= totalWeight;
 
     ret.pos_world = posW;
-    ret.pos_NDC = WorldToNDC(float4(posW, 1.0f));
+	ret.pos_NDC = WorldToNDC(posW);
 
     ret.uv = v.uv;
 
