@@ -14,6 +14,7 @@ Texture2D emissiveMap : register(t3);
 
 
 //10 ~ 19
+TextureCube cubeMap : register(t10);
 Buffer<float4> Lights : register(t11);//first float4 represent metaData
 
 
