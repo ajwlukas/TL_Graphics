@@ -67,7 +67,6 @@ void Pipeline::ClearRenderTarget(RenderTarget* renderTarget, TL_Math::Vector4 co
 
 void Pipeline::SetStatesDefualt()
 {
-
 	SetCurrentRasterState(defaultRasterState);
 	SetCurrentDepthStencilState(depthEnabledDepthStencilState);
 	SetCurrentBlendState(defaultBlendState);
@@ -163,6 +162,39 @@ void Pipeline::SetShader(Shader* shader)
 		dc->PSSetShader(*shader, 0, 0);
 		currentPSShader = shader;
 	}
+}
+
+void Pipeline::SetShaderOnce(Shader* shader)
+{
+	if (shader->type == TL_Graphics::E_SHADER_TYPE::VS)
+	{
+		dc->VSSetShader(*shader, 0, 0);
+
+		Shader* oldShader = currentVSShader;
+		currentVSShader = shader;
+
+		reservations.emplace_back(
+			[&]()
+			{
+				SetShader(oldShader);
+			}
+		);
+	}
+	else if (shader->type == TL_Graphics::E_SHADER_TYPE::PS)
+	{
+		dc->PSSetShader(*shader, 0, 0);
+
+		Shader* oldShader = currentPSShader;
+		currentPSShader = shader;
+
+		reservations.emplace_back(
+			[&]()
+			{
+				SetShader(oldShader);
+			}
+		);
+	}
+
 
 }
 
