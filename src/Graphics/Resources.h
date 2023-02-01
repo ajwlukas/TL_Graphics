@@ -204,8 +204,9 @@ private:
 
 		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 		desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-		/*desc.Filter = D3D11_FILTER_ANISOTROPIC;
-		desc.MaxAnisotropy = 16;*/
+		desc.MinLOD = 0;
+		desc.MaxLOD = 10;
+		desc.MipLODBias = 0;
 
 		SetWrap(desc);
 
