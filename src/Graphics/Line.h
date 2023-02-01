@@ -8,6 +8,8 @@
 
 #include "ILine.h"
 
+#include "ConstantBuffer.h"
+
 class Pipeline;
 
 class Line : public TL_Graphics::ILine
@@ -28,4 +30,10 @@ private:
 	TL_Math::Vector3 endPoint;
 
 	Mesh* mesh;
+
+	__declspec(align(16)) struct Data
+	{
+		TL_Math::Matrix identity;
+	}data;
+	ConstantBuffer* transform;
 };

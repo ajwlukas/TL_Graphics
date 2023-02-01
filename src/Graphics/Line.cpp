@@ -38,18 +38,25 @@ Line::Line(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, TL
 	UINT indices[]
 		= { 0,1 };
 
+	
+
 	//todo : ½¦ÀÌ´õ µû·Î ¸¸µé±â ±ÍÂú¾Æ¼­ ±âÁ¸ ½¦ÀÌ´õ ÀÏ´Ü ¾¸, ³ªÁß¿¡ ²À °íÄ¥ °Í
 	mesh = new Mesh(resources, pipeline, vertexAttribute, indices, 2, L"Shader/TL_StaticMeshVS.hlsl", D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
+	transform = new ConstantBuffer(dc, resources, pipeline, &data, sizeof(Data));
 }
 
 Line::~Line()
 {
+	SAFE_DELETE(transform);
 	SAFE_DELETE(mesh);
 }
 
 void Line::Draw()
 {
 	mesh->Set();
+
+	transform->Set(TL_Graphics::E_SHADER_TYPE::VS, 1);
 
 	pipeline->Draw();
 }
