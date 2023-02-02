@@ -13,7 +13,8 @@
 #include "IConstantBuffer.h"
 #include "ICamera.h"
 
-#include "IShaderResource.h"
+#include "ITexture.h"
+#include "ITextureBuffer.h"
 
 #include "IRenderTargetTexture.h"
 
@@ -61,9 +62,9 @@ namespace TL_Graphics
 
 		virtual ICamera* CreateCamera() = 0;
 
-		virtual IShaderResource* CreateTexture( std::wstring fileName) = 0;
+		virtual ITexture* CreateTexture( std::wstring fileName) = 0;
 
-		virtual IShaderResource* CreateTextureBuffer( void* data, size_t dataSize) = 0;
+		virtual ITextureBuffer* CreateTextureBuffer( void* data, size_t dataSize) = 0;
 
 		virtual IRenderTargetTexture* CreateRenderTargetTexture(float widthRatio = 1.0f, float heightRatio = 1.0f) = 0;
 

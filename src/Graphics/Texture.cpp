@@ -44,6 +44,7 @@ void Texture::LoadTexInfo()
 
 		sizeX = desc.Width;
 		sizeY = desc.Height;
+
 	}
 
 	ID3D11Texture3D* pTexture3d;

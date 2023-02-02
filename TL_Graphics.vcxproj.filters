@@ -87,9 +87,6 @@
     <ClInclude Include="inc\Graphics\RenderSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Graphics\IShaderResource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Graphics\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -159,13 +156,22 @@
     <ClInclude Include="src\Graphics\Pass\LightAdaptionPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Graphics\TopologyType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Graphics\Line.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\Graphics\ILine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Pass\CubeMapPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\SkyBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Graphics\ITextureBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Graphics\ITexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -266,6 +272,12 @@
     <ClCompile Include="src\Graphics\Line.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Pass\CubeMapPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\SkyBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Graphics\SimpleMath.inl">
@@ -300,7 +312,8 @@
     <FxCompile Include="Shader\PS\PostProcessors\TL_LightAdaptionPass.hlsl" />
     <FxCompile Include="Shader\PS\PostProcessors\TL_DownSampler3x3Average.hlsl" />
     <FxCompile Include="Shader\PS\PostProcessors\TL_Luminance.hlsl" />
-    <FxCompile Include="Shader\PS\NotePad.hlsl" />
     <FxCompile Include="Shader\PS\TestObjectGBuffers.hlsl" />
+    <FxCompile Include="Shader\VS\TL_SkyBoxVS.hlsl" />
+    <FxCompile Include="Shader\PS\TL_SkyBoxPS.hlsl" />
   </ItemGroup>
 </Project>

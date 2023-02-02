@@ -253,14 +253,15 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="inc\Graphics\IMesh.h" />
     <ClInclude Include="inc\Graphics\IRenderTargetTexture.h" />
     <ClInclude Include="inc\Graphics\IShader.h" />
-    <ClInclude Include="inc\Graphics\IShaderResource.h" />
+    <ClInclude Include="inc\Graphics\ITexture.h" />
+    <ClInclude Include="inc\Graphics\ITextureBuffer.h" />
     <ClInclude Include="inc\Graphics\IVertex.h" />
     <ClInclude Include="inc\Graphics\MeshType.h" />
     <ClInclude Include="inc\Graphics\RenderSystem.h" />
     <ClInclude Include="inc\Graphics\ShaderType.h" />
-    <ClInclude Include="inc\Graphics\TopologyType.h" />
     <ClInclude Include="src\Graphics\Line.h" />
     <ClInclude Include="src\Graphics\Pass\ColorGradingPass.h" />
+    <ClInclude Include="src\Graphics\Pass\CubeMapPass.h" />
     <ClInclude Include="src\Graphics\Pass\DeferredRenderPass.h" />
     <ClInclude Include="src\Graphics\Pass\SamplerPass.h" />
     <ClInclude Include="src\Graphics\Pass\FinalPass.h" />
@@ -276,6 +277,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="src\Graphics\ScreenMesh.h" />
     <ClInclude Include="src\Graphics\Shader.h" />
     <ClInclude Include="src\Graphics\ShaderResourceSlotPS.h" />
+    <ClInclude Include="src\Graphics\SkyBox.h" />
     <ClInclude Include="src\Graphics\SwapChainRenderTarget.h" />
     <ClInclude Include="src\Graphics\Texture.h" />
     <ClInclude Include="src\Graphics\Camera.h" />
@@ -298,6 +300,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
   <ItemGroup>
     <ClCompile Include="src\Graphics\Line.cpp" />
     <ClCompile Include="src\Graphics\Pass\ColorGradingPass.cpp" />
+    <ClCompile Include="src\Graphics\Pass\CubeMapPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\DeferredRenderPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\SamplerPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\FinalPass.cpp" />
@@ -312,6 +315,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClCompile Include="src\Graphics\RenderTargetTexture.cpp" />
     <ClCompile Include="src\Graphics\ScreenMesh.cpp" />
     <ClCompile Include="src\Graphics\Shader.cpp" />
+    <ClCompile Include="src\Graphics\SkyBox.cpp" />
     <ClCompile Include="src\Graphics\SwapChainRenderTarget.cpp" />
     <ClCompile Include="src\Graphics\Texture.cpp" />
     <ClCompile Include="src\Graphics\Camera.cpp" />
@@ -356,12 +360,6 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Shader\PS\PostProcessors\GaussianBlur.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Shader\PS\NotePad.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -435,6 +433,18 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\PS\TL_SkyBoxPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\VS\TL_SkyBoxVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Shader\VS\TL_ScreenSpaceMeshVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

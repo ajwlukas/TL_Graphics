@@ -3,15 +3,16 @@
 #include "TL_ConstantsVS.hlsli"
 #include "TL_Transform.hlsli"
 
-VS_Out_Pos main(VS_In_StaticMesh v)
+VS_Out_SkyBox main(VS_In_Pos v)
 {
-	VS_Out_Pos ret;
+	VS_Out_SkyBox ret;
 	
-    //skybox는 카메라의 트랜스폼을 따른다.
-	ret.pos_world = mul(viewInv, float4(v.pos_local, 1.0f)).xyz;
+	float3 worldPos = camPos + v.pos_local;
 	
-	//view공간에서 skybox는 localPos와 같다.
-	ret.pos_NDC = mul(proj, v.pos_local);
+	ret.pos_NDC = WorldToNDC(worldPos);
+	//ret.pos_NDC = LocalToNDC(v.pos_local);
     
+	ret.uvw = v.pos_local;
+	
 	return ret;
 }

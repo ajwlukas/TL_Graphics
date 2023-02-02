@@ -4,21 +4,19 @@
 
 #include "Resources.h"
 
-#include "IShaderResource.h"
+#include "ShaderType.h"
 
 class Pipeline;
 
-//todo : 인터페이스로 빼주지 말자
 
-class ShaderResource : public TL_Graphics::IShaderResource
+class ShaderResource
 {
 public:
 	ShaderResource(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	virtual ~ShaderResource();
 
-	virtual void Set(TL_Graphics::E_SHADER_TYPE type,
-		UINT slot) override;
-	virtual void Update(void* data, size_t dataSize) override {};
+	void Set(TL_Graphics::E_SHADER_TYPE type,
+		UINT slot);
 
 protected:
 	friend class Pipeline;

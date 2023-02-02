@@ -47,6 +47,11 @@ void TextureBuffer::PartialUpdate(size_t offset, void* data, size_t dataSize)
 	memcpy((void*)((char*)mappedResource.pData + offset) , data, dataSize);
 }
 
+void TextureBuffer::Set(TL_Graphics::E_SHADER_TYPE type, UINT slot)
+{
+	ShaderResource::Set(type, slot);
+}
+
 void TextureBuffer::Update(void* data, size_t dataSize)
 {
 	Map();
