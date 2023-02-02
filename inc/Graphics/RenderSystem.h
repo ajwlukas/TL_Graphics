@@ -54,7 +54,7 @@ namespace TL_Graphics
 
 		virtual IMesh* CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, std::wstring shaderFileName) = 0;
 
-		virtual IMesh* CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, TL_Graphics::E_MESH_TYPE meshType) = 0;
+		virtual IMesh* CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, TL_Graphics::E_MESH_TYPE meshType, bool isInstanced = false) = 0;
 
 		virtual IMaterial* CreateMaterial(const MaterialDesc& desc = MaterialDesc()) = 0;
 

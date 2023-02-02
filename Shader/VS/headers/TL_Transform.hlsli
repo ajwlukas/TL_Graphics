@@ -1,9 +1,9 @@
 #ifndef TL_Transform
 #define TL_Transform
 
-
-
 #include "TL_ConstantsVS.hlsli"
+
+#include "TL_TexturesVS.hlsli"
 
 ///버텍스용
 float3 LocalToWorld(float3 localPos)//로컬 포지션을 월드로
@@ -45,6 +45,60 @@ float3 LocalToNDCDirOnly(float3 localDir)//로컬 포지션을 월드로
     
     return ret;
 }
+
+//인스턴싱
+
+float4x4 GetInstanceWorldTransform(uint instanceID)
+{
+    float4 r0 = Transforms.Load(0 + 4 * instanceID);
+    float4 r1 = Transforms.Load(1 + 4 * instanceID);
+    float4 r2 = Transforms.Load(2 + 4 * instanceID);
+    float4 r3 = Transforms.Load(3 + 4 * instanceID);
+    
+    return float4x4(r0, r1, r2, r3);
+}
+
+float3 LocalToWorld(float3 localPos, uint instanceID)//로컬 포지션을 월드로
+{
+    return mul(float4(localPos, 1.0f), GetInstanceWorldTransform(instanceID)).xyz;
+}
+
+float4 LocalToNDC(float3 localPos, uint instanceID)//로컬 포지션을 월드로
+{
+    float3 ret = LocalToWorld(localPos, instanceID);
+    
+    return WorldToNDC(ret);
+}
+
+///벡터용
+float3 LocalToWorldDirOnly(float3 localDir, uint instanceID)//로컬 포지션을 월드로
+{
+    return mul(localDir, (float3x3) GetInstanceWorldTransform(instanceID));
+}
+
+float3 LocalToNDCDirOnly(float3 localDir, uint instanceID)//로컬 포지션을 월드로
+{
+    float3 dir_world = LocalToWorldDirOnly(localDir, instanceID);
+  
+    return WorldToNDCDirOnly(dir_world);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /////버텍스용
 //float3 WorldToLocal(float3 localPos)//월드 포지션을 월드로

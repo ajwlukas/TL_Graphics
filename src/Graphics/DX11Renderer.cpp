@@ -232,14 +232,29 @@ Mesh* DX11Renderer::CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT ind
     return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, fileName);
 }
 
-Mesh* DX11Renderer::CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, TL_Graphics::E_MESH_TYPE meshType)
+Mesh* DX11Renderer::CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, TL_Graphics::E_MESH_TYPE meshType, bool isInstanced)
 {
-    if(meshType == TL_Graphics::E_MESH_TYPE::STATIC)
-        return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_StaticMeshVS.hlsl");
-    else if(meshType == TL_Graphics::E_MESH_TYPE::SKINNING)
-        return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_SkinningMeshVS.hlsl");
-    else if(meshType == TL_Graphics::E_MESH_TYPE::SCREENSPACE)
-        return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_ScreenSpaceMeshVS.hlsl");
+    if (!isInstanced)
+    {
+        if(meshType ==  TL_Graphics::E_MESH_TYPE::STATIC)
+            return new Mesh(resources, pipeline,    vertexSet, indexData, indexCount,  L"Shader/TL_StaticMeshVS.hlsl");
+        else if(meshType ==     TL_Graphics::E_MESH_TYPE::SKINNING)
+            return new Mesh(resources, pipeline,    vertexSet, indexData, indexCount,  L"Shader/TL_SkinningMeshVS.hlsl");
+        else if(meshType ==     TL_Graphics::E_MESH_TYPE::SCREENSPACE)
+            return new Mesh(resources, pipeline,    vertexSet, indexData, indexCount,  L"Shader/TL_ScreenSpaceMeshVS.hlsl");
+    }
+    else
+    {
+        if (meshType == TL_Graphics::E_MESH_TYPE::STATIC)
+            return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_StaticMeshVS_Instanced.hlsl");
+
+        assert(false);//미구현
+       /* else if (meshType == TL_Graphics::E_MESH_TYPE::SKINNING)
+            return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_SkinningMeshVS_Instanced.hlsl");
+        else if (meshType == TL_Graphics::E_MESH_TYPE::SCREENSPACE)
+            return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_ScreenSpaceMeshVS_Instanced.hlsl");*/
+
+    }
 
     assert(meshType != TL_Graphics::E_MESH_TYPE::NONE);
 }
