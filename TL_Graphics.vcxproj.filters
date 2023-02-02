@@ -288,6 +288,7 @@
     <None Include="Shader\PS\headers\TL_Light.hlsli" />
     <None Include="Shader\PS\headers\TL_GammaCorrection.hlsli" />
     <None Include="Shader\PS\headers\TL_Reinhard.hlsli" />
+    <None Include="Shader\VS\headers\TL_TexturesVS.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\PS\TL_PS.hlsl" />
@@ -309,5 +310,6 @@
     <FxCompile Include="Shader\PS\TestObjectGBuffers.hlsl" />
     <FxCompile Include="Shader\VS\TL_SkyBoxVS.hlsl" />
     <FxCompile Include="Shader\PS\TL_SkyBoxPS.hlsl" />
+    <FxCompile Include="Shader\VS\TL_StaticMeshVS_Instanced.hlsl" />
   </ItemGroup>
 </Project>

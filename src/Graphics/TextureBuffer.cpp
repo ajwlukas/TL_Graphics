@@ -34,7 +34,7 @@ TextureBuffer::~TextureBuffer()
 {
 }
 
-void TextureBuffer::Map()
+void TextureBuffer::StartPartialUpdate()
 {
 	ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
@@ -47,6 +47,12 @@ void TextureBuffer::PartialUpdate(size_t offset, void* data, size_t dataSize)
 	memcpy((void*)((char*)mappedResource.pData + offset) , data, dataSize);
 }
 
+void TextureBuffer::EndPartialUpdate()
+{
+	// GPU Access UnLock Buffer Data..
+	dc->Unmap(buffer, 0);
+}
+
 void TextureBuffer::Set(TL_Graphics::E_SHADER_TYPE type, UINT slot)
 {
 	ShaderResource::Set(type, slot);
@@ -54,15 +60,10 @@ void TextureBuffer::Set(TL_Graphics::E_SHADER_TYPE type, UINT slot)
 
 void TextureBuffer::Update(void* data, size_t dataSize)
 {
-	Map();
+	StartPartialUpdate();
 
 	PartialUpdate(0, data, dataSize);
 
-	UnMap();
+	EndPartialUpdate();
 }
 
-void TextureBuffer::UnMap()
-{
-	// GPU Access UnLock Buffer Data..
-	dc->Unmap(buffer, 0);
-}

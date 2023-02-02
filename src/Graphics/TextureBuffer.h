@@ -11,16 +11,17 @@ public:
 	TextureBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, void* data, size_t dataSize);
 	virtual ~TextureBuffer();
 
-	void Map();
+	virtual void StartPartialUpdate() override;
 
-	void PartialUpdate(size_t offset, void* data, size_t dataSize);
+	virtual void PartialUpdate(size_t offset, void* data, size_t dataSize) override;
+
+	virtual void EndPartialUpdate() override;
 
 	virtual void Set(TL_Graphics::E_SHADER_TYPE type,
 		UINT slot) override;
 
 	virtual void Update(void* data, size_t dataSize) override;
 
-	void UnMap();
 
 private:
 	Resource<ID3D11Buffer> buffer;

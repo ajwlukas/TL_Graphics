@@ -16,7 +16,7 @@ Light::~Light()
 
 void Light::BeginLightSet()
 {
-	textureBuffer->Map();
+	textureBuffer->StartPartialUpdate();
 	metaData.lightCount = 0;
 }
 
@@ -44,7 +44,7 @@ void Light::SetLight(const TL_Graphics::SpotLight* light)
 void Light::EndLightSet()
 {
 	textureBuffer->PartialUpdate(0, &metaData, sizeof(MetaData));//맨앞에 라이트 갯수 적는다.
-	textureBuffer->UnMap();
+	textureBuffer->EndPartialUpdate();
 
 	textureBuffer->Set(TL_Graphics::E_SHADER_TYPE::PS, LightsSlot);
 }
