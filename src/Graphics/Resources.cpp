@@ -1,6 +1,32 @@
 #include "pch_dx_11.h"
 #include "Resources.h"
 
+#include "Utility.h"
+
+
+const wstring& GetResourcesRootPath()
+{
+	static struct __temp
+	{
+		wstring rootPath;
+
+		__temp()
+		{
+			char* _value = NULL;
+			size_t len = NULL;
+			_dupenv_s(&_value, &len, "TL_PROJECT_RESOURCES_ROOT");
+			if (_value)
+				rootPath = Utility::ToWstring(_value) + L"/";
+			else
+				rootPath = TEXT("./");
+
+			free(_value);
+		}
+	} _temp;
+
+	return _temp.rootPath;
+}
+
 
 Resources::Resources(ID3D11Device* device)
 	:device(device)
@@ -280,9 +306,11 @@ void SRVResources::Create(Resource<ID3D11ShaderResourceView>& dest, D3D11_SHADER
 	};
 }
 
-void SRVResources::GetFromFile(Resource<ID3D11ShaderResourceView>& dest, wstring fileName)
+void SRVResources::GetFromFile(Resource<ID3D11ShaderResourceView>& dest, wstring _fileName)
 {
 	dest.Return();
+
+	wstring fileName = GetResourcesRootPath() + _fileName;
 
 	if (srvsFromTexture.find(fileName) == srvsFromTexture.end())//해당하는 srv가 없으면
 	{
