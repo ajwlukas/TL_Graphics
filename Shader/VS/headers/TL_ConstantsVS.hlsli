@@ -17,7 +17,7 @@ cbuffer World : register(b1)
 
 cbuffer SkinnedObject : register(b2)
 {
-    matrix g_BoneTransforms[128];
+    matrix g_BoneTransforms[200];
 }
 
 #endif
