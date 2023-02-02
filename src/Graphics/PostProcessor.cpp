@@ -26,6 +26,8 @@ PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipe
 	lightAdaptionPass = new LightAdaptionPass(dc, resources, pipeline, resizeNotice);
 
 	finalPass = new FinalPass(dc, resources, pipeline, resizeNotice);
+
+	cubeMapPass = new CubeMapPass(dc, resources, pipeline, resizeNotice, L"_DevelopmentAssets/Texture/CubeMaps/GardenEnvHDR.dds");
 }
 
 PostProcessor::~PostProcessor()
@@ -33,6 +35,8 @@ PostProcessor::~PostProcessor()
 	SAFE_DELETE(finalPass);
 
 	SAFE_DELETE(lightAdaptionPass);
+
+	SAFE_DELETE(cubeMapPass);
 
 	SAFE_DELETE(gaussianBlurPassX);
 	SAFE_DELETE(gaussianBlurPassY);
@@ -45,9 +49,13 @@ PostProcessor::~PostProcessor()
 
 void PostProcessor::Execute()
 {
+	pipeline->SetDepthDisabled();
+
+	if (cubeMapPass)
+		cubeMapPass->Execute();
+
 	screenMesh->Set();
 
-	pipeline->SetDepthDisabled();
 
 	if (control.doGrid)
 		gridPass->Execute();

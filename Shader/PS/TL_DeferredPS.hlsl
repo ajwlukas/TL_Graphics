@@ -14,10 +14,9 @@
 
 #include "TL_GammaCorrection.hlsli"
 
-cbuffer material : register(b1)
+cbuffer material : register(b12)
 {
-    float metal;
-    float rough;
+	float lodLevel;
 }
 
  //https://github.com/Nadrin/PBR/blob/master/data/shaders/hlsl/pbr.hlsl
@@ -28,7 +27,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     float opacity = albedo_Deferred.Sample(Sampler_Wrap, surface.uv).a;
     float metalness = metalness_Deferred.Sample(Sampler_Wrap, surface.uv).r;
     float roughness = roughness_Deferred.Sample(Sampler_Wrap, surface.uv).r;
-    roughness = max(0.001f, roughness);
+    roughness = max(0.01f, roughness);
     float3 pos_world = pos_world_Deferred.Sample(Sampler_Wrap, surface.uv).rgb;
     float3 normal = normal_world_Deferred.Sample(Sampler_Wrap, surface.uv).rgb;
     
@@ -51,7 +50,6 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
     // 여러 광원으로부터 직접광 (Diffuse + Specular) 더해줄 변수 선언
     float3 directLighting = 0.0f;
-    
     
     for (uint i = 0; i < NumLights; ++i)
     {
@@ -117,6 +115,77 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
     directLighting = LinearTosRGB(directLighting);
     
+    //환경으로부터의 간접광들, environmentMap을 광원으로 삼음
+	float3 indirectLighting = 0.0f;
     
-    return float4(directLighting, opacity);
+    {
+        //빛으로 향하는 벡터
+		float3 lightDir = normalize(reflect(-toEye, normal));
+        
+		float3 light = prefilteredEnvMap.SampleLevel(Sampler_Clamp, lightDir, roughness * 10);
+        
+		light = sRGBtoLinear(light);
+        
+        
+        //감쇠된 빛의 세기s
+		float3 intensity = light;
+        
+        //표면과 빛의 각
+		float nDotL = max(0.0f, dot(normal, lightDir));
+
+		if (nDotL > 0.0f)
+		{
+            //램버트 코사인에 의해 들어오는 조도
+			float3 illuminance = intensity * nDotL;
+
+		// 눈과 빛의 중간 벡터
+			float3 halfVec = normalize(lightDir + toEye);
+
+		// 하프벡터와 표면노멀벡터의 각
+			float nDotH = max(0.0f, dot(normal, halfVec));
+
+        // 하프벡터와 눈방향의 각
+			float hDotE = max(0.0f, dot(halfVec, toEye));
+        
+        // 프레넬 항, 물질의 종류(F0가 바뀜), 눈과 표면(이경우 미세표면)의 각에 영향 받음
+			float3 F = fresnelSchlick(F0, hDotE);
+        
+        
+        // 분포함수, n을 노말로 갖고 있는 표면에 ,h를 노말로 갖고 있는 미세표면이 얼마나 있는지?
+        // 사실 아직도 확신 못하겠음
+			float D = D_Beckmann(roughness * roughness, nDotH);
+        //float D = ndfGGX(cosLh, roughness);
+        //float D = D_GGX(roughness * roughness, cosLh);
+        
+		// 기하감쇠율, masking, shadowing 으로 인한 빛의 손실율
+			float G = gaSchlickGGX(nDotL, nDotToEye, roughness);
+
+        // 빛의 굴절율, 반사율(프레넬 항)의 보수, 
+			float3 refracted = float3(1.0f, 1.0f, 1.0f) - F;
+        
+        //금속의 경우 굴절된 빛을 모두 흡수해서 산란하지 않는다.
+			float3 kd = lerp(refracted, float3(0.0f, 0.0f, 0.0f), metalness);
+
+		// Lambert diffuse BRDF.
+		// We don't scale by 1/PI for lighting & material units to be more convenient.
+		// See: https://seblagarde.wordpress.com/2012/01/08/pi-or-not-to-pi-in-game-lighting-equation/
+
+			float3 irradiance = sRGBtoLinear(irradianceMap.Sample(Sampler_Clamp, lightDir));
+            
+			float3 diffuseBRDF = kd * albedo * irradiance;
+
+		// Cook-Torrance specular microfacet BRDF.
+			float3 specularBRDF = (F * D * G) / max(Epsilon, 4.0f * nDotL * nDotToEye);
+
+		// Total contribution for this light.
+			//indirectLighting = illuminance * (diffuseBRDF + specularBRDF);
+			indirectLighting = illuminance * (specularBRDF) + diffuseBRDF;
+		}
+        
+        
+		}
+    
+	//indirectLighting = LinearTosRGB(indirectLighting);
+    
+	return float4(directLighting + indirectLighting, opacity);
 }

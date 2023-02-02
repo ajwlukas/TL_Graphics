@@ -20,6 +20,8 @@
 
 #include "Pass/FinalPass.h"
 
+#include "Pass/CubeMapPass.h"
+
 /// <summary>
 /// 후처리 담당
 /// </summary>
@@ -53,6 +55,8 @@ private:
 	GaussianBlurPass* gaussianBlurPassY;
 
 	LightAdaptionPass* lightAdaptionPass;
+
+	CubeMapPass* cubeMapPass = nullptr;
 
 	FinalPass* finalPass;
 

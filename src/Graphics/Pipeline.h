@@ -64,6 +64,7 @@ public:
 	void SetMaterial(Material* material, UINT albdeoMapSlot = 0, UINT metallicMapSlot = 1, UINT roughnessMapSlot = 2);
 
 	void SetShader(Shader* shader);
+	void SetShaderOnce(Shader* shader);
 
 	void SetRenderTarget(RenderTarget* rtv, UINT slot);//todo : depthStencilView도 해줘야하는가? 아직 depthStencilView가 뭔지 잘 모르겠다.
 

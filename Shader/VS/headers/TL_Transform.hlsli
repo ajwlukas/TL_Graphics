@@ -17,7 +17,7 @@ float4 WorldToNDC(float3 worldPos)
     
 	return mul(proj, pos_view);
 }
-float3 LocalToNDC(float3 localPos)//로컬 포지션을 월드로
+float4 LocalToNDC(float3 localPos)//로컬 포지션을 월드로
 {
     float3 pos_world = LocalToWorld(localPos);
     
