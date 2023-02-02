@@ -10,6 +10,7 @@ namespace Utility
 {
 	std::string  ToString(std::wstring value);
 	std::wstring ToWstring(std::string value);
+	std::wstring ToWstring(const char* value);
 
 	void SplitString(std::vector<std::string>& dest, std::string origin, std::string tok);
 	void Replace(std::string* str, std::string comp, std::string rep);

@@ -19,6 +19,24 @@ wstring Utility::ToWstring(string value)
     return temp;
 }
 
+std::wstring Utility::ToWstring(const char* value)//상연이 코드
+{
+    const int _stringLength = static_cast<int>(std::strlen(value));
+    const int _bufferLength = _stringLength + 1;
+    wchar_t* _buffer = new wchar_t[_bufferLength];
+
+    // MultiByteToWideChar 함수가 문자열의 끝에 자동으로 null 문자 ('\0')을 넣어주지 않습니다.
+    // 따라서 문자열을 변환을 마친 후 그 뒤에다 수동으로 null문자를 넣어주어야 합니다.
+    int _end = MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, value, _stringLength,
+        _buffer, _bufferLength);
+    _buffer[_end] = '\0';
+
+    auto _retVal = std::wstring{ _buffer };
+
+    delete[] _buffer;
+    return _retVal;
+}
+
 void Utility::SplitString(std::vector<std::string>& dest, string origin, string tok)
 {
     vector<string> result;
@@ -142,6 +160,8 @@ std::vector<char> Utility::GetBinary(std::string path)
 
     fin.seekg(0, std::ios_base::end);
     int size = (int)fin.tellg();
+    assert(size >= 0);//file not Found
+
     fin.seekg(0, std::ios_base::beg);
     std::vector<char> binary(size);
 
