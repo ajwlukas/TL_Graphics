@@ -157,7 +157,7 @@ class SRVResources
 {
 public:
 	void Create(Resource<ID3D11ShaderResourceView>& dest, D3D11_SHADER_RESOURCE_VIEW_DESC desc, ID3D11Resource* buffer);
-	void GetFromFile(Resource< ID3D11ShaderResourceView>& dest, std::wstring _fileName);
+	void GetFromFile(Resource< ID3D11ShaderResourceView>& dest, std::wstring fileName);
 
 private:
 	friend class Resources;

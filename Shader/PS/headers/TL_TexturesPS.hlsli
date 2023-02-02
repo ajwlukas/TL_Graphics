@@ -3,7 +3,7 @@
 
 //paired with ShaderResourceSlotPS.h
 
-//0 ~ 10
+//0 ~ 9
 Texture2D baseColor_opcityMap : register(t0);
 Texture2D roughness_specular_metallic_AOMap : register(t1);
 Texture2D normalMap : register(t2);
