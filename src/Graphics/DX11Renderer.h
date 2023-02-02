@@ -26,8 +26,6 @@
 
 #include "PostProcessor.h"
 
-#include "TopologyType.h"
-
 #include "Line.h"
 
 
