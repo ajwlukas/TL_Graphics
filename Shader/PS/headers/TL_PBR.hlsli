@@ -41,9 +41,12 @@ float D_GGX(float a2, float NoH)
 
     return a2 / (PI * d * d);
 }
+
+//a2 = roughness^2, NoH = nDotH
 float D_Beckmann(float a2, float NoH)
 {
-
+    a2 = max(Epsilon, a2); //a2 shouldnt be 0
+    
     float NoH2 = NoH * NoH;
     return exp((NoH2 - 1) / (a2 * NoH2)) / (PI * a2 * NoH2 * NoH2);
 }
