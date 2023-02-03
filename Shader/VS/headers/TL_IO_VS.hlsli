@@ -36,6 +36,8 @@ struct VS_Out//aka PS_In
 	float3 normal_world : NORMAL;
 	float3 tangent_world : TANGENT;
 	float3 bitangent_world : BITANGENT;
+	
+    uint instanceID : SV_InstanceID;
 };
 
 struct VS_In_ScreenSpace
@@ -49,7 +51,8 @@ struct VS_Out_ScreenSpace//aka PS_In
 {
 	float4 pos_NDC : SV_POSITION;
     
-	float2 uv : UV;
+    float2 uv : UV;
+    uint instanceID : SV_InstanceID;
 };
 
 struct VS_In_Pos
@@ -60,7 +63,7 @@ struct VS_In_Pos
 struct VS_Out_SkyBox
 {
 	float4 pos_NDC : SV_POSITION;
-	float3 uvw : UVW;
+    float3 uvw : UVW;
 };
 
 #endif

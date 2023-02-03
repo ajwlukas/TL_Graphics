@@ -18,5 +18,7 @@ VS_Out main(VS_In_StaticMesh v,
     ret.bitangent_world = LocalToWorldDirOnly(v.bitangent_local, instanceID);
     
     
+    ret.instanceID = instanceID;
+    
     return ret;
 }
