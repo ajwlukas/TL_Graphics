@@ -12,7 +12,7 @@ class Pipeline;
 class ShaderResource
 {
 public:
-	ShaderResource(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
+	ShaderResource(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::string debugName = "");
 	virtual ~ShaderResource();
 
 	void Set(TL_Graphics::E_SHADER_TYPE type,

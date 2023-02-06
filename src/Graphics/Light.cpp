@@ -6,7 +6,7 @@
 Light::Light(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
 	:maxLightNum (100)
 {
-	textureBuffer = new TextureBuffer(dc, resources, pipeline, nullptr, sizeof(MetaData) + sizeof(TL_Graphics::DirectionalLight) * maxLightNum);
+	textureBuffer = new TextureBuffer(dc, resources, pipeline, nullptr, sizeof(MetaData) + sizeof(TL_Graphics::DirectionalLight) * maxLightNum,"Light");
 }
 
 Light::~Light()

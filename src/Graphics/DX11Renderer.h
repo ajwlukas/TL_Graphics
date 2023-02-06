@@ -52,7 +52,7 @@ public:
 
 	virtual Mesh* CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, std::wstring fileName) override;
 
-	virtual Mesh* CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, TL_Graphics::E_MESH_TYPE meshType, bool isInstanced = false) override;
+	virtual Mesh* CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, TL_Graphics::E_MESH_TYPE meshType, std::string debugName = "", bool isInstanced = false) override;
 
 	virtual Material* CreateMaterial( const TL_Graphics::MaterialDesc& desc = TL_Graphics::MaterialDesc()) override;
 

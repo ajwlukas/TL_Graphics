@@ -41,7 +41,7 @@ Line::Line(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, TL
 	
 
 	//todo : 쉐이더 따로 만들기 귀찮아서 기존 쉐이더 일단 씀, 나중에 꼭 고칠 것
-	mesh = new Mesh(resources, pipeline, vertexAttribute, indices, 2, L"Shader/TL_StaticMeshVS.hlsl", D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	mesh = new Mesh(dc, resources, pipeline, vertexAttribute, indices, 2, L"Shader/TL_StaticMeshVS.hlsl","Static","Line", D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	transform = new ConstantBuffer(dc, resources, pipeline, &data, sizeof(Data));
 }

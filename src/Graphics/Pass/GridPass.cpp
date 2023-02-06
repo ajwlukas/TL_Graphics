@@ -38,5 +38,5 @@ void GridPass::ClearRenderTargets()
 
 void GridPass::CreateShader()
 {
-	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_Grid.hlsl");
+	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_Grid.hlsl", "Grid");
 }

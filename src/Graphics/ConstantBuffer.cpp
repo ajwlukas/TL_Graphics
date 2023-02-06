@@ -3,7 +3,7 @@
 
 #include "Pipeline.h"
 
-ConstantBuffer::ConstantBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, void* data, size_t dataSize)
+ConstantBuffer::ConstantBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, void* data, size_t dataSize, std::string debugName)
 	:dc(dc)
 	,resources(resources)
 	,pipeline(pipeline)
@@ -20,6 +20,9 @@ ConstantBuffer::ConstantBuffer(ID3D11DeviceContext* dc, Resources* resources, Pi
 	initData.pSysMem = data;
 
 	resources->buffers->Create(buffer, desc, &initData);
+
+	if(debugName.length() >0)
+	buffer.resource->SetPrivateData(WKPDID_D3DDebugObjectName, debugName.length(), debugName.c_str());
 }
 
 ConstantBuffer::~ConstantBuffer()

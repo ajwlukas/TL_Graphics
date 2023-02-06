@@ -16,16 +16,9 @@ ColorGradingPass::ColorGradingPass(ID3D11DeviceContext* dc, Resources* resources
 	lut_info.height = 1;*/
 
 
-	LUT = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/volumeTexture_Greenish.dds");
-	/*lut_info.width = 8;
-	lut_info.height = 8;*/
-	
-	//LUT = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/rainbow.jpg");
-	//LUT = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/night.jpg");
-	//lut_info.width = 16;
-	//lut_info.height = 16;
+	LUT = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/volumeTexture_Greenish.dds", "ColorGradingLUT");
 
-	//LUT_Info_buffer = new ConstantBuffer(dc, resources, pipeline, &lut_info, sizeof(LUT_Info));
+
 }
 
 ColorGradingPass::~ColorGradingPass()
@@ -66,10 +59,10 @@ void ColorGradingPass::ClearRenderTargets()
 
 void ColorGradingPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
-	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice);
+	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "ColorGrading");
 }
 
 void ColorGradingPass::CreateShader()
 {
-	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_ColorGrading.hlsl");
+	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_ColorGrading.hlsl", "ColorGradingPS");
 }

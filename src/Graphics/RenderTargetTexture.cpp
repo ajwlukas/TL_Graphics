@@ -3,7 +3,7 @@
 
 #include "Pipeline.h"
 
-RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, UINT width, UINT height)
+RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, UINT width, UINT height, std::string debugName)
 	:Texture(dc, resources, pipeline), RenderTarget(dc, resources, pipeline)
 	, isBasedWindowSize(false)
 	, dc(dc)
@@ -14,9 +14,11 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
 	sizeY = height;
 	resizeNotice->AddObserver(this);
 	OnResize(width, height);
+
+	SetDebugName(debugName);
 }
 
-RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, float widthRatio, float heightRatio)
+RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, float widthRatio, float heightRatio, std::string debugName)
 	: Texture(dc, resources, pipeline), RenderTarget(dc, resources, pipeline)
 	, widthRatio(widthRatio)
 	, heightRatio(heightRatio)
@@ -31,6 +33,8 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
 
 	sizeX = resizeNotice->GetWidth() * widthRatio < 1 ? 1 : resizeNotice->GetWidth() * widthRatio;
 	sizeY = resizeNotice->GetHeight() * heightRatio < 1 ? 1 : resizeNotice->GetHeight();
+	
+	SetDebugName(debugName);
 }
 
 RenderTargetTexture::~RenderTargetTexture()
@@ -79,6 +83,7 @@ void RenderTargetTexture::OnResize(uint32_t width, uint32_t height)
 
 	resources->texture2Ds->Create(texture, desc);
 
+
 	D3D11_RENDER_TARGET_VIEW_DESC rtvDesc = {};
 	rtvDesc.Format = desc.Format;
 	rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
@@ -93,4 +98,19 @@ void RenderTargetTexture::OnResize(uint32_t width, uint32_t height)
 	srvDesc.Texture2D.MipLevels = 1;
 
 	resources->srvs->Create(srv, srvDesc, texture);
+}
+
+void RenderTargetTexture::SetDebugName(std::string debugName)
+{
+	if (debugName.length() > 0)
+	{
+		string temp = debugName + "Texture";
+		texture.resource->SetPrivateData(WKPDID_D3DDebugObjectName, temp.length(), temp.c_str());
+
+		temp = debugName + "RTV";
+		rtv.resource->SetPrivateData(WKPDID_D3DDebugObjectName, temp.length(), temp.c_str());
+
+		temp = debugName + "SRV";
+		srv.resource->SetPrivateData(WKPDID_D3DDebugObjectName, temp.length(), temp.c_str());
+	}
 }

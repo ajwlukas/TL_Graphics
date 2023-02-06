@@ -4,6 +4,7 @@
 #include "Utility.h"
 
 
+
 Resources::Resources(ID3D11Device* device)
 	:device(device)
 {
@@ -304,7 +305,12 @@ void SRVResources::GetFromFile(Resource<ID3D11ShaderResourceView>& dest, wstring
 
 		res->Release();
 
+		string fileNameWithNoPath = Utility::GetFileNameWithoutExtension(Utility::ToString(path));
+		srvsFromTexture[fileName].data->SetPrivateData(WKPDID_D3DDebugObjectName, fileNameWithNoPath.length(), fileNameWithNoPath.c_str());
+
 		assert(SUCCEEDED(hr));
+
+
 	}//생성
 
 	//있으면 그냥, 없으면 생성한 후

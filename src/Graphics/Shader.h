@@ -13,7 +13,7 @@ class Pipeline;
 class Shader : public TL_Graphics::IShader
 {
 public:
-	Shader(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, TL_Graphics::E_SHADER_TYPE type, std::wstring fileName);
+	Shader(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, TL_Graphics::E_SHADER_TYPE type, std::wstring fileName, std::string debugName = "");
 	virtual ~Shader();
 
 	void Set();

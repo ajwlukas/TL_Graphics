@@ -39,6 +39,10 @@ void SwapChainRenderTarget::OnResize(uint32_t width, uint32_t height)
 	backBuffer->Release();
 	backBuffer = nullptr;
 
+	const char* temp = "SwapChainRTV";
+		rtv.resource->SetPrivateData(WKPDID_D3DDebugObjectName, lstrlenA(temp), temp);
+
+
 	assert(SUCCEEDED(hr));
 
 	//todo : 일단 이렇게 해놓긴 하는데, 바꿔야한다. swapChainRTV Set 시점 고민해봐야함, postProcssing 거치면

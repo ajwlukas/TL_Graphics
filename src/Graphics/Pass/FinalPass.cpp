@@ -32,5 +32,5 @@ void FinalPass::ClearRenderTargets()
 
 void FinalPass::CreateShader()
 {
-	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_SamplerPS.hlsl");
+	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_SamplerPS.hlsl", "Final");
 }

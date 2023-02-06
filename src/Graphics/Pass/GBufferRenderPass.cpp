@@ -58,10 +58,13 @@ void GBufferRenderPass::ClearRenderTargets()
 
 void GBufferRenderPass::CreateRenderTargets(OnResizeNotice* resizeNotice)
 {
-	for (UINT i = 0; i < 8; i++)
-	{
+		rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f,1.0f,"G_Albedo_Opacity");
+		rtts[1] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice,1.0f,1.0f,"G_Normal");
+		rtts[2] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice,1.0f,1.0f,"G_WorldPos");
+		rtts[3] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice,1.0f,1.0f,"G_Metalness");
+		rtts[4] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice,1.0f,1.0f,"G_Roughness");
+	for (UINT i = 5; i < 8; i++)
 		rtts[i] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice);
-	}
 }
 
 void GBufferRenderPass::CreateBlendStates()
@@ -85,5 +88,5 @@ void GBufferRenderPass::CreateBlendStates()
 
 void GBufferRenderPass::CreateShader()
 {
-	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_G_Buffers.hlsl");
+	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_G_Buffers.hlsl", "GBufferGenerator");
 }

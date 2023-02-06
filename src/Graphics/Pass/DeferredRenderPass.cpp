@@ -39,10 +39,10 @@ void DeferredRenderPass::ClearRenderTargets()
 
 void DeferredRenderPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
-	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice);
+	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "Deferred");
 }
 
 void DeferredRenderPass::CreateShader()
 {
-	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_DeferredPS.hlsl");
+	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_DeferredPS.hlsl", "Deferred");
 }

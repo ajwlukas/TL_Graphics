@@ -11,7 +11,7 @@ class Pipeline;
 class RenderTarget
 {
 public:
-	RenderTarget(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
+	RenderTarget(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::string debugName = "");
 	virtual ~RenderTarget();
 
 	virtual void Set(UINT slot) ;

@@ -229,24 +229,24 @@ Shader* DX11Renderer::CreateShader(TL_Graphics::E_SHADER_TYPE type, std::wstring
 
 Mesh* DX11Renderer::CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, wstring fileName)
 {
-    return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, fileName);
+    return new Mesh(dc, resources, pipeline, vertexSet, indexData, indexCount, fileName);
 }
 
-Mesh* DX11Renderer::CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, TL_Graphics::E_MESH_TYPE meshType, bool isInstanced)
+Mesh* DX11Renderer::CreateMesh(TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount, TL_Graphics::E_MESH_TYPE meshType, std::string debugName, bool isInstanced)
 {
     if (!isInstanced)
     {
         if(meshType ==  TL_Graphics::E_MESH_TYPE::STATIC)
-            return new Mesh(resources, pipeline,    vertexSet, indexData, indexCount,  L"Shader/TL_StaticMeshVS.hlsl");
+            return new Mesh(dc, resources, pipeline,    vertexSet, indexData, indexCount,  L"Shader/TL_StaticMeshVS.hlsl", "Static", debugName);
         else if(meshType ==     TL_Graphics::E_MESH_TYPE::SKINNING)
-            return new Mesh(resources, pipeline,    vertexSet, indexData, indexCount,  L"Shader/TL_SkinningMeshVS.hlsl");
+            return new Mesh(dc, resources, pipeline,    vertexSet, indexData, indexCount,  L"Shader/TL_SkinningMeshVS.hlsl", "Skinning", debugName);
         else if(meshType ==     TL_Graphics::E_MESH_TYPE::SCREENSPACE)
-            return new Mesh(resources, pipeline,    vertexSet, indexData, indexCount,  L"Shader/TL_ScreenSpaceMeshVS.hlsl");
+            return new Mesh(dc, resources, pipeline,    vertexSet, indexData, indexCount,  L"Shader/TL_ScreenSpaceMeshVS.hlsl", "Screen", debugName);
     }
     else
     {
         if (meshType == TL_Graphics::E_MESH_TYPE::STATIC)
-            return new Mesh(resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_StaticMeshVS_Instanced.hlsl");
+            return new Mesh(dc, resources, pipeline, vertexSet, indexData, indexCount, L"Shader/TL_StaticMeshVS_Instanced.hlsl");
 
         assert(false);//미구현
        /* else if (meshType == TL_Graphics::E_MESH_TYPE::SKINNING)
@@ -276,6 +276,7 @@ Camera* DX11Renderer::CreateCamera()
 
 Texture* DX11Renderer::CreateTexture(std::wstring fileName)
 {
+
     return new Texture(dc, resources, pipeline, fileName);
 }
 

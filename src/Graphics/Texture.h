@@ -7,8 +7,8 @@
 class Texture : public TL_Graphics::ITexture, public ShaderResource
 {
 public:
-	Texture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::wstring fileName);
-	Texture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
+	Texture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::wstring fileName, std::string debugName = "");
+	Texture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::string debugName = "");
 	virtual ~Texture();
 	
 	virtual void Set(TL_Graphics::E_SHADER_TYPE type,

@@ -65,14 +65,14 @@ void LightAdaptionPass::ClearRenderTargets()
 
 void LightAdaptionPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
-	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice);
+	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "LightAdaption");
 }
 
 void LightAdaptionPass::CreateShader()
 {
-	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_LightAdaptionPass.hlsl");
+	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_LightAdaptionPass.hlsl", "LightAdaption");
 
-	downSampler3x3 = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_DownSampler3x3Average.hlsl");
+	downSampler3x3 = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_DownSampler3x3Average.hlsl", "DownSampler");
 
-	downSampler3x3 = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_Luminance.hlsl");
+	downSampler3x3 = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_Luminance.hlsl", "Luminance");
 }

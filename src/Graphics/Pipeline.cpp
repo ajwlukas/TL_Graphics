@@ -46,7 +46,6 @@ void Pipeline::SetMesh(Mesh* mesh)
 	dc->IASetPrimitiveTopology(mesh->topology);
 	dc->IASetVertexBuffers(0, 1, mesh->vertexBuffer, &mesh->vertexDataSize, &mesh->offset);
 	dc->IASetIndexBuffer(mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-	dc->VSSetShader(mesh->shader, 0, 0);
 
 	currentMesh = mesh;
 }

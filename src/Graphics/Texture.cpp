@@ -3,19 +3,26 @@
 
 #include "Pipeline.h"
 
-Texture::Texture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::wstring fileName)
+#include "Utility.h"
+
+Texture::Texture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::wstring fileName, std::string debugName)
 	:ShaderResource(dc, resources, pipeline)
 	, fileName(fileName)
 {
 	resources->srvs->GetFromFile(srv, fileName);
 
+	if (debugName.length() > 0)
+		srv.resource->SetPrivateData(WKPDID_D3DDebugObjectName, debugName.length(), debugName.c_str());
+
 	LoadTexInfo();
 }
 
-Texture::Texture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
+Texture::Texture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::string debugName)
 	:ShaderResource(dc, resources, pipeline)
 	, fileName{}
 {
+	if (debugName.length() > 0)
+		srv.resource->SetPrivateData(WKPDID_D3DDebugObjectName, debugName.length(), debugName.c_str());
 }
 
 Texture::~Texture()

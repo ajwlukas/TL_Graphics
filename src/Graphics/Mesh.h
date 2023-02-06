@@ -7,6 +7,8 @@
 #include "Resources.h"
 #include "Vertex.h"
 
+#include "Shader.h"
+
 /// <summary>
 /// 버텍스, 인덱스, 인풋레이아웃 정보를 가지고 있는 오브젝트
 /// 
@@ -18,8 +20,8 @@ class Pipeline;
  class  Mesh : public TL_Graphics::IMesh
 {
 public:
-	Mesh(Resources* resources, Pipeline* pipeline, TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount,
-		std::wstring vsFileName = L"UVLightVertex.hlsl", D3D_PRIMITIVE_TOPOLOGY topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	Mesh(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, TL_Graphics::VertexAttribute& vertexSet, UINT indexData[], UINT indexCount,
+		std::wstring vsFileName = L"UVLightVertex.hlsl", std::string debugNameShader = "", std::string debugName = "", D3D_PRIMITIVE_TOPOLOGY topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	virtual ~Mesh();
 	virtual void Set() override;
 
@@ -33,6 +35,7 @@ public:
 
 private:
 	friend class Pipeline;
+	ID3D11DeviceContext* dc;
 	Resources* resources;
 	Pipeline* pipeline;
 
@@ -45,8 +48,10 @@ private:
 	UINT offset = 0;
 	Resource<ID3D11Buffer> vertexBuffer;
 	Resource<ID3D11Buffer> indexBuffer;
-	Resource<ID3D11VertexShader> shader;
+	//Resource<ID3D11VertexShader> shader;
 
 	D3D11_INPUT_ELEMENT_DESC* desc;
 	UINT descSize;
+
+	Shader* shader;
 };

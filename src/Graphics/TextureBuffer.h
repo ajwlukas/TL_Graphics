@@ -8,7 +8,7 @@
 class TextureBuffer : public TL_Graphics::ITextureBuffer, public ShaderResource
 {
 public:
-	TextureBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, void* data, size_t dataSize);
+	TextureBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, void* data, size_t dataSize, std::string debugName = "");
 	virtual ~TextureBuffer();
 
 	virtual void StartPartialUpdate() override;

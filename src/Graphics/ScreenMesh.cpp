@@ -47,5 +47,5 @@ void ScreenMesh::CreateMesh(ID3D11DeviceContext* dc, Resources* resources, Pipel
 		1,2,3,
 	};
 
-	mesh = new Mesh(resources, pipeline, attribute, indicies, 6, L"Shader/TL_ScreenSpaceMeshVS.hlsl");
+	mesh = new Mesh(dc, resources, pipeline, attribute, indicies, 6, L"Shader/TL_ScreenSpaceMeshVS.hlsl", "Screen", "Screen");
 }

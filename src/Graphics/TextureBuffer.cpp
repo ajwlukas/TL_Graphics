@@ -1,7 +1,7 @@
 #include "pch_dx_11.h"
 #include "TextureBuffer.h"
 
-TextureBuffer::TextureBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, void* data, size_t dataSize)
+TextureBuffer::TextureBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, void* data, size_t dataSize, std::string debugName)
 	:ShaderResource(dc, resources, pipeline)
 	, dc(dc)
 {
@@ -28,6 +28,9 @@ TextureBuffer::TextureBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipe
 	srvDesc.Buffer.NumElements = dataSize / 16;//1¿¤·¹¸àÆ®´ç Å©±â = sizeof(float4) = 16
 
 	resources->srvs->Create(srv, srvDesc, buffer);
+
+	if (debugName.length() > 0)
+		srv.resource->SetPrivateData(WKPDID_D3DDebugObjectName, debugName.length(), debugName.c_str());
 }
 
 TextureBuffer::~TextureBuffer()

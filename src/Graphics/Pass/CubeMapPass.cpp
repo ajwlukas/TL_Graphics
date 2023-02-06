@@ -50,12 +50,12 @@ void CubeMapPass::ClearRenderTargets()
 
 void CubeMapPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
-	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice);
+	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "SkyBox");
 }
 
 void CubeMapPass::CreateShader()
 {
-	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_SkyBoxPS.hlsl");
+	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_SkyBoxPS.hlsl", "SkyBoxPS");
 }
 
 void CubeMapPass::CreateMesh()
@@ -109,6 +109,6 @@ void CubeMapPass::CreateMesh()
         1,5,3,
         5,7,3
 	};
-    mesh = new Mesh(resources, pipeline, vertexAttribute, indicies, sizeof(indicies) / sizeof(indicies[0]), L"Shader/TL_SkyBoxVS.hlsl");
+    mesh = new Mesh(dc, resources, pipeline, vertexAttribute, indicies, sizeof(indicies) / sizeof(indicies[0]), L"Shader/TL_SkyBoxVS.hlsl", "SkyBox");
 
 }

@@ -11,7 +11,7 @@ class Pipeline;
 class ConstantBuffer : public TL_Graphics::IConstantBuffer
 {
 public:
-	ConstantBuffer(ID3D11DeviceContext* dc,Resources* resources, Pipeline* pipeline, void* data, size_t dataSize);
+	ConstantBuffer(ID3D11DeviceContext* dc,Resources* resources, Pipeline* pipeline, void* data, size_t dataSize, std::string debugName = "");
 	virtual ~ConstantBuffer();
 
 	virtual void Set(TL_Graphics::E_SHADER_TYPE type,

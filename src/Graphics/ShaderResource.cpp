@@ -3,11 +3,13 @@
 
 #include "Pipeline.h"
 
-ShaderResource::ShaderResource(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
+ShaderResource::ShaderResource(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::string debugName)
 	:dc(dc)
 	,resources(resources)
 	,pipeline(pipeline)
 {
+	if (debugName.length() > 0)
+		srv.resource->SetPrivateData(WKPDID_D3DDebugObjectName, debugName.length(), debugName.c_str());
 }
 
 ShaderResource::~ShaderResource()
