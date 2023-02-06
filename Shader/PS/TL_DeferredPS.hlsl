@@ -125,12 +125,11 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
     {
         //Diffuse
-		float3 ref = normalize(reflect(-toEye, normal));
         
-        float3 diffuseIrradiance = sRGBtoLinear(irradianceMap.Sample(Sampler_Clamp, ref));
+        float3 diffuseIrradiance = sRGBtoLinear(irradianceMap.Sample(Sampler_Clamp, normal));
         
         // 빛의 입사각을 특정할 수 없어서 half대신 normal로
-        float3 F = fresnelSchlick(F0, nDotToEye);
+        float3 F = fresnelSchlickRoughness(max(nDotToEye, 0.0), F0, roughness);
         
         // 빛의 굴절율, 반사율(프레넬 항)의 보수, 
         float3 refracted = float3(1.0f, 1.0f, 1.0f) - F;
@@ -141,6 +140,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
         float3 diffuse = kd * albedo * diffuseIrradiance;
 
         
+        float3 ref = normalize(reflect(-toEye, normal));
         
         //Specular
         uint width, height, level;
@@ -148,13 +148,17 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
         float3 specularIrradiance = sRGBtoLinear(prefilteredEnvMap.SampleLevel(Sampler_Clamp, ref, roughness * level));
         
         float2 specularBRDF = IBL_BRDF_LUT.Sample(Sampler_Clamp
-        , float2(nDotToEye, roughness));
+        , float2(nDotToEye, 1.0f - roughness));
         
         float3 specular = specularIrradiance * (F0 * specularBRDF.x + specularBRDF.y);
         
         
         //return float4(0.0f, specularBRDF.g, 0.0f, 1.0f);
         //return float4(specularBRDF.r, 0.0f, 0.0f, 1.0f);
+        //return float4(specularBRDF.r, specularBRDF.g, 0.0f, 1.0f);
+        
+        //return float4(F, 1.0f);
+        //return float4(LinearTosRGB(diffuse), 1.0f);
         
         indirectLighting = specular + diffuse;
 	  
