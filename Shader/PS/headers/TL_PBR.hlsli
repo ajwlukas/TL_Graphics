@@ -5,16 +5,26 @@
  //https://github.com/Nadrin/PBR/blob/master/data/shaders/hlsl/pbr.hlsl
 
 // Constant normal incidence Fresnel factor for all dielectrics.
-static const float PI = 3.141592;
-static const float3 Fdielectric = 0.04;
+static const float PI = 3.141592f;
+static const float3 Fdielectric = 0.04f;
 
-static const float Epsilon = 0.00001;
+static const float Epsilon = 0.00001f;
 
 // Shlick's approximation of the Fresnel factor.
 float3 fresnelSchlick(float3 F0, float cosTheta)
 {
-    return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+    return F0 + (1.0f - F0) * pow(1.0f - cosTheta, 5.0f);
 }
+
+float3 fresnelSchlickRoughness(float cosTheta, float3 F0, float roughness)
+{
+    
+    float kR = 1.0f - roughness;
+    
+    return F0 + (max(float3(kR, kR, kR), F0) - F0) * pow(clamp(1.0f - cosTheta, 0.0f, 1.0f), 5.0f);
+}
+
+
 
 // GGX/Towbridge-Reitz normal distribution function.
 // Uses Disney's reparametrization of alpha = roughness^2.
