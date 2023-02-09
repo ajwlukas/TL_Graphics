@@ -33,11 +33,32 @@ private:
 
 	ConstantBuffer* viewprojBuffer;
 
+	friend class Shadow;
 	float fov;//시야각
 	float fovInRadian;
 	float frustumNear;
 	float frustumFar;
+	float aspectRatio;
 
 	//보류
 	virtual void  OnResize(UINT width, UINT height) override;
+
+	struct Points//뷰 공간에서 Frustum의 각 꼭짓점들
+	{
+		//L = left, R = right, T = top, B = bottom, F = far, N = near;
+		TL_Math::Vector3 LTF;
+		TL_Math::Vector3 LBF;
+		TL_Math::Vector3 RTF;
+		TL_Math::Vector3 RBF;
+
+		TL_Math::Vector3 LTN;
+		TL_Math::Vector3 LBN;
+		TL_Math::Vector3 RTN;
+		TL_Math::Vector3 RBN;
+	}points;
+
+	Points worldPoints;
+
+	void CalculatePoints();
+	void CalculateWorldPoints();
 };
