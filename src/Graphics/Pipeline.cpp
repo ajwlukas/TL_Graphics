@@ -105,6 +105,43 @@ void Pipeline::SetConstantBuffer(ConstantBuffer* constantBuffer, TL_Graphics::E_
 	}
 }
 
+void Pipeline::SetConstantBufferOnce(ConstantBuffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot)
+{
+	if (type == TL_Graphics::E_SHADER_TYPE::VS)
+	{
+		dc->VSSetConstantBuffers(slot, 1, constantBuffer->buffer);
+
+		ConstantBuffer* oldBuffer = currentConstantBuffersVS[slot];
+
+		currentConstantBuffersVS[slot] = constantBuffer;
+
+
+
+		reservations.emplace_back(
+			[&]()
+			{
+				SetConstantBuffer(oldBuffer, TL_Graphics::E_SHADER_TYPE::VS, slot);
+			}
+		);
+	}
+
+	else if (type == TL_Graphics::E_SHADER_TYPE::PS)
+	{
+		dc->PSSetConstantBuffers(slot, 1, constantBuffer->buffer);
+
+		ConstantBuffer* oldBuffer = currentConstantBuffersVS[slot];
+
+		currentConstantBuffersPS[slot] = constantBuffer;
+
+		reservations.emplace_back(
+			[&]()
+			{
+				SetConstantBuffer(oldBuffer, TL_Graphics::E_SHADER_TYPE::PS, slot);
+			}
+		);
+	}
+}
+
 void Pipeline::SetShaderResource(ShaderResource* shaderResource, TL_Graphics::E_SHADER_TYPE type,
 	UINT slot)
 {
@@ -277,8 +314,6 @@ void Pipeline::CreateDefaultStates()
 	defaultRasterState = solidRasterState;
 	//defaultRasterState = wireFrameRasterState;
 
-
-
 	resources->depthStencilStates->GetDepthEnabled(depthEnabledDepthStencilState);
 	resources->depthStencilStates->GetDepthDisabled(depthDisabledDepthStencilState);
 	resources->blendStates->GetDefault(defaultBlendState);
@@ -317,8 +352,8 @@ void Pipeline::ResizeDepthStencilView(UINT width, UINT height)
 
 void Pipeline::ResizeViewPort(UINT width, UINT height)
 {
-	viewPort.Width = (float)width;
-	viewPort.Height = (float)height;
+	viewPort.Width = (float)width / 2;
+	viewPort.Height = (float)height / 2;
 	viewPort.MinDepth = 0.0f;
 	viewPort.MaxDepth = 1.0f;
 	viewPort.TopLeftX = 0.0f;
