@@ -89,38 +89,36 @@ void Pipeline::SetViewPort()
 	dc->RSSetViewports(1, &viewPort);
 }
 
-void Pipeline::SetConstantBuffer(ConstantBuffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type,
+void Pipeline::SetConstantBuffer(ID3D11Buffer** constantBuffer, TL_Graphics::E_SHADER_TYPE type,
 	UINT slot)
 {
 	if (type == TL_Graphics::E_SHADER_TYPE::VS)
 	{
-		dc->VSSetConstantBuffers(slot, 1, constantBuffer->buffer);
+		dc->VSSetConstantBuffers(slot, 1, constantBuffer);
 
 		currentConstantBuffersVS[slot] = constantBuffer;
 	}
 
 	else if (type == TL_Graphics::E_SHADER_TYPE::PS)
 	{
-		dc->PSSetConstantBuffers(slot, 1, constantBuffer->buffer);
+		dc->PSSetConstantBuffers(slot, 1, constantBuffer);
 
 		currentConstantBuffersPS[slot] = constantBuffer;
 	}
 }
 
-void Pipeline::SetConstantBufferOnce(ConstantBuffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot)
+void Pipeline::SetConstantBufferOnce(ID3D11Buffer** constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot)
 {
 	if (type == TL_Graphics::E_SHADER_TYPE::VS)
 	{
-		dc->VSSetConstantBuffers(slot, 1, constantBuffer->buffer);
+		dc->VSSetConstantBuffers(slot, 1, constantBuffer);
 
-		ConstantBuffer* oldBuffer = currentConstantBuffersVS[slot];
+		ID3D11Buffer** oldBuffer = currentConstantBuffersVS[slot];
 
 		currentConstantBuffersVS[slot] = constantBuffer;
 
-
-
 		reservations.emplace_back(
-			[&]()
+			[=]()
 			{
 				SetConstantBuffer(oldBuffer, TL_Graphics::E_SHADER_TYPE::VS, slot);
 			}
@@ -129,14 +127,14 @@ void Pipeline::SetConstantBufferOnce(ConstantBuffer* constantBuffer, TL_Graphics
 
 	else if (type == TL_Graphics::E_SHADER_TYPE::PS)
 	{
-		dc->PSSetConstantBuffers(slot, 1, constantBuffer->buffer);
+		dc->PSSetConstantBuffers(slot, 1, constantBuffer);
 
-		ConstantBuffer* oldBuffer = currentConstantBuffersVS[slot];
+		ID3D11Buffer** oldBuffer = currentConstantBuffersPS[slot];
 
 		currentConstantBuffersPS[slot] = constantBuffer;
 
 		reservations.emplace_back(
-			[&]()
+			[=]()
 			{
 				SetConstantBuffer(oldBuffer, TL_Graphics::E_SHADER_TYPE::PS, slot);
 			}
@@ -212,7 +210,7 @@ void Pipeline::SetShaderOnce(Shader* shader)
 		currentVSShader = shader;
 
 		reservations.emplace_back(
-			[&]()
+			[=]()
 			{
 				SetShader(oldShader);
 			}
@@ -226,7 +224,7 @@ void Pipeline::SetShaderOnce(Shader* shader)
 		currentPSShader = shader;
 
 		reservations.emplace_back(
-			[&]()
+			[=]()
 			{
 				SetShader(oldShader);
 			}
@@ -252,9 +250,9 @@ void Pipeline::SetRenderTargetOnce(ID3D11RenderTargetView* rtv, UINT slot)
 	SetRenderTarget(rtv, slot);
 
 	reservations.emplace_back(
-		[&]()
+		[=]()
 		{
-			SetRenderTargetOnce(old, slot);
+			SetRenderTarget(old, slot);
 		}
 	);
 
@@ -276,7 +274,7 @@ void Pipeline::SetDepthStencilViewOnce(ID3D11DepthStencilView* depthStencilView)
 	dc->OMSetRenderTargets(MAX_RENDERTARGET, renderTargets, currentDepthStencilView);
 
 	reservations.emplace_back(
-		[&]()
+		[=]()
 		{
 			SetDepthStencilView(old);
 		}

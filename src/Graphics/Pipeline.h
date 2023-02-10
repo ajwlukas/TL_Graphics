@@ -52,8 +52,8 @@ public:
 
 	void SetViewPort();
 
-	void SetConstantBuffer(ConstantBuffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot);
-	void SetConstantBufferOnce(ConstantBuffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot);
+	void SetConstantBuffer(ID3D11Buffer** constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot);
+	void SetConstantBufferOnce(ID3D11Buffer** constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot);
 	void SetShaderResource(ShaderResource* shaderResource, TL_Graphics::E_SHADER_TYPE type,
 		UINT slot);
 	void SetTexture(Texture* texture, TL_Graphics::E_SHADER_TYPE type,
@@ -91,8 +91,8 @@ private:
 	Mesh* currentMesh;
 	Material* currentMaterial;
 
-	ConstantBuffer* currentConstantBuffersVS[255];
-	ConstantBuffer* currentConstantBuffersPS[255];
+	ID3D11Buffer** currentConstantBuffersVS[255];
+	ID3D11Buffer** currentConstantBuffersPS[255];
 
 	ShaderResource* currentShaderResourceVS[255];
 	ShaderResource* currentShaderResourcePS[255];
