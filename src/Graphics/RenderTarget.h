@@ -15,6 +15,7 @@ public:
 	virtual ~RenderTarget();
 
 	virtual void Set(UINT slot) ;
+	void SetOnce(UINT slot);
 	
 	void Clear(TL_Math::Vector4 color = { 0,0,0,0 });
 

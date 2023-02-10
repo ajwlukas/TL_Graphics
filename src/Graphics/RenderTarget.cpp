@@ -19,10 +19,15 @@ RenderTarget::~RenderTarget()
 
 void RenderTarget::Set(UINT slot)
 {
-	pipeline->SetRenderTarget(this, slot);
+	pipeline->SetRenderTarget(rtv, slot);
+}
+
+void RenderTarget::SetOnce(UINT slot)
+{
+	pipeline->SetRenderTargetOnce(rtv, slot);
 }
 
 void RenderTarget::Clear(TL_Math::Vector4 color)
 {
-	pipeline->ClearRenderTarget(this, color);
+	pipeline->ClearRenderTarget(rtv, color);
 }
