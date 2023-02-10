@@ -23,7 +23,8 @@ public:
 	// IRenderTargetTexture을(를) 통해 상속됨
 
 	virtual void SetRT(UINT slot) override;
-	//todo : naming 다 이런식으로 바꿀 예정 안 헷갈리게
+	void SetRTOnce(UINT slot) ;
+
 	virtual void SetT(TL_Graphics::E_SHADER_TYPE type, UINT slot) override;
 
 	virtual void Clear(TL_Math::Vector4 color = { 0,0,0,0 }) override;

@@ -46,6 +46,11 @@ void RenderTargetTexture::SetRT(UINT slot)
 	RenderTarget::Set(slot);
 }
 
+void RenderTargetTexture::SetRTOnce(UINT slot)
+{
+	RenderTarget::SetOnce(slot);
+}
+
 void RenderTargetTexture::SetT(TL_Graphics::E_SHADER_TYPE type, UINT slot)
 {
 	Texture::Set(type, slot);
@@ -53,7 +58,7 @@ void RenderTargetTexture::SetT(TL_Graphics::E_SHADER_TYPE type, UINT slot)
 
 void RenderTargetTexture::Clear(TL_Math::Vector4 color)
 {
-	pipeline->ClearRenderTarget(this, color);
+	pipeline->ClearRenderTarget(rtv, color);
 }
 
 void RenderTargetTexture::OnResize(uint32_t width, uint32_t height)
