@@ -3,16 +3,30 @@
 
 Shadow::Shadow(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, Camera* camera, UINT directionalShadowNum)
 	:directionalShadowNum(directionalShadowNum)
+	, dc(dc)
+	, resources(resources)
+	, pipeline(pipeline)
+	, camera(camera)
 {
-	CalculateSize(camera);
+
+
+	lightSpaceViewProj = new ConstantBuffer(dc, resources, pipeline, &lightCam, sizeof(Data), "LightCam");
+
+	CalculateSize();
 	CreateRTTs(resizeNotice);
+	CreateDepthStateAndView();
+	DescViewport(); 
+	CreateShader();
 }
 
 Shadow::~Shadow()
 {
+	SAFE_DELETE(lightSpaceViewProj);
+	SAFE_DELETE(depthFromLight);
+	SAFE_DELETE(shadowShader);
 }
 
-void Shadow::CalculateSize(Camera* camera)
+void Shadow::CalculateSize()
 {
 	TL_Math::Vector3 frustumMiddle = camera->data.camPos + TL_Math::Vector3(XMVector3Transform(TL_Math::Vector3(0,0,1), camera->data.viewInv) * (camera->frustumFar + camera->frustumNear) * 0.5f);//frustum middle spot
 
@@ -21,17 +35,18 @@ void Shadow::CalculateSize(Camera* camera)
 	//빛의 역방향을 쳐다 보고 있는 좌표계를 구함
 	dir.Normalize();
 
-	TL_Math::Vector3 axisZ = -dir;
-	TL_Math::Vector3 axisX = axisZ.Cross(TL_Math::Vector3(0,1,0));
-	TL_Math::Vector3 axisY = axisX.Cross(axisZ);
+	TL_Math::Vector3 axisZ = dir;
+	TL_Math::Vector3 axisX = TL_Math::Vector3(0,1,0).Cross(axisZ);
+	TL_Math::Vector3 axisY = axisZ.Cross(axisX);
 
 
-	float max = FLT_MIN;
-	float min = FLT_MAX;
-
-	float axisScalar = 0.0f;
 
 	{//빛 좌표계 x축으로 투영
+		float max = FLT_MIN;
+		float min = FLT_MAX;
+
+		float axisScalar = 0.0f;
+
 		axisScalar = axisX.Dot(camera->worldPoints.LTF);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
@@ -72,6 +87,11 @@ void Shadow::CalculateSize(Camera* camera)
 	}
 
 	{//빛 좌표계 y축으로 투영
+		float max = FLT_MIN;
+		float min = FLT_MAX;
+
+		float axisScalar = 0.0f;
+
 		axisScalar = axisY.Dot(camera->worldPoints.LTF);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
@@ -112,6 +132,11 @@ void Shadow::CalculateSize(Camera* camera)
 	}
 
 	{//빛 좌표계 z축으로 투영
+		float max = FLT_MIN;
+		float min = FLT_MAX;
+
+		float axisScalar = 0.0f;
+
 		axisScalar = axisZ.Dot(camera->worldPoints.LTF);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
@@ -147,94 +172,88 @@ void Shadow::CalculateSize(Camera* camera)
 		depth = max - min;
 
 		//frustum의 외곽으로 가게끔
-		TL_Math::Vector3 temp = XMVectorScale(axisZ, max);
+		TL_Math::Vector3 temp = XMVectorScale(axisZ, max - max_depth);
 
 		middlePoint += temp;
 	}
 
-	lightTransformR = TL_Math::Matrix(axisX, axisY, axisZ);
-	lightTransformR.m[3][0] = middlePoint.x;
-	lightTransformR.m[3][1] = middlePoint.y;
-	lightTransformR.m[3][2] = middlePoint.z;
+	lightTransform = TL_Math::Matrix(axisX, axisY, axisZ);
+	lightTransform.m[3][0] = middlePoint.x;
+	lightTransform.m[3][1] = middlePoint.y;
+	lightTransform.m[3][2] = middlePoint.z;
 
 	
-	lightR.camPos = middlePoint;
-	lightR.proj = XMMatrixOrthographicLH(width, height, 1.0f, 2000.0f);
-	lightR.projInv = XMMatrixInverse(nullptr, lightR.proj);
-	lightR.viewInv = lightTransformR;
-	lightR.view = XMMatrixInverse(nullptr, lightR.viewInv);
+	lightCam.viewInv = lightTransform;
+	lightCam.view = XMMatrixInverse(nullptr, lightCam.viewInv);
+	lightCam.proj = XMMatrixOrthographicLH(width, height, 1.0f, max_depth);
+	lightCam.projInv = XMMatrixInverse(nullptr, lightCam.proj);
+	lightCam.camPos = middlePoint;
 
+	lightSpaceViewProj->Update(&lightCam, sizeof(Data));
 
+}
 
+void Shadow::ClearRTTs()
+{
+	depthFromLight->Clear();
 
-
-
-
-
-	//빛이 향하는 방향을 쳐다보고 있는 좌표계
-	axisZ = dir;
-	axisX = dir.Cross(TL_Math::Vector3(0,1,0));
-	axisY = axisX.Cross(axisZ);
-
-	lightTransform = TL_Math::Matrix(axisX, axisY, axisZ);
+	dc->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
 void Shadow::CreateRTTs(OnResizeNotice* resizeNotice)
 {
-	shadowMapDirectionalLight.resize(directionalShadowNum);
-
-	for (auto s : shadowMapDirectionalLight)
-	{
-		s = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, (UINT)1000, (UINT)1000, "ShadowMap");
-	}
+	depthFromLight = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "depthFromLight");
 }
 
 void Shadow::Execute()
 {
+	ClearRTTs();
+
+	CalculateSize();
+
+	depthFromLight->SetRTOnce(0);
+	lightSpaceViewProj->SetOnce(TL_Graphics::E_SHADER_TYPE::VS, 0);
+	pipeline->SetDepthStencilViewOnce(depthStencilView);
+
+
+	pipeline->Draw();
 }
 
 void Shadow::CreateDepthStateAndView()
 {
-	{
-		D3D11_DEPTH_STENCIL_DESC desc = {};
+	D3D11_TEXTURE2D_DESC depthBufferDesc;
+	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
-		desc.DepthEnable = true;
-		desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-		desc.DepthFunc = D3D11_COMPARISON_GREATER;
+	depthBufferDesc.Width = width;//todo : 여기
+	depthBufferDesc.Height = height;
+	depthBufferDesc.MipLevels = 1;
+	depthBufferDesc.ArraySize = 1;
+	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthBufferDesc.SampleDesc.Count = 1;
+	depthBufferDesc.SampleDesc.Quality = 0;
+	depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthBufferDesc.CPUAccessFlags = 0;
+	depthBufferDesc.MiscFlags = 0;
 
-		desc.StencilEnable = true;
-		desc.StencilReadMask = 0xFF;
-		desc.StencilWriteMask = 0xFF;
+	resources->texture2Ds->Create(depthStencilBuffer, depthBufferDesc);
 
-		desc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		desc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-		desc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		desc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-		desc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		desc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-		desc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		desc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-		resources->depthStencilStates->Get(depthState, desc);
-	}
+	resources->depthStencilViews->CreateDefault(depthStencilView, depthStencilBuffer);
 
 
-	{
-		D3D11_RASTERIZER_DESC desc = {};
-		desc.AntialiasedLineEnable = false;
-		desc.CullMode = D3D11_CULL_NONE;
-		desc.DepthBias = 0;
-		desc.DepthBiasClamp = 0.0f;
-		desc.DepthClipEnable = true;
-		desc.FillMode = D3D11_FILL_SOLID;
-		desc.FrontCounterClockwise = true;
-		desc.MultisampleEnable = false;
-		desc.ScissorEnable = false;
-		desc.SlopeScaledDepthBias = 0.0f;
+}
 
-		resources->rasterStates->Get(rasterState, desc);
-	}
+void Shadow::DescViewport()
+{
+	viewPort.Width = (float)width;
+	viewPort.Height = (float)height;
+	viewPort.MinDepth = 0.0f;
+	viewPort.MaxDepth = 1.0f;
+	viewPort.TopLeftX = 0.0f;
+	viewPort.TopLeftY = 0.0f;
+}
 
-	resources->depthStencilViews->CreateDefault(depthView, nullptr);
+void Shadow::CreateShader()
+{
+	//shadowShader = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"", "LightDepth");
 }
