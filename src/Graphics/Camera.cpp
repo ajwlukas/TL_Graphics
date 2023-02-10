@@ -26,6 +26,7 @@ Camera::Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline
 	viewprojBuffer = new ConstantBuffer(dc, resources, pipeline,  &data, sizeof(Data),"Camera");
 
 	CalculatePoints();
+	CalculateWorldPoints();
 }
 
 Camera::~Camera()
@@ -130,14 +131,14 @@ void Camera::CalculatePoints()
 
 void Camera::CalculateWorldPoints()
 {
-	worldPoints.RTF = XMVector3Transform(points.RTF, data.viewInv);
-	worldPoints.LTF = XMVector3Transform(points.LTF, data.viewInv);
-	worldPoints.RBF = XMVector3Transform(points.RBF, data.viewInv);
-	worldPoints.LBF = XMVector3Transform(points.LBF, data.viewInv);
+	worldPoints.RTF = XMVector4Transform(points.RTF, data.viewInv);
+	worldPoints.LTF = XMVector4Transform(points.LTF, data.viewInv);
+	worldPoints.RBF = XMVector4Transform(points.RBF, data.viewInv);
+	worldPoints.LBF = XMVector4Transform(points.LBF, data.viewInv);
 
-	worldPoints.RTN = XMVector3Transform(points.RTN, data.viewInv);
-	worldPoints.LTN = XMVector3Transform(points.LTN, data.viewInv);
-	worldPoints.RBN = XMVector3Transform(points.RBN, data.viewInv);
-	worldPoints.LBN = XMVector3Transform(points.LBN, data.viewInv);
+	worldPoints.RTN = XMVector4Transform(points.RTN, data.viewInv);
+	worldPoints.LTN = XMVector4Transform(points.LTN, data.viewInv);
+	worldPoints.RBN = XMVector4Transform(points.RBN, data.viewInv);
+	worldPoints.LBN = XMVector4Transform(points.LBN, data.viewInv);
 }
 
