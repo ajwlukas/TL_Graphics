@@ -18,6 +18,8 @@ public:
 	void EndLightSet();
 
 private:
+	friend class Shadow;
+
 	TextureBuffer* textureBuffer;
 
 	const UINT maxLightNum;
@@ -28,4 +30,7 @@ private:
 
 		TL_Math::Vector3 pad;
 	}metaData;
+
+	//directionals dirs
+	//static vector<TL_Math::Vector3> dirs;
 };
