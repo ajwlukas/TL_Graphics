@@ -277,6 +277,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="src\Graphics\ScreenMesh.h" />
     <ClInclude Include="src\Graphics\Shader.h" />
     <ClInclude Include="src\Graphics\ShaderResourceSlotPS.h" />
+    <ClInclude Include="src\Graphics\Shadow.h" />
     <ClInclude Include="src\Graphics\SwapChainRenderTarget.h" />
     <ClInclude Include="src\Graphics\Texture.h" />
     <ClInclude Include="src\Graphics\Camera.h" />
@@ -314,6 +315,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClCompile Include="src\Graphics\RenderTargetTexture.cpp" />
     <ClCompile Include="src\Graphics\ScreenMesh.cpp" />
     <ClCompile Include="src\Graphics\Shader.cpp" />
+    <ClCompile Include="src\Graphics\Shadow.cpp" />
     <ClCompile Include="src\Graphics\SwapChainRenderTarget.cpp" />
     <ClCompile Include="src\Graphics\Texture.cpp" />
     <ClCompile Include="src\Graphics\Camera.cpp" />

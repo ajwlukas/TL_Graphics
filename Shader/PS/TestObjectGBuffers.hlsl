@@ -25,7 +25,7 @@ PS_Out main(VS_Out surface)
     
 	//ret.out0 = float4(basecolor_opacity.rgb, 1.0f); //albedo
     float test = surface.instanceID / 20.0f;
-    ret.out0 = float4(0.98f, 0.82f, 0.76f, 1.0f); //albedo
+    ret.out0 = float4(1.0f, 0.0f, 0.0f, 1.0f); //albedo
 
 	ret.out1 = float4(surface.normal_world, 1.0f); //normal_world
     

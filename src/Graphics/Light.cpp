@@ -25,6 +25,8 @@ void Light::SetLight(const TL_Graphics::DirectionalLight* light)
 	if (metaData.lightCount >= maxLightNum) return;
 
 	textureBuffer->PartialUpdate(sizeof(MetaData) + sizeof(TL_Graphics::DirectionalLight) * metaData.lightCount++, (void*)light, sizeof(TL_Graphics::DirectionalLight));
+
+	//dirs.push_back(light->direction);
 }
 
 void Light::SetLight(const TL_Graphics::PointLight* light)

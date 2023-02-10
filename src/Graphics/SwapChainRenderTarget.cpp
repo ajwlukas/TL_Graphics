@@ -20,7 +20,7 @@ void SwapChainRenderTarget::Init(uint32_t width, uint32_t height)
 
 void SwapChainRenderTarget::Set(UINT slot)
 {
-	pipeline->SetRenderTarget(this, slot);
+	pipeline->SetRenderTarget(rtv, slot);
 }
 
 void SwapChainRenderTarget::OnResize(uint32_t width, uint32_t height)
