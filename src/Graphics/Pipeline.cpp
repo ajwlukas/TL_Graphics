@@ -31,6 +31,8 @@ void Pipeline::Init(UINT width, UINT height)
 	OnResize(width, height);
 
 	swapChainRtv->OnResize(width, height);
+
+	SetDepthStencilView(depthStencilView);
 }
 
 void Pipeline::OnResize(uint32_t width, uint32_t height)
@@ -57,10 +59,10 @@ void Pipeline::Clear(float color[4])
 	dc->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
-void Pipeline::ClearRenderTarget(RenderTarget* renderTarget, TL_Math::Vector4 color)
+void Pipeline::ClearRenderTarget(ID3D11RenderTargetView* renderTarget, TL_Math::Vector4 color)
 {
 	float rgba[4] = { color.x,color.y,color.z,color.w };
-	dc->ClearRenderTargetView(renderTarget->rtv, rgba);
+	dc->ClearRenderTargetView(renderTarget, rgba);
 
 }
 
@@ -234,13 +236,52 @@ void Pipeline::SetShaderOnce(Shader* shader)
 
 }
 
-void Pipeline::SetRenderTarget(RenderTarget* rtv, UINT slot)
+void Pipeline::SetRenderTarget(ID3D11RenderTargetView* rtv, UINT slot)
 {
-	renderTargets[slot] = rtv->rtv;
+	renderTargets[slot] = rtv;
 
-		dc->OMSetRenderTargets(MAX_RENDERTARGET, renderTargets, depthStencilView);
+		dc->OMSetRenderTargets(MAX_RENDERTARGET, renderTargets, currentDepthStencilView);
 
 	currentRenderTarget[slot] = rtv;
+}
+
+void Pipeline::SetRenderTargetOnce(ID3D11RenderTargetView* rtv, UINT slot)
+{
+	ID3D11RenderTargetView* old = renderTargets[slot];
+
+	SetRenderTarget(rtv, slot);
+
+	reservations.emplace_back(
+		[&]()
+		{
+			SetRenderTargetOnce(old, slot);
+		}
+	);
+
+}
+
+void Pipeline::SetDepthStencilView(ID3D11DepthStencilView* depthStencilView)
+{
+	currentDepthStencilView = depthStencilView;
+
+	dc->OMSetRenderTargets(MAX_RENDERTARGET, renderTargets, currentDepthStencilView);
+}
+
+void Pipeline::SetDepthStencilViewOnce(ID3D11DepthStencilView* depthStencilView)
+{
+	ID3D11DepthStencilView* old = currentDepthStencilView;
+
+	currentDepthStencilView = depthStencilView;
+
+	dc->OMSetRenderTargets(MAX_RENDERTARGET, renderTargets, currentDepthStencilView);
+
+	reservations.emplace_back(
+		[&]()
+		{
+			SetDepthStencilView(old);
+		}
+	);
+
 }
 
 void Pipeline::SetSwapChainRenderTargetView(UINT slot)
@@ -258,7 +299,7 @@ void Pipeline::UnSetRenderTarget(UINT slot)
 {
 	renderTargets[slot] = nullptr;
 
-	dc->OMSetRenderTargets(MAX_RENDERTARGET, renderTargets, depthStencilView);
+	dc->OMSetRenderTargets(MAX_RENDERTARGET, renderTargets, currentDepthStencilView);
 
 	currentRenderTarget[slot] = nullptr;
 }
@@ -352,8 +393,8 @@ void Pipeline::ResizeDepthStencilView(UINT width, UINT height)
 
 void Pipeline::ResizeViewPort(UINT width, UINT height)
 {
-	viewPort.Width = (float)width / 2;
-	viewPort.Height = (float)height / 2;
+	viewPort.Width = (float)width;
+	viewPort.Height = (float)height;
 	viewPort.MinDepth = 0.0f;
 	viewPort.MaxDepth = 1.0f;
 	viewPort.TopLeftX = 0.0f;

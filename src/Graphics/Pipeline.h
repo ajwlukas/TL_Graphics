@@ -40,7 +40,7 @@ public:
 
 
 	void Clear(float color[4]);
-	void ClearRenderTarget(RenderTarget* renderTarget, TL_Math::Vector4 color);
+	void ClearRenderTarget(ID3D11RenderTargetView* renderTarget, TL_Math::Vector4 color);
 
 
 	void SetStatesDefualt();
@@ -66,7 +66,13 @@ public:
 	void SetShader(Shader* shader);
 	void SetShaderOnce(Shader* shader);
 
-	void SetRenderTarget(RenderTarget* rtv, UINT slot);//todo : depthStencilView도 해줘야하는가? 아직 depthStencilView가 뭔지 잘 모르겠다.
+	void SetRenderTarget(ID3D11RenderTargetView* rtv, UINT slot);
+
+	void SetRenderTargetOnce(ID3D11RenderTargetView* rtv, UINT slot);
+
+	void SetDepthStencilView(ID3D11DepthStencilView* depthStencilView);
+
+	void SetDepthStencilViewOnce(ID3D11DepthStencilView* depthStencilView);
 
 	void SetSwapChainRenderTargetView(UINT slot = 0);
 
@@ -94,7 +100,9 @@ private:
 	Shader* currentVSShader;
 	Shader* currentPSShader;
 
-	RenderTarget* currentRenderTarget[MAX_RENDERTARGET];
+	ID3D11DepthStencilView* currentDepthStencilView;
+
+	ID3D11RenderTargetView* currentRenderTarget[MAX_RENDERTARGET];
 
 	Resource<ID3D11RasterizerState> currentRasterState;
 	Resource<ID3D11DepthStencilState> currentDepthStencilState;
