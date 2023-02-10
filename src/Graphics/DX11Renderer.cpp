@@ -14,15 +14,8 @@ DX11Renderer::DX11Renderer()
 DX11Renderer::~DX11Renderer()
 {
     SAFE_DELETE(postProcessor);
-    /*SAFE_DELETE(finalPass);
 
-    SAFE_DELETE(downSamplerPass);
-
-    SAFE_DELETE(gridPass)
-
-    SAFE_DELETE(screenMesh);
-
-    SAFE_DELETE(deferredRenderPass);*/
+    SAFE_DELETE(shadow);
 
     SAFE_DELETE(gBufferRenderPass);
 
@@ -52,17 +45,10 @@ HRESULT DX11Renderer::Init()
 
     gBufferRenderPass = new GBufferRenderPass(dc, resources, pipeline, &onResizeNotice);
 
+
     postProcessor = new PostProcessor(dc, resources, pipeline, &onResizeNotice);
 
-    /*screenMesh = new ScreenMesh(dc, resources, pipeline);
 
-    deferredRenderPass = new DeferredRenderPass(dc, resources, pipeline, &onResizeNotice);
-
-    gridPass = new GridPass(dc, resources, pipeline, &onResizeNotice);
-
-    downSamplerPass = new DownSamplerPass(dc, resources, pipeline, &onResizeNotice,0.1f, 0.1f);
-
-    finalPass = new FinalPass(dc, resources, pipeline, &onResizeNotice);*/
 
     return hr;
 }
@@ -196,17 +182,6 @@ void DX11Renderer::PostRender()
 
     postProcessor->Execute();
 
-   /* screenMesh->Set();
-
-    pipeline->SetDepthDisabled();
-
-    gridPass->Execute();
-
-    deferredRenderPass->Execute();
-
-    downSamplerPass->Execute();
-
-    finalPass->Execute();*/
 }
 
 
@@ -271,7 +246,12 @@ ConstantBuffer* DX11Renderer::CreateConstantBuffer(void* data, size_t dataSize)
 
 Camera* DX11Renderer::CreateCamera()
 {
-    return new Camera(dc, resources, pipeline, &onResizeNotice, 80.0f, 1.0f, 2000.0f);
+    cam = new Camera(dc, resources, pipeline, &onResizeNotice, 80.0f, 1.0f, 2000.0f);
+
+
+    shadow = new Shadow(dc, resources, pipeline, &onResizeNotice, cam, (UINT)1);
+
+    return cam;
 }
 
 Texture* DX11Renderer::CreateTexture(std::wstring fileName)
@@ -308,6 +288,9 @@ void DX11Renderer::UpdateWindowSize(UINT width, UINT height)
 void DX11Renderer::Draw()
 {
     pipeline->Draw();
+
+    //shadow->Execute();
+
 }
 
 void DX11Renderer::Draw(UINT indexCount, UINT startIndexLocation)

@@ -28,6 +28,8 @@
 
 #include "Line.h"
 
+#include "Shadow.h"
+
 
 class  DX11Renderer : public TL_Graphics::RenderSystem
 {
@@ -121,18 +123,10 @@ private:
 
 	GBufferRenderPass* gBufferRenderPass;
 
+	Shadow* shadow;
+
 	PostProcessor* postProcessor;
 
-	ScreenMesh* screenMesh;
-
-	DeferredRenderPass* deferredRenderPass;
-
-	GridPass* gridPass;
-
-	SamplerPass* downSamplerPass;
-
-	FinalPass* finalPass;
-
-
+	Camera* cam = nullptr;
 
 };
