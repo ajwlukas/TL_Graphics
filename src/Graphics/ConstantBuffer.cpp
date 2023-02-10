@@ -32,7 +32,12 @@ ConstantBuffer::~ConstantBuffer()
 void ConstantBuffer::Set(TL_Graphics::E_SHADER_TYPE type,
 	UINT slot)
 {
-	pipeline->SetConstantBuffer(this, type, slot);
+	pipeline->SetConstantBuffer(buffer, type, slot);
+}
+
+void ConstantBuffer::SetOnce(TL_Graphics::E_SHADER_TYPE type, UINT slot)
+{
+	pipeline->SetConstantBufferOnce(buffer, type, slot);
 }
 
 void ConstantBuffer::Update(void* data, size_t dataSize)
