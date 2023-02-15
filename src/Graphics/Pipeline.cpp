@@ -116,18 +116,23 @@ void Pipeline::SetViewPortOnce(D3D11_VIEWPORT* viewport)
 	);
 }
 
-void Pipeline::SetConstantBuffer(ID3D11Buffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type,
+ID3D11Buffer* Pipeline::SetConstantBuffer(ID3D11Buffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type,
 	UINT slot)
 {
+	ID3D11Buffer* old = nullptr;
 	if (type == TL_Graphics::E_SHADER_TYPE::VS)
 	{
+		old = currentConstantBuffersVS[slot];
 		currentConstantBuffersVS[slot] = constantBuffer;
 	}
 
 	else if (type == TL_Graphics::E_SHADER_TYPE::PS)
 	{
+		old = currentConstantBuffersPS[slot];
 		currentConstantBuffersPS[slot] = constantBuffer;
 	}
+
+	return old;
 }
 
 void Pipeline::SetConstantBufferOnce(ID3D11Buffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot)
@@ -213,14 +218,18 @@ void Pipeline::SetMaterial(Material* material, UINT albdeoMapSlot, UINT metallic
 	currentMaterial = material;
 }
 
-void Pipeline::SetShader(ID3D11VertexShader* shader)
+ID3D11VertexShader* Pipeline::SetShader(ID3D11VertexShader* shader)
 {
+	ID3D11VertexShader* old = currentShaderVS;
 	currentShaderVS = shader;
+	return old;
 }
 
-void Pipeline::SetShader(ID3D11PixelShader* shader)
+ID3D11PixelShader* Pipeline::SetShader(ID3D11PixelShader* shader)
 {
+	ID3D11PixelShader* old = currentShaderPS;
 	currentShaderPS = shader;
+	return old;
 }
 
 void Pipeline::SetShaderOnce(ID3D11VertexShader* shader)
@@ -252,9 +261,11 @@ void Pipeline::SetShaderOnce(ID3D11PixelShader* shader)
 }
 
 
-void Pipeline::SetRenderTarget(ID3D11RenderTargetView* rtv, UINT slot)
+ID3D11RenderTargetView* Pipeline::SetRenderTarget(ID3D11RenderTargetView* rtv, UINT slot)
 {
+	ID3D11RenderTargetView* old = currentRenderTarget[slot];
 	currentRenderTarget[slot] = rtv;
+	return old;
 }
 
 void Pipeline::SetRenderTargetOnce(ID3D11RenderTargetView* rtv, UINT slot)
@@ -284,9 +295,11 @@ void Pipeline::SetRenderTargetOnce(ID3D11RenderTargetView* rtv, UINT slot)
 
 }
 
-void Pipeline::SetDepthStencilView(ID3D11DepthStencilView* depthStencilView)
+ID3D11DepthStencilView* Pipeline::SetDepthStencilView(ID3D11DepthStencilView* depthStencilView)
 {
+	ID3D11DepthStencilView* old = currentDepthStencilView;
 	currentDepthStencilView = depthStencilView;
+	return old;
 }
 
 void Pipeline::SetDepthStencilViewOnce(ID3D11DepthStencilView* depthStencilView)

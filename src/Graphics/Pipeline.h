@@ -54,7 +54,7 @@ public:
 	void SetViewPort(D3D11_VIEWPORT* viewport);
 	void SetViewPortOnce(D3D11_VIEWPORT* viewport);
 
-	void SetConstantBuffer(ID3D11Buffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot);
+	ID3D11Buffer* SetConstantBuffer(ID3D11Buffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot);
 	void SetConstantBufferOnce(ID3D11Buffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot);
 	void SetShaderResource(ShaderResource* shaderResource, TL_Graphics::E_SHADER_TYPE type, UINT slot);
 	void UnSetShaderResource(TL_Graphics::E_SHADER_TYPE type, UINT slot);
@@ -65,16 +65,16 @@ public:
 	void SetMesh(Mesh* mesh);
 	void SetMaterial(Material* material, UINT albdeoMapSlot = 0, UINT metallicMapSlot = 1, UINT roughnessMapSlot = 2);
 
-	void SetShader(ID3D11VertexShader* shader);
-	void SetShader(ID3D11PixelShader* shader);
+	ID3D11VertexShader* SetShader(ID3D11VertexShader* shader);
+	ID3D11PixelShader* SetShader(ID3D11PixelShader* shader);
 	void SetShaderOnce(ID3D11VertexShader* shader);
 	void SetShaderOnce(ID3D11PixelShader* shader);
 
-	void SetRenderTarget(ID3D11RenderTargetView* rtv, UINT slot);
+	ID3D11RenderTargetView* SetRenderTarget(ID3D11RenderTargetView* rtv, UINT slot);
 
 	void SetRenderTargetOnce(ID3D11RenderTargetView* rtv, UINT slot);
 
-	void SetDepthStencilView(ID3D11DepthStencilView* depthStencilView);
+	ID3D11DepthStencilView* SetDepthStencilView(ID3D11DepthStencilView* depthStencilView);
 
 	void SetDepthStencilViewOnce(ID3D11DepthStencilView* depthStencilView);
 
