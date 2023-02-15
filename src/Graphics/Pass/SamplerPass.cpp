@@ -73,13 +73,13 @@ void SamplerPass::ClearRenderTargets()
 void SamplerPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
 	if (isBasedWindowSize)
-		rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, widthRatio, heightRatio, "Sampler");
+		rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, widthRatio, heightRatio);
 	else //!isBasedWindowSize
-		rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, width, height, "Sampler");
+		rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, width, height);
 }
 
 void SamplerPass::CreateShader()
 {
 	isShaderCreatedHere = true;
-	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_SamplerPS.hlsl", "Sampler");
+	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_SamplerPS.hlsl");
 }

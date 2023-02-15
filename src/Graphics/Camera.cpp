@@ -22,6 +22,7 @@ Camera::Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline
 
 
 	data.camPos = { 0,0,0 };
+	data.frustumFar = frustumFar;
 
 	viewprojBuffer = new ConstantBuffer(dc, resources, pipeline,  &data, sizeof(Data),"Camera");
 

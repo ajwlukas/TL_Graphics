@@ -3,22 +3,23 @@
 
 #include "Pipeline.h"
 
-RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, UINT width, UINT height, std::string debugName)
+RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, UINT width, UINT height, std::string debugName, DXGI_FORMAT format)
 	:Texture(dc, resources, pipeline), RenderTarget(dc, resources, pipeline)
 	, isBasedWindowSize(false)
 	, dc(dc)
 	, resources(resources)
 	, pipeline(pipeline)
+	, format(format)
 {
 	sizeX = width;
 	sizeY = height;
 	resizeNotice->AddObserver(this);
-	OnResize(width, height);
+	OnResize(sizeX, sizeY);
 
 	SetDebugName(debugName);
 }
 
-RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, float widthRatio, float heightRatio, std::string debugName)
+RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, float widthRatio, float heightRatio, std::string debugName, DXGI_FORMAT format)
 	: Texture(dc, resources, pipeline), RenderTarget(dc, resources, pipeline)
 	, widthRatio(widthRatio)
 	, heightRatio(heightRatio)
@@ -26,6 +27,7 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
 	, dc(dc)
 	, resources(resources)
 	, pipeline(pipeline)
+	, format(format)
 {
 	resizeNotice->AddObserver(this);
 
@@ -79,7 +81,7 @@ void RenderTargetTexture::OnResize(uint32_t width, uint32_t height)
 	desc.Height = sizeY;
 	desc.MipLevels = 1;
 	desc.ArraySize = 1;
-	desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	desc.Format = format;
 	desc.SampleDesc.Count = 1;
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;

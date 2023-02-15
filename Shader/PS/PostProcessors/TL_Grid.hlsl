@@ -20,14 +20,14 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
 	float3 NDC_xyz = float3(NDC_x, NDC_y, 0.0f);
 	
-	float3 rayOrigin_ViewSpace = mul(projInv, float4(NDC_xyz, 1.0f)).xyz;
+	float3 rayOrigin_ViewSpace = mul(cam.projInv, float4(NDC_xyz, 1.0f)).xyz;
     
-	float3 rayOrigin_World = mul(viewInv, float4(rayOrigin_ViewSpace, 1.0f)).
+	float3 rayOrigin_World = mul(cam.viewInv, float4(rayOrigin_ViewSpace, 1.0f)).
 	xyz;
 	
-	float3 rayDirection = rayOrigin_World - camPos;
+	float3 rayDirection = rayOrigin_World - cam.camPos;
 	
-	if (rayDirection.y * camPos.y > 0) 
+	if (rayDirection.y * cam.camPos.y > 0) 
 		return float4(0.0f, 0.0f, 0.0f, 0.0f);
     
 	

@@ -12,7 +12,11 @@
 
 #include "RenderTargetTexture.h"
 
-const float max_depth = 4000.0f;
+const float max_depth = 8000.0f;
+
+const UINT rtSizeHigh = 10000;
+const UINT rtSizeMid = 5000;
+const UINT rtSizeLow = 1000;
 
 class Shadow
 {
@@ -32,10 +36,14 @@ private:
 
 	UINT directionalShadowNum;
 
-	void CalculateSize();
+	void CalculateSize(TL_Math::Vector3 LTN, TL_Math::Vector3 RTN, TL_Math::Vector3 LBN, TL_Math::Vector3 RBN,
+		TL_Math::Vector3 LTF, TL_Math::Vector3 RTF, TL_Math::Vector3 LBF, TL_Math::Vector3 RBF, TL_Math::Vector3& middlePoint, float& width, float& height);
+	void CalculateSizeNew();
 	float size = 0;
 	
-	TL_Math::Matrix lightTransform;
+	TL_Math::Matrix lightTransformHigh;
+	TL_Math::Matrix lightTransformMid;
+	TL_Math::Matrix lightTransformLow;
 
 	TL_Math::Vector3 dir = { 0,0,1 };//일단 빛 생각하지 말아보자
 
@@ -54,26 +62,44 @@ private:
 		TL_Math::Matrix  viewInv;
 		TL_Math::Matrix  projInv;
 		TL_Math::Vector3 camPos;
-	}lightCam;
+		float frustumFar;
+	}lightCamHigh, lightCamMid, lightCamLow;//0 = high, 1 = mid, 2 = low
 
 	Resource<ID3D11DepthStencilState> depthState;
 
-	Resource<ID3D11Texture2D> depthStencilBuffer;
-	Resource<ID3D11DepthStencilView> depthStencilView;
+	Resource<ID3D11Texture2D> depthStencilBufferHigh;
+	Resource<ID3D11Texture2D> depthStencilBufferMid;
+	Resource<ID3D11Texture2D> depthStencilBufferLow;
+
+	Resource<ID3D11DepthStencilView> depthStencilViewHigh;
+	Resource<ID3D11DepthStencilView> depthStencilViewMid;
+	Resource<ID3D11DepthStencilView> depthStencilViewLow;
 
 	Resource<ID3D11RasterizerState> rasterState;
 
 	void CreateDepthStateAndView();
 
-	void DescViewport();
+	void DescViewport(float size);
 
 	D3D11_VIEWPORT viewPort;
 
 	ConstantBuffer* lightSpaceViewProj;
-	RenderTargetTexture* depthFromLight;
+	RenderTargetTexture* depthFromLightHigh;
+	RenderTargetTexture* depthFromLightMid;
+	RenderTargetTexture* depthFromLightLow;
+
+	Resource<ID3D11SamplerState> samplerState;
 
 	Camera* camera;
 
+
 	Shader* shadowShader;//빛을 기준으로 깊이 구해주는 쉐이더
 	void CreateShader();
+	void CreateAndSetSamplerState();
+	void CreateRasterState();
+
+
+	TL_Math::Vector3 axisZ;
+	TL_Math::Vector3 axisX;
+	TL_Math::Vector3 axisY;
 };

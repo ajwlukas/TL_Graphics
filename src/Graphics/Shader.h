@@ -17,6 +17,7 @@ public:
 	virtual ~Shader();
 
 	void Set();
+	void SetOnce();
 
 	operator ID3D11VertexShader* () const { return shader.vs.resource; }
 	operator ID3D11VertexShader* const* () const { return &(shader.vs.resource); }

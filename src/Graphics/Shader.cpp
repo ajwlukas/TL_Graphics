@@ -30,5 +30,16 @@ Shader::~Shader()
 
 void Shader::Set()
 {
-	pipeline->SetShader(this);
+	if (type == TL_Graphics::E_SHADER_TYPE::VS)
+		pipeline->SetShader(shader.vs);
+	else if (type == TL_Graphics::E_SHADER_TYPE::PS)
+		pipeline->SetShader(shader.ps);
+}
+
+void Shader::SetOnce()
+{
+	if (type == TL_Graphics::E_SHADER_TYPE::VS)
+		pipeline->SetShaderOnce(shader.vs);
+	else if (type == TL_Graphics::E_SHADER_TYPE::PS)
+		pipeline->SetShaderOnce(shader.ps);
 }

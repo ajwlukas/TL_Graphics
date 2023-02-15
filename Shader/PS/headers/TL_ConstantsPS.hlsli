@@ -4,13 +4,19 @@
 
 //00 ~ 09 : commonBuffers
 
-cbuffer CameraBuffer : register(b0)
+struct CamInfo
 {
     float4x4 view;
     float4x4 proj;
     float4x4 viewInv;
     float4x4 projInv;
     float3 camPos;
+    float frustumFar;
+};
+
+cbuffer CameraBuffer : register(b0)
+{
+    CamInfo cam;
 }
 
 struct TextureInfo
@@ -29,6 +35,19 @@ cbuffer RenderTargetTexInfo : register(b2)//¾²·Á³ª...? ÀÏ´Ü ¹Ì·ï³ð
 cbuffer TexInfo : register(b3)
 {
     TextureInfo texInfo[4096]; //index means slot of texture ref TL_TexturePS
+}
+
+cbuffer ShadowBuffer : register(b4)
+{
+    CamInfo shadowCamHigh;
+}
+cbuffer ShadowBuffer : register(b5)
+{
+    CamInfo shadowCamMid;
+}
+cbuffer ShadowBuffer : register(b6)
+{
+    CamInfo shadowCamLow;
 }
 
 

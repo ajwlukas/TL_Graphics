@@ -36,7 +36,9 @@ VS_Out main(VS_In_SkinningMesh v)
     tangentL /= totalWeight;
 
     ret.pos_world = posW;
-	ret.pos_NDC = WorldToNDC(posW);
+    ret.pos_view = WorldToView(ret.pos_world);
+    ret.linearDepth = ret.pos_view / frustumFar;
+    ret.pos_NDC = ViewToNDC(ret.pos_view);
 
     ret.uv = v.uv;
 

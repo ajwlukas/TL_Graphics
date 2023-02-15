@@ -8,8 +8,9 @@ VS_Out main(VS_In_StaticMesh v,
 {
     VS_Out ret;
     
-    ret.pos_world = LocalToWorld(v.pos_local, instanceID);
-    ret.pos_NDC = WorldToNDC(ret.pos_world);
+    ret.pos_world = LocalToWorld(v.pos_local);
+    ret.pos_view = WorldToView(ret.pos_world);
+    ret.pos_NDC = ViewToNDC(ret.pos_view);
     
     ret.uv = v.uv;
 

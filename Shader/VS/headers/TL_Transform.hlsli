@@ -11,11 +11,21 @@ float3 LocalToWorld(float3 localPos)//로컬 포지션을 월드로
 	return mul(world, float4(localPos, 1.0f)).xyz;
 }
 
+float3 WorldToView(float3 worldPos)
+{
+    return mul(view, float4(worldPos, 1.0f)).xyz;
+}
+
+float4 ViewToNDC(float3 viewPos)
+{
+    return mul(proj, float4(viewPos, 1.0f));
+}
+
 float4 WorldToNDC(float3 worldPos)
 {
-	float4 pos_view = mul(view, float4(worldPos, 1.0f));
+    float3 pos_view = WorldToView(worldPos).xyz;
     
-	return mul(proj, pos_view);
+    return mul(proj, float4(pos_view, 1.0f));
 }
 float4 LocalToNDC(float3 localPos)//로컬 포지션을 월드로
 {

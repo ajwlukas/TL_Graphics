@@ -80,10 +80,17 @@ HRESULT DX11Renderer::CreateDeviceAndSwapChain()
     HRESULT hr = S_OK;
     D3D_FEATURE_LEVEL FeatureLevel;
 
+    UINT createDeviceFlags = {};
+
+#if defined(DEBUG) || defined(_DEBUG)
+    createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
+
     if (FAILED(hr = D3D11CreateDeviceAndSwapChain(NULL,
         D3D_DRIVER_TYPE_HARDWARE,
         NULL,
-        0,
+        createDeviceFlags,
         &FeatureLevels,
         1,
         D3D11_SDK_VERSION,
@@ -166,6 +173,9 @@ Line* DX11Renderer::CreateLine(TL_Math::Vector3 startPoint, TL_Math::Vector3 end
 
 void DX11Renderer::PreRender()
 {
+    /*for (int i = 0; i < 8; i++)
+        pipeline->UnSetShaderResource(TL_Graphics::E_SHADER_TYPE::PS ,20 + i);*/
+
     gBufferRenderPass->ClearRenderTargets();
     gBufferRenderPass->Set();//화면 기하정보 뽑아냄
 
@@ -289,7 +299,7 @@ void DX11Renderer::Draw()
 {
     pipeline->Draw();
 
-    //shadow->Execute();
+    shadow->Execute();
 
 }
 

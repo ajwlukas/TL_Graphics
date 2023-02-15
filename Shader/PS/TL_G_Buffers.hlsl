@@ -42,6 +42,7 @@ PS_Out main(VS_Out surface)
     ret.out3 = float4(r_s_m_ao.b, 1.0f, 1.0f, 0.0f); //metalness
     ret.out4 = float4(r_s_m_ao.r, 0.0f, 0.0f, 0.0f); //roughness
     ret.out5 = float4(surface.pos_NDC.z, 0.0f, 0.0f, 0.0f);
+    ret.out6 = float4(surface.linearDepth, 0.0f, 0.0f, 0.0f);
     
     return ret;
 }

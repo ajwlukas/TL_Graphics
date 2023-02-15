@@ -45,17 +45,19 @@ public:
 
 	void SetStatesDefualt();
 
-	void SetCurrentRasterState(Resource<ID3D11RasterizerState> state);
+	void SetCurrentRasterState(ID3D11RasterizerState* state);
+	void SetCurrentRasterStateOnce(ID3D11RasterizerState* state);
 	void SetCurrentDepthStencilState(Resource<ID3D11DepthStencilState> state);
 	void SetCurrentBlendState(Resource<ID3D11BlendState> state);
-	void SetCurrentSamplerState(Resource<ID3D11SamplerState> state, UINT slot);
+	void SetCurrentSamplerState(ID3D11SamplerState* state, UINT slot);
 
-	void SetViewPort();
+	void SetViewPort(D3D11_VIEWPORT* viewport);
+	void SetViewPortOnce(D3D11_VIEWPORT* viewport);
 
-	void SetConstantBuffer(ID3D11Buffer** constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot);
-	void SetConstantBufferOnce(ID3D11Buffer** constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot);
-	void SetShaderResource(ShaderResource* shaderResource, TL_Graphics::E_SHADER_TYPE type,
-		UINT slot);
+	void SetConstantBuffer(ID3D11Buffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot);
+	void SetConstantBufferOnce(ID3D11Buffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot);
+	void SetShaderResource(ShaderResource* shaderResource, TL_Graphics::E_SHADER_TYPE type, UINT slot);
+	void UnSetShaderResource(TL_Graphics::E_SHADER_TYPE type, UINT slot);
 	void SetTexture(Texture* texture, TL_Graphics::E_SHADER_TYPE type,
 		UINT slot);
 
@@ -63,8 +65,10 @@ public:
 	void SetMesh(Mesh* mesh);
 	void SetMaterial(Material* material, UINT albdeoMapSlot = 0, UINT metallicMapSlot = 1, UINT roughnessMapSlot = 2);
 
-	void SetShader(Shader* shader);
-	void SetShaderOnce(Shader* shader);
+	void SetShader(ID3D11VertexShader* shader);
+	void SetShader(ID3D11PixelShader* shader);
+	void SetShaderOnce(ID3D11VertexShader* shader);
+	void SetShaderOnce(ID3D11PixelShader* shader);
 
 	void SetRenderTarget(ID3D11RenderTargetView* rtv, UINT slot);
 
@@ -91,20 +95,36 @@ private:
 	Mesh* currentMesh;
 	Material* currentMaterial;
 
-	ID3D11Buffer** currentConstantBuffersVS[255];
-	ID3D11Buffer** currentConstantBuffersPS[255];
+	ID3D11InputLayout* currentInputLayout;
+	D3D11_PRIMITIVE_TOPOLOGY currentPrimitiveTopology;
 
-	ShaderResource* currentShaderResourceVS[255];
-	ShaderResource* currentShaderResourcePS[255];
+	struct VertexBufferInfo
+	{
+		ID3D11Buffer* const* ptrBuffer;
+		const UINT* strides;
+		const UINT* offset;
 
-	Shader* currentVSShader;
-	Shader* currentPSShader;
+	}currentVertexBufferInfo;
+
+	ID3D11Buffer* currentIndexBuffer;
+
+
+	ID3D11Buffer* currentConstantBuffersVS[14];
+	ID3D11Buffer* currentConstantBuffersPS[14];
+
+	ID3D11ShaderResourceView* currentShaderResourceVS[128];
+	ID3D11ShaderResourceView* currentShaderResourcePS[128];
+
+	ID3D11VertexShader* currentShaderVS;
+	ID3D11PixelShader* currentShaderPS;
+
+	D3D11_VIEWPORT* currentViewport;
 
 	ID3D11DepthStencilView* currentDepthStencilView;
 
 	ID3D11RenderTargetView* currentRenderTarget[MAX_RENDERTARGET];
 
-	Resource<ID3D11RasterizerState> currentRasterState;
+	ID3D11RasterizerState* currentRasterState;
 	Resource<ID3D11DepthStencilState> currentDepthStencilState;
 	Resource<ID3D11BlendState> currentBlendState;
 
@@ -113,7 +133,7 @@ private:
 	Resource<ID3D11RasterizerState> wireFrameRasterState;
 	Resource<ID3D11RasterizerState> solidRasterState;
 
-	ID3D11SamplerState* currentSamplerStates[4];
+	ID3D11SamplerState* currentSamplerStates[16];
 
 	Resource<ID3D11DepthStencilState> depthEnabledDepthStencilState;
 	Resource<ID3D11DepthStencilState> depthDisabledDepthStencilState;
@@ -129,7 +149,7 @@ private:
 
 	SwapChainRenderTarget* swapChainRtv;//swapChainø° present«“ øÎµµ¿« ∑ª¥ı≈∏∞Ÿ
 
-	ID3D11RenderTargetView* renderTargets[MAX_RENDERTARGET] = {};
+	//ID3D11RenderTargetView* renderTargets[MAX_RENDERTARGET] = {};
 	D3D11_VIEWPORT viewPort;
 
 	void CreateDefaultStates();
@@ -163,4 +183,6 @@ private:
 	}texInfos[4096];
 
 	ConstantBuffer* texInfoBuffer;
+
+	void SetPipeline();
 };

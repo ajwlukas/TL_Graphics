@@ -21,6 +21,7 @@ cbuffer material : register(b12)
 	float lodLevel;
 }
 
+
 //TextureCube prefilteredEnvMap : register(t13); //Texture for IBL(Specular)
  //https://github.com/Nadrin/PBR/blob/master/data/shaders/hlsl/pbr.hlsl
 float4 main(VS_Out_ScreenSpace surface) : SV_Target0
@@ -35,10 +36,12 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     float3 pos_world = pos_world_Deferred.Sample(Sampler_Wrap, surface.uv).rgb;
     float3 normal = normal_world_Deferred.Sample(Sampler_Wrap, surface.uv).rgb;
     
+    float depthLinear = depthLinear_Deferred.Sample(Sampler_Clamp, surface.uv).r;
+    
     albedo = sRGBtoLinear(albedo);
     
     //표면으로 부터 눈으로 향하는 방향 벡터
-    float3 toEye = normalize(camPos - pos_world);
+    float3 toEye = normalize(cam.camPos - pos_world);
     
     
     // 노말과 눈방향의 각
@@ -55,6 +58,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     // 여러 광원으로부터 직접광 (Diffuse + Specular) 더해줄 변수 선언
     float3 directLighting = 0.0f;
     
+    [unroll(20)]
     for (uint i = 0; i < NumLights; ++i)
     {
         Light light = LoadLightInfo(i);
@@ -64,6 +68,52 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
         
         //빛으로 향하는 벡터
         float3 lightDir = GetLightDirection(light, pos_world);
+        
+        float ratio = 1.0f;
+        
+        if (light.type == LightType_Directional)
+        {
+            
+            CamInfo info;
+            if (depthLinear <= 0.3f)
+            {
+                info = shadowCamHigh;
+            //}
+            //else if (depthLinear <= 0.6f)
+            //{
+            //    info = shadowCamMid;
+            //}
+            //else
+            //{
+            //    info = shadowCamLow;
+            //}
+            
+                float3 shadowViewPos = mul(info.view, float4(pos_world, 1.0f)).xyz;
+                float3 shadowNDCPos = mul(info.proj, float4(shadowViewPos, 1.0f)).xyz;
+            
+                float2 UV = float2((shadowNDCPos.x + 1) * 0.5f, (-shadowNDCPos.y + 1) * 0.5f);
+            
+                float depth = shadowNDCPos.z;
+            
+                if (depthLinear <= 0.3f)
+                {
+                    ratio = depthFromLightHigh.SampleCmpLevelZero(Sampler_Comp, UV, depth).r;
+                }
+                else if (depthLinear <= 0.6f)
+                {
+                    ratio = depthFromLightMid.SampleCmpLevelZero(Sampler_Comp, UV, depth).r;
+                }
+                else
+                {
+                    ratio = depthFromLightLow.SampleCmpLevelZero(Sampler_Comp, UV, depth).r;
+                }
+            
+            
+                if (ratio == 0.0f)
+                    continue;
+            }
+        }
+        
         
         //감쇠된 빛의 세기
         float3 intensity = GetLightIntensity(light, pos_world);
@@ -115,6 +165,8 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
 
 		// Total contribution for this light.
         directLighting = directLighting + illuminance * (diffuse + specularBRDF);
+        directLighting *= ratio;
+
     }
     
     directLighting = directLighting;
@@ -145,6 +197,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
         //Specular
         uint width, height, level;
         prefilteredEnvMap.GetDimensions(0, width, height, level);
+        
         float3 specularIrradiance = sRGBtoLinear(prefilteredEnvMap.SampleLevel(Sampler_Clamp, ref, roughness * level));
         
         float2 specularBRDF = IBL_BRDF_LUT.Sample(Sampler_Clamp
@@ -168,4 +221,5 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
 	//indirectLighting = LinearTosRGB(indirectLighting);
     
     return float4(LinearTosRGB(directLighting + indirectLighting), opacity);
+    //return float4(LinearTosRGB(directLighting), opacity);
 }

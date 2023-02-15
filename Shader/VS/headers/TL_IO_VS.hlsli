@@ -29,7 +29,9 @@ struct VS_In_SkinningMesh
 struct VS_Out//aka PS_In
 {
 	float3 pos_world : POSITION_W;
+    float3 pos_view : POSITION_V;
 	float4 pos_NDC : SV_POSITION;
+    float linearDepth : LINEAR_DEPTH;//0.0~1.0 depth linear
     
 	float2 uv : UV;
     

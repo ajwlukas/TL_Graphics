@@ -29,6 +29,7 @@ private:
 		TL_Math::Matrix  viewInv;
 		TL_Math::Matrix  projInv;
 		TL_Math::Vector3 camPos;
+		float frustumFar;
 	}data;
 
 	ConstantBuffer* viewprojBuffer;

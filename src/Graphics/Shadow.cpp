@@ -8,74 +8,74 @@ Shadow::Shadow(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline
 	, pipeline(pipeline)
 	, camera(camera)
 {
+	lightSpaceViewProj = new ConstantBuffer(dc, resources, pipeline, &lightCamHigh, sizeof(Data), "LightCam");
 
-
-	lightSpaceViewProj = new ConstantBuffer(dc, resources, pipeline, &lightCam, sizeof(Data), "LightCam");
-
-	CalculateSize();
 	CreateRTTs(resizeNotice);
 	CreateDepthStateAndView();
-	DescViewport(); 
 	CreateShader();
+	CreateDepthStateAndView();
+	CreateAndSetSamplerState();
+	CreateRasterState();
+
+
+	dir.Normalize();
+
+	axisZ = dir;
+	axisX = TL_Math::Vector3(0, 1, 0).Cross(axisZ);
+	axisY = axisZ.Cross(axisX);
 }
 
 Shadow::~Shadow()
 {
 	SAFE_DELETE(lightSpaceViewProj);
-	SAFE_DELETE(depthFromLight);
+	SAFE_DELETE(depthFromLightHigh);
+	SAFE_DELETE(depthFromLightMid);
+	SAFE_DELETE(depthFromLightLow);
 	SAFE_DELETE(shadowShader);
 }
 
-void Shadow::CalculateSize()
+void Shadow::CalculateSize(TL_Math::Vector3 LTN, TL_Math::Vector3 RTN, TL_Math::Vector3 LBN, TL_Math::Vector3 RBN,
+	TL_Math::Vector3 LTF, TL_Math::Vector3 RTF, TL_Math::Vector3 LBF, TL_Math::Vector3 RBF, TL_Math::Vector3& middlePoint, float& width, float& height)
 {
-	TL_Math::Vector3 frustumMiddle = camera->data.camPos + TL_Math::Vector3(XMVector3Transform(TL_Math::Vector3(0,0,1), camera->data.viewInv) * (camera->frustumFar + camera->frustumNear) * 0.5f);//frustum middle spot
-
-	TL_Math::Vector3 middlePoint = { 0,0,0 };
+	middlePoint = camera->data.camPos;
 
 	//빛의 역방향을 쳐다 보고 있는 좌표계를 구함
-	dir.Normalize();
-
-	TL_Math::Vector3 axisZ = dir;
-	TL_Math::Vector3 axisX = TL_Math::Vector3(0,1,0).Cross(axisZ);
-	TL_Math::Vector3 axisY = axisZ.Cross(axisX);
-
-
 
 	{//빛 좌표계 x축으로 투영
-		float max = FLT_MIN;
+		float max = -FLT_MAX;
 		float min = FLT_MAX;
 
 		float axisScalar = 0.0f;
 
-		axisScalar = axisX.Dot(camera->worldPoints.LTF);
+		axisScalar = axisX.Dot(LTF);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisX.Dot(camera->worldPoints.LBF);
+		axisScalar = axisX.Dot(LBF);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisX.Dot(camera->worldPoints.RTF);
+		axisScalar = axisX.Dot(RTF);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisX.Dot(camera->worldPoints.RBF);
+		axisScalar = axisX.Dot(RBF);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisX.Dot(camera->worldPoints.LTN);
+		axisScalar = axisX.Dot(LTN);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisX.Dot(camera->worldPoints.LBN);
+		axisScalar = axisX.Dot(LBN);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisX.Dot(camera->worldPoints.RTN);
+		axisScalar = axisX.Dot(RTN);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisX.Dot(camera->worldPoints.RBN);
+		axisScalar = axisX.Dot(RBN);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
@@ -92,35 +92,35 @@ void Shadow::CalculateSize()
 
 		float axisScalar = 0.0f;
 
-		axisScalar = axisY.Dot(camera->worldPoints.LTF);
+		axisScalar = axisY.Dot(LTF);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisY.Dot(camera->worldPoints.LBF);
+		axisScalar = axisY.Dot(LBF);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisY.Dot(camera->worldPoints.RTF);
+		axisScalar = axisY.Dot(RTF);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisY.Dot(camera->worldPoints.RBF);
+		axisScalar = axisY.Dot(RBF);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisY.Dot(camera->worldPoints.LTN);
+		axisScalar = axisY.Dot(LTN);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisY.Dot(camera->worldPoints.LBN);
+		axisScalar = axisY.Dot(LBN);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisY.Dot(camera->worldPoints.RTN);
+		axisScalar = axisY.Dot(RTN);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisY.Dot(camera->worldPoints.RBN);
+		axisScalar = axisY.Dot(RBN);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
@@ -137,35 +137,35 @@ void Shadow::CalculateSize()
 
 		float axisScalar = 0.0f;
 
-		axisScalar = axisZ.Dot(camera->worldPoints.LTF);
+		axisScalar = axisZ.Dot(LTF);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisZ.Dot(camera->worldPoints.LBF);
+		axisScalar = axisZ.Dot(LBF);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisZ.Dot(camera->worldPoints.RTF);
+		axisScalar = axisZ.Dot(RTF);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisZ.Dot(camera->worldPoints.RBF);
+		axisScalar = axisZ.Dot(RBF);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisZ.Dot(camera->worldPoints.LTN);
+		axisScalar = axisZ.Dot(LTN);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisZ.Dot(camera->worldPoints.LBN);
+		axisScalar = axisZ.Dot(LBN);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisZ.Dot(camera->worldPoints.RTN);
+		axisScalar = axisZ.Dot(RTN);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		axisScalar = axisZ.Dot(camera->worldPoints.RBN);
+		axisScalar = axisZ.Dot(RBN);
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
@@ -176,47 +176,177 @@ void Shadow::CalculateSize()
 
 		middlePoint += temp;
 	}
+}
 
-	lightTransform = TL_Math::Matrix(axisX, axisY, axisZ);
-	lightTransform.m[3][0] = middlePoint.x;
-	lightTransform.m[3][1] = middlePoint.y;
-	lightTransform.m[3][2] = middlePoint.z;
+void Shadow::CalculateSizeNew()
+{
+	float div0 = 0.0f;
+	float div1 = 0.3f;
+	float div2 = 0.6f;
+	float div3 = 1.0f;
 
-	
-	lightCam.viewInv = lightTransform;
-	lightCam.view = XMMatrixInverse(nullptr, lightCam.viewInv);
-	lightCam.proj = XMMatrixOrthographicLH(width, height, 1.0f, max_depth);
-	lightCam.projInv = XMMatrixInverse(nullptr, lightCam.proj);
-	lightCam.camPos = middlePoint;
+	TL_Math::Vector3 GapLT = camera->worldPoints.LTF - camera->worldPoints.LTN;
+	TL_Math::Vector3 GapRT = camera->worldPoints.RTF - camera->worldPoints.RTN;
+	TL_Math::Vector3 GapLB = camera->worldPoints.LBF - camera->worldPoints.LBN;
+	TL_Math::Vector3 GapRB = camera->worldPoints.RBF - camera->worldPoints.RBN;
 
-	lightSpaceViewProj->Update(&lightCam, sizeof(Data));
+	TL_Math::Vector3 LT0 = camera->worldPoints.LTN;
+	TL_Math::Vector3 RT0 = camera->worldPoints.RTN;
+	TL_Math::Vector3 LB0 = camera->worldPoints.LBN;
+	TL_Math::Vector3 RB0 = camera->worldPoints.RBN;
 
+	TL_Math::Vector3 LT1 = LT0 + div1 * GapLT;
+	TL_Math::Vector3 RT1 = RT0 + div1 * GapRT;
+	TL_Math::Vector3 LB1 = LB0 + div1 * GapLB;
+	TL_Math::Vector3 RB1 = RB0 + div1 * GapRB;
+
+	TL_Math::Vector3 LT2 = LT0 + div2 * GapLT;
+	TL_Math::Vector3 RT2 = RT0 + div2 * GapRT;
+	TL_Math::Vector3 LB2 = LB0 + div2 * GapLB;
+	TL_Math::Vector3 RB2 = RB0 + div2 * GapRB;
+
+	TL_Math::Vector3 LT3 = LT0 + div3 * GapLT;
+	TL_Math::Vector3 RT3 = RT0 + div3 * GapRT;
+	TL_Math::Vector3 LB3 = LB0 + div3 * GapLB;
+	TL_Math::Vector3 RB3 = RB0 + div3 * GapRB;
+
+	TL_Math::Vector3 middlePoint;
+	float width = 0, height = 0;
+
+	//High
+	CalculateSize(LT0, RT0, LB0, RB0, LT1, RT1, LB1, RB1, middlePoint, width, height);
+
+	lightTransformHigh = TL_Math::Matrix(axisX, axisY, axisZ);
+
+	lightTransformHigh.m[3][0] = middlePoint.x;
+	lightTransformHigh.m[3][1] = middlePoint.y;
+	lightTransformHigh.m[3][2] = middlePoint.z;
+
+	lightCamHigh.viewInv = lightTransformHigh;
+	lightCamHigh.view = XMMatrixInverse(nullptr, lightCamHigh.viewInv);
+	lightCamHigh.proj = XMMatrixOrthographicLH(width, height, 1.0f, max_depth);
+	lightCamHigh.projInv = XMMatrixInverse(nullptr, lightCamHigh.proj);
+	lightCamHigh.camPos = middlePoint;
+	lightCamHigh.frustumFar = max_depth;
+
+	//Mid
+	CalculateSize(LT1, RT1, LB1, RB1, LT2, RT2, LB2, RB2, middlePoint, width, height);
+
+	lightTransformMid = TL_Math::Matrix(axisX, axisY, axisZ);
+
+	lightTransformMid.m[3][0] = middlePoint.x;
+	lightTransformMid.m[3][1] = middlePoint.y;
+	lightTransformMid.m[3][2] = middlePoint.z;
+
+	lightCamMid.viewInv = lightTransformMid;
+	lightCamMid.view = XMMatrixInverse(nullptr, lightCamMid.viewInv);
+	lightCamMid.proj = XMMatrixOrthographicLH(width, height, 1.0f, max_depth);
+	lightCamMid.projInv = XMMatrixInverse(nullptr, lightCamMid.proj);
+	lightCamMid.camPos = middlePoint;
+	lightCamMid.frustumFar = max_depth;
+
+
+	//Low
+	CalculateSize(LT2, RT2, LB2, RB2, LT3, RT3, LB3, RB3, middlePoint, width, height);
+
+	lightTransformLow = TL_Math::Matrix(axisX, axisY, axisZ);
+
+	lightTransformLow.m[3][0] = middlePoint.x;
+	lightTransformLow.m[3][1] = middlePoint.y;
+	lightTransformLow.m[3][2] = middlePoint.z;
+
+	lightCamLow.viewInv = lightTransformLow;
+	lightCamLow.view = XMMatrixInverse(nullptr, lightCamLow.viewInv);
+	lightCamLow.proj = XMMatrixOrthographicLH(width, height, 1.0f, max_depth);
+	lightCamLow.projInv = XMMatrixInverse(nullptr, lightCamLow.proj);
+	lightCamLow.camPos = middlePoint;
+	lightCamLow.frustumFar = max_depth;
 }
 
 void Shadow::ClearRTTs()
 {
-	depthFromLight->Clear();
+	depthFromLightHigh->Clear({ 1,1,1,1 });
+	depthFromLightMid->Clear({ 1,1,1,1 });
+	depthFromLightLow->Clear({ 1,1,1,1 });
 
-	dc->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	dc->ClearDepthStencilView(depthStencilViewHigh, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	dc->ClearDepthStencilView(depthStencilViewMid, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	dc->ClearDepthStencilView(depthStencilViewLow, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
 void Shadow::CreateRTTs(OnResizeNotice* resizeNotice)
 {
-	depthFromLight = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "depthFromLight");
+	depthFromLightHigh = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, rtSizeHigh, rtSizeHigh, "depthFromLight", DXGI_FORMAT_R32_FLOAT);
+	depthFromLightMid = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, rtSizeMid, rtSizeMid, "depthFromLight", DXGI_FORMAT_R32_FLOAT);
+	depthFromLightLow = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, rtSizeLow, rtSizeLow, "depthFromLight", DXGI_FORMAT_R32_FLOAT);
 }
 
 void Shadow::Execute()
 {
 	ClearRTTs();
 
-	CalculateSize();
+	CalculateSizeNew();
 
-	depthFromLight->SetRTOnce(0);
+	//High
+	DescViewport(rtSizeHigh);
+	lightSpaceViewProj->Update(&lightCamHigh, sizeof(Data));
+
+	pipeline->SetViewPortOnce(&viewPort);
+
+	pipeline->SetCurrentRasterStateOnce(rasterState);
+
+	depthFromLightHigh->SetRTOnce(0);
 	lightSpaceViewProj->SetOnce(TL_Graphics::E_SHADER_TYPE::VS, 0);
-	pipeline->SetDepthStencilViewOnce(depthStencilView);
-
+	lightSpaceViewProj->Set(TL_Graphics::E_SHADER_TYPE::PS, 4);
+	pipeline->SetDepthStencilViewOnce(depthStencilViewHigh);
+	shadowShader->SetOnce();
 
 	pipeline->Draw();
+
+	pipeline->UnSetRenderTarget(0);
+
+	depthFromLightHigh->SetT(TL_Graphics::E_SHADER_TYPE::PS, 16);
+
+	//Mid
+	//DescViewport(rtSizeMid);
+	//lightSpaceViewProj->Update(&lightCamMid, sizeof(Data));
+
+	//pipeline->SetViewPortOnce(&viewPort);
+
+	//pipeline->SetCurrentRasterStateOnce(rasterState);
+
+	//depthFromLightMid->SetRTOnce(0);
+	//lightSpaceViewProj->SetOnce(TL_Graphics::E_SHADER_TYPE::VS, 0);
+	//lightSpaceViewProj->Set(TL_Graphics::E_SHADER_TYPE::PS, 5);
+	//pipeline->SetDepthStencilViewOnce(depthStencilViewMid);
+	//shadowShader->SetOnce();
+
+	//pipeline->Draw();
+
+	//pipeline->UnSetRenderTarget(0);
+
+	//depthFromLightMid->SetT(TL_Graphics::E_SHADER_TYPE::PS, 17);
+
+
+	////Low
+	//DescViewport(rtSizeLow);
+	//lightSpaceViewProj->Update(&lightCamLow, sizeof(Data));
+
+	//pipeline->SetViewPortOnce(&viewPort);
+
+	//pipeline->SetCurrentRasterStateOnce(rasterState);
+
+	//depthFromLightLow->SetRTOnce(0);
+	//lightSpaceViewProj->SetOnce(TL_Graphics::E_SHADER_TYPE::VS, 0);
+	//lightSpaceViewProj->Set(TL_Graphics::E_SHADER_TYPE::PS, 6);
+	//pipeline->SetDepthStencilViewOnce(depthStencilViewLow);
+	//shadowShader->SetOnce();
+
+	//pipeline->Draw();
+
+	//pipeline->UnSetRenderTarget(0);
+
+	//depthFromLightLow->SetT(TL_Graphics::E_SHADER_TYPE::PS, 18);
 }
 
 void Shadow::CreateDepthStateAndView()
@@ -224,8 +354,10 @@ void Shadow::CreateDepthStateAndView()
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
 	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
-	depthBufferDesc.Width = width;//todo : 여기
-	depthBufferDesc.Height = height;
+	depthBufferDesc.Width = rtSizeHigh;
+	depthBufferDesc.Height = rtSizeHigh;
+	//depthBufferDesc.Width = width;
+	//depthBufferDesc.Height = height;
 	depthBufferDesc.MipLevels = 1;
 	depthBufferDesc.ArraySize = 1;
 	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -236,17 +368,30 @@ void Shadow::CreateDepthStateAndView()
 	depthBufferDesc.CPUAccessFlags = 0;
 	depthBufferDesc.MiscFlags = 0;
 
-	resources->texture2Ds->Create(depthStencilBuffer, depthBufferDesc);
+	resources->texture2Ds->Create(depthStencilBufferHigh, depthBufferDesc);
 
-	resources->depthStencilViews->CreateDefault(depthStencilView, depthStencilBuffer);
+	resources->depthStencilViews->CreateDefault(depthStencilViewHigh, depthStencilBufferHigh);
 
 
+	depthBufferDesc.Width = rtSizeMid;
+	depthBufferDesc.Height = rtSizeMid;
+
+	resources->texture2Ds->Create(depthStencilBufferMid, depthBufferDesc);
+
+	resources->depthStencilViews->CreateDefault(depthStencilViewMid, depthStencilBufferMid);
+
+	depthBufferDesc.Width = rtSizeLow;
+	depthBufferDesc.Height = rtSizeLow;
+
+	resources->texture2Ds->Create(depthStencilBufferLow, depthBufferDesc);
+
+	resources->depthStencilViews->CreateDefault(depthStencilViewLow, depthStencilBufferLow);
 }
 
-void Shadow::DescViewport()
+void Shadow::DescViewport(float size)
 {
-	viewPort.Width = (float)width;
-	viewPort.Height = (float)height;
+	viewPort.Width = (float)size;
+	viewPort.Height = (float)size;
 	viewPort.MinDepth = 0.0f;
 	viewPort.MaxDepth = 1.0f;
 	viewPort.TopLeftX = 0.0f;
@@ -255,5 +400,45 @@ void Shadow::DescViewport()
 
 void Shadow::CreateShader()
 {
-	//shadowShader = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"", "LightDepth");
+	shadowShader = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_DepthFromLight.hlsl", "LightDepth");
+}
+
+void Shadow::CreateAndSetSamplerState()
+{
+	D3D11_SAMPLER_DESC desc = {};
+
+	desc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+	desc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+	desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+
+	desc.BorderColor[0] = 1.0f;
+	desc.BorderColor[1] = 1.0f;
+	desc.BorderColor[2] = 1.0f;
+	desc.BorderColor[3] = 1.0f;
+
+	desc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_LINEAR_MIP_POINT;
+	desc.ComparisonFunc = D3D11_COMPARISON_LESS_EQUAL;
+
+	resources->samplerStates->Get(samplerState, desc);
+
+	pipeline->SetCurrentSamplerState(samplerState, 4);
+}
+
+void Shadow::CreateRasterState()
+{
+	D3D11_RASTERIZER_DESC desc = {};
+
+	desc.DepthBias = 20000;
+	desc.DepthBiasClamp = 0.0f;
+	desc.SlopeScaledDepthBias = 1.0f;
+	desc.DepthClipEnable = true;
+
+	desc.AntialiasedLineEnable = false;
+	desc.CullMode = D3D11_CULL_BACK;
+	desc.FillMode = D3D11_FILL_SOLID;
+	desc.FrontCounterClockwise = true;
+	desc.MultisampleEnable = false;
+	desc.ScissorEnable = false;
+
+	resources->rasterStates->Get(rasterState, desc);
 }

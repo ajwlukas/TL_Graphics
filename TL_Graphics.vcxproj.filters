@@ -317,5 +317,6 @@
     <FxCompile Include="Shader\VS\TL_SkyBoxVS.hlsl" />
     <FxCompile Include="Shader\PS\TL_SkyBoxPS.hlsl" />
     <FxCompile Include="Shader\VS\TL_StaticMeshVS_Instanced.hlsl" />
+    <FxCompile Include="Shader\PS\TL_DepthFromLight.hlsl" />
   </ItemGroup>
 </Project>

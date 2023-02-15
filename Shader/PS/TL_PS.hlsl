@@ -40,7 +40,7 @@ PS_Out main(VS_Out surface)
     
     
     //표면으로 부터 눈으로 향하는 방향 벡터
-    float3 toEye = normalize(camPos - surface.pos_world);
+    float3 toEye = normalize(cam.camPos - surface.pos_world);
     
     //표면의 노말
     float3 normal = surface.normal_world;

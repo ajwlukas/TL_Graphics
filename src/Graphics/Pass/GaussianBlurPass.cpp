@@ -27,7 +27,6 @@ GaussianBlurPass::~GaussianBlurPass()
 void GaussianBlurPass::Set()
 {
 	rtt->SetRT(0);
-
 	shaderPS->Set();
 
 	dirInfoBuffer->Set(TL_Graphics::E_SHADER_TYPE::PS, 10);
@@ -52,11 +51,11 @@ void GaussianBlurPass::ClearRenderTargets()
 
 void GaussianBlurPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
-	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "GaussainBlur");
+	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice);
 }
 
 void GaussianBlurPass::CreateShader()
 {
-	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/GaussianBlur.hlsl", "GaussainBlur");
-
+	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/GaussianBlur.hlsl");
+\
 }
