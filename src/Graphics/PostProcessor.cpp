@@ -78,4 +78,18 @@ void PostProcessor::Execute()
 	lightAdaptionPass->Execute();*/
 
 	finalPass->Execute();
+	UnBindGBuffers();
+}
+
+void PostProcessor::UnBindGBuffers()
+{
+	for (int i = 0; i < 8; i++)
+	{
+		pipeline->SetShaderResource(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 20 + i);
+	}
+
+	pipeline->SetShaderResource(nullptr,
+		TL_Graphics::E_SHADER_TYPE::PS, 31);
+
+	pipeline->BindShaderResourcesPS();
 }

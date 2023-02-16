@@ -60,4 +60,6 @@ private:
 
 	FinalPass* finalPass;
 
+
+	void UnBindGBuffers();
 };

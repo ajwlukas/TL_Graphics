@@ -48,6 +48,12 @@ void RenderTargetTexture::SetRT(UINT slot)
 	RenderTarget::Set(slot);
 }
 
+ID3D11RenderTargetView* RenderTargetTexture::SetRTTEST(UINT slot)
+{
+
+	return RenderTarget::Set(slot);
+}
+
 void RenderTargetTexture::SetRTOnce(UINT slot)
 {
 	RenderTarget::SetOnce(slot);

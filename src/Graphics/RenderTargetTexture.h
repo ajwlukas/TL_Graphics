@@ -23,6 +23,9 @@ public:
 	// IRenderTargetTexture을(를) 통해 상속됨
 
 	virtual void SetRT(UINT slot) override;
+	ID3D11RenderTargetView* SetRTTEST(UINT slot) ;//todo : 일단 돌아가게만 하자.. 나중에 정리할 것
+	//ID3D11RenderTargetView* SetRT(UINT slot)
+
 	void SetRTOnce(UINT slot) ;
 
 	virtual void SetT(TL_Graphics::E_SHADER_TYPE type, UINT slot) override;

@@ -80,9 +80,11 @@ void Pipeline::SetStatesDefualt()
 
 }
 
-void Pipeline::SetCurrentRasterState(ID3D11RasterizerState* state)
+ID3D11RasterizerState* Pipeline::SetCurrentRasterState(ID3D11RasterizerState* state)
 {
+	ID3D11RasterizerState* old = currentRasterState;
 	currentRasterState = state;
+	return old;
 }
 
 void Pipeline::SetCurrentRasterStateOnce(ID3D11RasterizerState* state)
@@ -98,9 +100,11 @@ void Pipeline::SetCurrentRasterStateOnce(ID3D11RasterizerState* state)
 	);
 }
 
-void Pipeline::SetViewPort(D3D11_VIEWPORT* viewport)
+D3D11_VIEWPORT* Pipeline::SetViewPort(D3D11_VIEWPORT* viewport)
 {
+	D3D11_VIEWPORT* old = currentViewport;
 	currentViewport = viewport;
+	return old;
 }
 
 void Pipeline::SetViewPortOnce(D3D11_VIEWPORT* viewport)
@@ -172,12 +176,19 @@ void Pipeline::SetShaderResource(ShaderResource* shaderResource, TL_Graphics::E_
 {
 	if (type == TL_Graphics::E_SHADER_TYPE::VS)
 	{
-		currentShaderResourceVS[slot] = shaderResource->srv;
+		if (shaderResource)
+			currentShaderResourceVS[slot] = shaderResource->srv;
+		else
+			currentShaderResourceVS[slot] = nullptr;
 	}
 
 	else if (type == TL_Graphics::E_SHADER_TYPE::PS)
 	{
-		currentShaderResourcePS[slot] = shaderResource->srv;
+		if (shaderResource)
+			currentShaderResourcePS[slot] = shaderResource->srv;
+		else
+			currentShaderResourcePS[slot] = nullptr;
+
 	}
 }
 
@@ -248,7 +259,7 @@ void Pipeline::SetShaderOnce(ID3D11VertexShader* shader)
 
 void Pipeline::SetShaderOnce(ID3D11PixelShader* shader)
 {
-	ID3D11PixelShader* old= currentShaderPS;
+	ID3D11PixelShader* old = currentShaderPS;
 
 	currentShaderPS = shader;
 
@@ -288,8 +299,8 @@ void Pipeline::SetRenderTargetOnce(ID3D11RenderTargetView* rtv, UINT slot)
 	reservations.emplace_back(
 		[=]()
 		{
-			for(int i = 0; i < MAX_RENDERTARGET; i++)
-			SetRenderTarget(old[i], slot);
+			for (int i = 0; i < MAX_RENDERTARGET; i++)
+				SetRenderTarget(old[i], slot);
 		}
 	);
 
@@ -351,37 +362,35 @@ void Pipeline::SetCurrentDepthStencilState(Resource<ID3D11DepthStencilState> sta
 void Pipeline::SetPipeline()
 {
 	//OM
-	dc->OMSetRenderTargets(MAX_RENDERTARGET, currentRenderTarget, currentDepthStencilView);
-	dc->OMSetBlendState(currentBlendState, NULL, 0xFF);
-	dc->OMSetDepthStencilState(currentDepthStencilState, 1);
+	BindRenderTargets();
+	BindBlendStates();
+	BindDepthStencilStates();
 
 	//IA
-	dc->IASetInputLayout(currentInputLayout);
-	dc->IASetPrimitiveTopology(currentPrimitiveTopology);
-	dc->IASetVertexBuffers(0, 1, currentVertexBufferInfo.ptrBuffer, currentVertexBufferInfo.strides, currentVertexBufferInfo.offset);
-
-	dc->IASetIndexBuffer(currentIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	BindInputLayouts();
+	BindPrimitiveTopology();
+	BindVertexBuffers();
+	BindIndexBuffer();
 
 	//VS
-	dc->VSSetConstantBuffers(0, 14, currentConstantBuffersVS);
-	dc->VSSetShaderResources(0, 128, currentShaderResourceVS);
-	dc->VSSetShader(currentShaderVS, 0, 0);
+	BindConstantBuffersVS();
+	BindShaderResourcesVS();
+	BindShaderVS();
 
 	//RS
-	dc->RSSetState(currentRasterState);
-	dc->RSSetViewports(1, currentViewport);
+	BindRasterizerStates();
+	BindViewports();
 
 	//PS
-	dc->PSSetConstantBuffers(0, 14, currentConstantBuffersPS);
-	dc->PSSetShaderResources(0, 128, currentShaderResourcePS);
-	dc->PSSetShader(currentShaderPS, 0, 0);
-	dc->PSSetSamplers(0, 16, currentSamplerStates);
+	BindConstantBuffersPS();
+	BindShaderResourcesPS();
+	BindShaderPS();
+	BindSamplers();
 }
 
 void Pipeline::Draw()
 {
 	SetPipeline();
-
 
 	dc->DrawIndexed(currentMesh->GetIndexCount(), 0, 0);
 
@@ -516,4 +525,84 @@ void Pipeline::SetDepthEnabled()
 void Pipeline::SetDepthDisabled()
 {
 	SetCurrentDepthStencilState(depthDisabledDepthStencilState);
+}
+
+void Pipeline::BindRenderTargets()
+{
+	dc->OMSetRenderTargets(MAX_RENDERTARGET, currentRenderTarget, currentDepthStencilView);
+}
+
+void Pipeline::BindBlendStates()
+{
+	dc->OMSetBlendState(currentBlendState, NULL, 0xFF);
+}
+
+void Pipeline::BindDepthStencilStates()
+{
+	dc->OMSetDepthStencilState(currentDepthStencilState, 1);
+}
+
+void Pipeline::BindInputLayouts()
+{
+	dc->IASetInputLayout(currentInputLayout);
+}
+
+void Pipeline::BindPrimitiveTopology()
+{
+	dc->IASetPrimitiveTopology(currentPrimitiveTopology);
+}
+
+void Pipeline::BindVertexBuffers()
+{
+	dc->IASetVertexBuffers(0, 1, currentVertexBufferInfo.ptrBuffer, currentVertexBufferInfo.strides, currentVertexBufferInfo.offset);
+}
+
+void Pipeline::BindIndexBuffer()
+{
+	dc->IASetIndexBuffer(currentIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+}
+
+void Pipeline::BindConstantBuffersVS()
+{
+	dc->VSSetConstantBuffers(0, 14, currentConstantBuffersVS);
+}
+
+void Pipeline::BindShaderResourcesVS()
+{
+	dc->VSSetShaderResources(0, 128, currentShaderResourceVS);
+}
+
+void Pipeline::BindShaderVS()
+{
+	dc->VSSetShader(currentShaderVS, 0, 0);
+}
+
+void Pipeline::BindRasterizerStates()
+{
+	dc->RSSetState(currentRasterState);
+}
+
+void Pipeline::BindViewports()
+{
+	dc->RSSetViewports(1, currentViewport);
+}
+
+void Pipeline::BindConstantBuffersPS()
+{
+	dc->PSSetConstantBuffers(0, 14, currentConstantBuffersPS);
+}
+
+void Pipeline::BindShaderResourcesPS()
+{
+	dc->PSSetShaderResources(0, 128, currentShaderResourcePS);
+}
+
+void Pipeline::BindShaderPS()
+{
+	dc->PSSetShader(currentShaderPS, 0, 0);
+}
+
+void Pipeline::BindSamplers()
+{
+	dc->PSSetSamplers(0, 16, currentSamplerStates);
 }

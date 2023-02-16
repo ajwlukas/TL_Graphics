@@ -6,7 +6,5 @@
 
 float4 main(VS_Out_ScreenSpace surface) : SV_TARGET0
 {
-	
     return interPass.Sample(Sampler_Clamp, surface.uv);
-
 }

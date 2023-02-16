@@ -2,21 +2,23 @@
 #include "Shadow.h"
 
 Shadow::Shadow(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, Camera* camera, UINT directionalShadowNum)
-	:directionalShadowNum(directionalShadowNum)
-	, dc(dc)
+	: dc(dc)
 	, resources(resources)
 	, pipeline(pipeline)
 	, camera(camera)
 {
-	lightSpaceViewProj = new ConstantBuffer(dc, resources, pipeline, &lightCamHigh, sizeof(Data), "LightCam");
+	lightSpaceViewProjHigh = new ConstantBuffer(dc, resources, pipeline, &lightCamHigh, sizeof(Data));
+	lightSpaceViewProjHigh->SetDebugName("LightCamHigh");
+	lightSpaceViewProjMid = new ConstantBuffer(dc, resources, pipeline, &lightCamMid, sizeof(Data));
+	lightSpaceViewProjMid->SetDebugName("LightCamMid");
+	lightSpaceViewProjLow = new ConstantBuffer(dc, resources, pipeline, &lightCamLow, sizeof(Data));
+	lightSpaceViewProjLow->SetDebugName("LightCamLow");
 
 	CreateRTTs(resizeNotice);
 	CreateDepthStateAndView();
 	CreateShader();
-	CreateDepthStateAndView();
 	CreateAndSetSamplerState();
 	CreateRasterState();
-
 
 	dir.Normalize();
 
@@ -27,19 +29,23 @@ Shadow::Shadow(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline
 
 Shadow::~Shadow()
 {
-	SAFE_DELETE(lightSpaceViewProj);
+	SAFE_DELETE(lightSpaceViewProjHigh);
+	SAFE_DELETE(lightSpaceViewProjMid);
+	SAFE_DELETE(lightSpaceViewProjLow);
 	SAFE_DELETE(depthFromLightHigh);
 	SAFE_DELETE(depthFromLightMid);
 	SAFE_DELETE(depthFromLightLow);
 	SAFE_DELETE(shadowShader);
 }
 
-void Shadow::CalculateSize(TL_Math::Vector3 LTN, TL_Math::Vector3 RTN, TL_Math::Vector3 LBN, TL_Math::Vector3 RBN,
+void Shadow::CalculateSizeOfFrustum(TL_Math::Vector3 LTN, TL_Math::Vector3 RTN, TL_Math::Vector3 LBN, TL_Math::Vector3 RBN,
 	TL_Math::Vector3 LTF, TL_Math::Vector3 RTF, TL_Math::Vector3 LBF, TL_Math::Vector3 RBF, TL_Math::Vector3& middlePoint, float& width, float& height)
 {
-	middlePoint = camera->data.camPos;
-
+	middlePoint = {};
 	//ºûÀÇ ¿ª¹æÇâÀ» ÃÄ´Ù º¸°í ÀÖ´Â ÁÂÇ¥°è¸¦ ±¸ÇÔ
+
+	lightTransformHigh = TL_Math::Matrix(axisX, axisY, axisZ);
+
 
 	{//ºû ÁÂÇ¥°è xÃàÀ¸·Î Åõ¿µ
 		float max = -FLT_MAX;
@@ -87,7 +93,7 @@ void Shadow::CalculateSize(TL_Math::Vector3 LTN, TL_Math::Vector3 RTN, TL_Math::
 	}
 
 	{//ºû ÁÂÇ¥°è yÃàÀ¸·Î Åõ¿µ
-		float max = FLT_MIN;
+		float max = -FLT_MAX;
 		float min = FLT_MAX;
 
 		float axisScalar = 0.0f;
@@ -132,7 +138,7 @@ void Shadow::CalculateSize(TL_Math::Vector3 LTN, TL_Math::Vector3 RTN, TL_Math::
 	}
 
 	{//ºû ÁÂÇ¥°è zÃàÀ¸·Î Åõ¿µ
-		float max = FLT_MIN;
+		float max = -FLT_MAX;
 		float min = FLT_MAX;
 
 		float axisScalar = 0.0f;
@@ -169,7 +175,7 @@ void Shadow::CalculateSize(TL_Math::Vector3 LTN, TL_Math::Vector3 RTN, TL_Math::
 		max = max > axisScalar ? max : axisScalar;
 		min = min < axisScalar ? min : axisScalar;
 
-		depth = max - min;
+		//depth = max - min;
 
 		//frustumÀÇ ¿Ü°ûÀ¸·Î °¡°Ô²û
 		TL_Math::Vector3 temp = XMVectorScale(axisZ, max - max_depth);
@@ -178,22 +184,21 @@ void Shadow::CalculateSize(TL_Math::Vector3 LTN, TL_Math::Vector3 RTN, TL_Math::
 	}
 }
 
-void Shadow::CalculateSizeNew()
+void Shadow::CalculateSizeOfFrustums()
 {
-	float div0 = 0.0f;
 	float div1 = 0.3f;
 	float div2 = 0.6f;
 	float div3 = 1.0f;
 
-	TL_Math::Vector3 GapLT = camera->worldPoints.LTF - camera->worldPoints.LTN;
-	TL_Math::Vector3 GapRT = camera->worldPoints.RTF - camera->worldPoints.RTN;
-	TL_Math::Vector3 GapLB = camera->worldPoints.LBF - camera->worldPoints.LBN;
-	TL_Math::Vector3 GapRB = camera->worldPoints.RBF - camera->worldPoints.RBN;
+	TL_Math::Vector3 GapLT = camera->worldPoints.LTF - camera->data.camPos;
+	TL_Math::Vector3 GapRT = camera->worldPoints.RTF - camera->data.camPos;
+	TL_Math::Vector3 GapLB = camera->worldPoints.LBF - camera->data.camPos;
+	TL_Math::Vector3 GapRB = camera->worldPoints.RBF - camera->data.camPos;
 
-	TL_Math::Vector3 LT0 = camera->worldPoints.LTN;
-	TL_Math::Vector3 RT0 = camera->worldPoints.RTN;
-	TL_Math::Vector3 LB0 = camera->worldPoints.LBN;
-	TL_Math::Vector3 RB0 = camera->worldPoints.RBN;
+	TL_Math::Vector3 LT0 = camera->data.camPos;
+	TL_Math::Vector3 RT0 = camera->data.camPos;
+	TL_Math::Vector3 LB0 = camera->data.camPos;
+	TL_Math::Vector3 RB0 = camera->data.camPos;
 
 	TL_Math::Vector3 LT1 = LT0 + div1 * GapLT;
 	TL_Math::Vector3 RT1 = RT0 + div1 * GapRT;
@@ -214,7 +219,7 @@ void Shadow::CalculateSizeNew()
 	float width = 0, height = 0;
 
 	//High
-	CalculateSize(LT0, RT0, LB0, RB0, LT1, RT1, LB1, RB1, middlePoint, width, height);
+	CalculateSizeOfFrustum(LT0, RT0, LB0, RB0, LT1, RT1, LB1, RB1, middlePoint, width, height);
 
 	lightTransformHigh = TL_Math::Matrix(axisX, axisY, axisZ);
 
@@ -230,7 +235,7 @@ void Shadow::CalculateSizeNew()
 	lightCamHigh.frustumFar = max_depth;
 
 	//Mid
-	CalculateSize(LT1, RT1, LB1, RB1, LT2, RT2, LB2, RB2, middlePoint, width, height);
+	CalculateSizeOfFrustum(LT1, RT1, LB1, RB1, LT2, RT2, LB2, RB2, middlePoint, width, height);
 
 	lightTransformMid = TL_Math::Matrix(axisX, axisY, axisZ);
 
@@ -247,7 +252,7 @@ void Shadow::CalculateSizeNew()
 
 
 	//Low
-	CalculateSize(LT2, RT2, LB2, RB2, LT3, RT3, LB3, RB3, middlePoint, width, height);
+	CalculateSizeOfFrustum(LT2, RT2, LB2, RB2, LT3, RT3, LB3, RB3, middlePoint, width, height);
 
 	lightTransformLow = TL_Math::Matrix(axisX, axisY, axisZ);
 
@@ -276,77 +281,93 @@ void Shadow::ClearRTTs()
 
 void Shadow::CreateRTTs(OnResizeNotice* resizeNotice)
 {
-	depthFromLightHigh = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, rtSizeHigh, rtSizeHigh, "depthFromLight", DXGI_FORMAT_R32_FLOAT);
-	depthFromLightMid = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, rtSizeMid, rtSizeMid, "depthFromLight", DXGI_FORMAT_R32_FLOAT);
-	depthFromLightLow = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, rtSizeLow, rtSizeLow, "depthFromLight", DXGI_FORMAT_R32_FLOAT);
+	depthFromLightHigh = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, rtSizeHigh, rtSizeHigh, "depthFromLightHigh", DXGI_FORMAT_R32_FLOAT);
+	depthFromLightMid = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, rtSizeMid, rtSizeMid, "depthFromLightMid", DXGI_FORMAT_R32_FLOAT);
+	depthFromLightLow = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, rtSizeLow, rtSizeLow, "depthFromLightLow", DXGI_FORMAT_R32_FLOAT);
 }
 
 void Shadow::Execute()
 {
 	ClearRTTs();
 
-	CalculateSizeNew();
+	CalculateSizeOfFrustums();
+
+	ID3D11RasterizerState* oldRasteriszerState = pipeline->SetCurrentRasterState(rasterState);
+	ID3D11PixelShader* oldPiexelShader = (ID3D11PixelShader*)shadowShader->SetTest();
+
+	pipeline->SetShaderResource(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 16);
+	pipeline->SetShaderResource(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 17);
+	pipeline->SetShaderResource(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 18);
+	pipeline->BindShaderResourcesPS();
 
 	//High
 	DescViewport(rtSizeHigh);
-	lightSpaceViewProj->Update(&lightCamHigh, sizeof(Data));
+	D3D11_VIEWPORT* oldViewPort = pipeline->SetViewPort(&viewPort);
 
-	pipeline->SetViewPortOnce(&viewPort);
+	ID3D11RenderTargetView* oldTargets[8] = {};
+	oldTargets[0] = depthFromLightHigh->SetRTTEST(0);
+	for (int i = 1; i < 8; i++)
+	{
+		oldTargets[i] = pipeline->SetRenderTarget(nullptr, i);
+	}
+	ID3D11DepthStencilView* oldDSView = pipeline->SetDepthStencilView(depthStencilViewHigh);
+	//pipeline->BindRenderTargets();
 
-	pipeline->SetCurrentRasterStateOnce(rasterState);
 
-	depthFromLightHigh->SetRTOnce(0);
-	lightSpaceViewProj->SetOnce(TL_Graphics::E_SHADER_TYPE::VS, 0);
-	lightSpaceViewProj->Set(TL_Graphics::E_SHADER_TYPE::PS, 4);
-	pipeline->SetDepthStencilViewOnce(depthStencilViewHigh);
-	shadowShader->SetOnce();
+	lightSpaceViewProjHigh->Update(&lightCamHigh, sizeof(Data));
+	ID3D11Buffer* oldConstBuffer = lightSpaceViewProjHigh->SetTest(TL_Graphics::E_SHADER_TYPE::VS, 0);
+	lightSpaceViewProjHigh->Set(TL_Graphics::E_SHADER_TYPE::PS, 4);
 
 	pipeline->Draw();
 
 	pipeline->UnSetRenderTarget(0);
-
 	depthFromLightHigh->SetT(TL_Graphics::E_SHADER_TYPE::PS, 16);
 
 	//Mid
-	//DescViewport(rtSizeMid);
-	//lightSpaceViewProj->Update(&lightCamMid, sizeof(Data));
+	DescViewport(rtSizeMid);
+	pipeline->SetViewPort(&viewPort);
 
-	//pipeline->SetViewPortOnce(&viewPort);
+	depthFromLightMid->SetRTTEST(0);
+	
+	pipeline->SetDepthStencilView(depthStencilViewMid);
 
-	//pipeline->SetCurrentRasterStateOnce(rasterState);
+	lightSpaceViewProjMid->Update(&lightCamMid, sizeof(Data));
+	lightSpaceViewProjMid->SetTest(TL_Graphics::E_SHADER_TYPE::VS, 0);
+	lightSpaceViewProjMid->Set(TL_Graphics::E_SHADER_TYPE::PS, 5);
 
-	//depthFromLightMid->SetRTOnce(0);
-	//lightSpaceViewProj->SetOnce(TL_Graphics::E_SHADER_TYPE::VS, 0);
-	//lightSpaceViewProj->Set(TL_Graphics::E_SHADER_TYPE::PS, 5);
-	//pipeline->SetDepthStencilViewOnce(depthStencilViewMid);
-	//shadowShader->SetOnce();
+	pipeline->Draw();
 
-	//pipeline->Draw();
+	pipeline->UnSetRenderTarget(0);
+	depthFromLightMid->SetT(TL_Graphics::E_SHADER_TYPE::PS, 17);
 
-	//pipeline->UnSetRenderTarget(0);
+	//Low
+	DescViewport(rtSizeLow);
+	pipeline->SetViewPort(&viewPort);
 
-	//depthFromLightMid->SetT(TL_Graphics::E_SHADER_TYPE::PS, 17);
+	depthFromLightLow->SetRTTEST(0);
+	
+	pipeline->SetDepthStencilView(depthStencilViewLow);
+
+	lightSpaceViewProjLow->Update(&lightCamLow, sizeof(Data));
+	lightSpaceViewProjLow->SetTest(TL_Graphics::E_SHADER_TYPE::VS, 0);
+	lightSpaceViewProjLow->Set(TL_Graphics::E_SHADER_TYPE::PS, 6);
+
+	pipeline->Draw();
+
+	pipeline->UnSetRenderTarget(0);
+	depthFromLightLow->SetT(TL_Graphics::E_SHADER_TYPE::PS, 18);
 
 
-	////Low
-	//DescViewport(rtSizeLow);
-	//lightSpaceViewProj->Update(&lightCamLow, sizeof(Data));
-
-	//pipeline->SetViewPortOnce(&viewPort);
-
-	//pipeline->SetCurrentRasterStateOnce(rasterState);
-
-	//depthFromLightLow->SetRTOnce(0);
-	//lightSpaceViewProj->SetOnce(TL_Graphics::E_SHADER_TYPE::VS, 0);
-	//lightSpaceViewProj->Set(TL_Graphics::E_SHADER_TYPE::PS, 6);
-	//pipeline->SetDepthStencilViewOnce(depthStencilViewLow);
-	//shadowShader->SetOnce();
-
-	//pipeline->Draw();
-
-	//pipeline->UnSetRenderTarget(0);
-
-	//depthFromLightLow->SetT(TL_Graphics::E_SHADER_TYPE::PS, 18);
+	//Return To oldStates
+	pipeline->SetViewPort(oldViewPort);
+	pipeline->SetConstantBuffer(oldConstBuffer, TL_Graphics::E_SHADER_TYPE::VS, 0);
+	pipeline->SetCurrentRasterState(oldRasteriszerState);
+	for (int i = 0; i < 8; i++)
+	{
+		pipeline->SetRenderTarget(oldTargets[i], i);
+	}
+	pipeline->SetDepthStencilView(oldDSView);
+	pipeline->SetShader(oldPiexelShader);
 }
 
 void Shadow::CreateDepthStateAndView()

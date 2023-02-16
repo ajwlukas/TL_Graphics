@@ -10,7 +10,7 @@ VS_Out main(VS_In_StaticMesh v)
 	ret.pos_world = LocalToWorld(v.pos_local);
     ret.pos_view = WorldToView(ret.pos_world);
     ret.pos_NDC = ViewToNDC(ret.pos_view);
-    ret.linearDepth = ret.pos_view / frustumFar;
+    ret.linearDepth = ret.pos_view.z / frustumFar;
     
     ret.uv = v.uv;
 

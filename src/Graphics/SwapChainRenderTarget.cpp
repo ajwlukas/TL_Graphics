@@ -18,9 +18,9 @@ void SwapChainRenderTarget::Init(uint32_t width, uint32_t height)
 	OnResize(width, height);
 }
 
-void SwapChainRenderTarget::Set(UINT slot)
+ID3D11RenderTargetView* SwapChainRenderTarget::Set(UINT slot)
 {
-	pipeline->SetRenderTarget(rtv, slot);
+	return pipeline->SetRenderTarget(rtv, slot);
 }
 
 void SwapChainRenderTarget::OnResize(uint32_t width, uint32_t height)

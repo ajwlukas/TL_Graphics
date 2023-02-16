@@ -17,9 +17,9 @@ RenderTarget::~RenderTarget()
 {
 }
 
-void RenderTarget::Set(UINT slot)
+ID3D11RenderTargetView* RenderTarget::Set(UINT slot)
 {
-	pipeline->SetRenderTarget(rtv, slot);
+	return pipeline->SetRenderTarget(rtv, slot);
 }
 
 void RenderTarget::SetOnce(UINT slot)

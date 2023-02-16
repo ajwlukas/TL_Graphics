@@ -45,13 +45,13 @@ public:
 
 	void SetStatesDefualt();
 
-	void SetCurrentRasterState(ID3D11RasterizerState* state);
+	ID3D11RasterizerState* SetCurrentRasterState(ID3D11RasterizerState* state);
 	void SetCurrentRasterStateOnce(ID3D11RasterizerState* state);
 	void SetCurrentDepthStencilState(Resource<ID3D11DepthStencilState> state);
 	void SetCurrentBlendState(Resource<ID3D11BlendState> state);
 	void SetCurrentSamplerState(ID3D11SamplerState* state, UINT slot);
 
-	void SetViewPort(D3D11_VIEWPORT* viewport);
+	D3D11_VIEWPORT* SetViewPort(D3D11_VIEWPORT* viewport);
 	void SetViewPortOnce(D3D11_VIEWPORT* viewport);
 
 	ID3D11Buffer* SetConstantBuffer(ID3D11Buffer* constantBuffer, TL_Graphics::E_SHADER_TYPE type, UINT slot);
@@ -169,6 +169,32 @@ public:
 
 	void SetDepthEnabled();
 	void SetDepthDisabled();
+
+	//OM
+	void BindRenderTargets();
+	void BindBlendStates();
+	void BindDepthStencilStates();
+
+	//IA
+	void BindInputLayouts();
+	void BindPrimitiveTopology();
+	void BindVertexBuffers();
+	void BindIndexBuffer();
+
+	//VS
+	void BindConstantBuffersVS();
+	void BindShaderResourcesVS();
+	void BindShaderVS();
+
+	//RS
+	void BindRasterizerStates();
+	void BindViewports();
+
+	//PS
+	void BindConstantBuffersPS();
+	void BindShaderResourcesPS();
+	void BindShaderPS();
+	void BindSamplers();
 
 private:
 	vector<function<void()>> reservations;//calls after one drawcall

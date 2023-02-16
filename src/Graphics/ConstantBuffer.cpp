@@ -3,7 +3,7 @@
 
 #include "Pipeline.h"
 
-ConstantBuffer::ConstantBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, void* data, size_t dataSize, std::string debugName)
+ConstantBuffer::ConstantBuffer(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, void* data, size_t dataSize)
 	:dc(dc)
 	,resources(resources)
 	,pipeline(pipeline)
@@ -21,8 +21,6 @@ ConstantBuffer::ConstantBuffer(ID3D11DeviceContext* dc, Resources* resources, Pi
 
 	resources->buffers->Create(buffer, desc, &initData);
 
-	if(debugName.length() >0)
-	buffer.resource->SetPrivateData(WKPDID_D3DDebugObjectName, debugName.length(), debugName.c_str());
 }
 
 ConstantBuffer::~ConstantBuffer()
@@ -33,6 +31,11 @@ void ConstantBuffer::Set(TL_Graphics::E_SHADER_TYPE type,
 	UINT slot)
 {
 	pipeline->SetConstantBuffer(buffer, type, slot);
+}
+
+ID3D11Buffer* ConstantBuffer::SetTest(TL_Graphics::E_SHADER_TYPE type, UINT slot)
+{
+	return pipeline->SetConstantBuffer(buffer, type, slot);
 }
 
 void ConstantBuffer::SetOnce(TL_Graphics::E_SHADER_TYPE type, UINT slot)
@@ -52,4 +55,9 @@ void ConstantBuffer::Update(void* data, size_t dataSize)
 
 	// GPU Access UnLock Buffer Data..
 	dc->Unmap(buffer, 0);
+}
+
+void ConstantBuffer::SetDebugName(std::string debugName)
+{
+		buffer.resource->SetPrivateData(WKPDID_D3DDebugObjectName, debugName.length(), debugName.c_str());
 }

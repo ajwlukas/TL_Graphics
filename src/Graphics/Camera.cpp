@@ -1,16 +1,16 @@
 #include "pch_dx_11.h"
 #include "Camera.h"
 
-constexpr float pi  = 3.141592f;
+constexpr float pi = 3.141592f;
 
 Camera::Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, float fov, float frustumNear, float frustumFar)
 	:data{}
-	,fov(fov)
-	,frustumNear(frustumNear)
-	,frustumFar(frustumFar)
+	, fov(fov)
+	, frustumNear(frustumNear)
+	, frustumFar(frustumFar)
 {
 	fovInRadian = pi / 180.0f * fov;
-	
+
 	resizeNotice->AddObserver(this);
 
 	aspectRatio = resizeNotice->GetWidth() / (float)resizeNotice->GetHeight();
@@ -24,7 +24,8 @@ Camera::Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline
 	data.camPos = { 0,0,0 };
 	data.frustumFar = frustumFar;
 
-	viewprojBuffer = new ConstantBuffer(dc, resources, pipeline,  &data, sizeof(Data),"Camera");
+	viewprojBuffer = new ConstantBuffer(dc, resources, pipeline, &data, sizeof(Data));
+	viewprojBuffer->SetDebugName("Camera");
 
 	CalculatePoints();
 	CalculateWorldPoints();
@@ -114,20 +115,20 @@ void Camera::CalculatePoints()
 	float farY = tanf(fovInRadian / 2) * farZ;
 	float farX = aspectRatio * farY;
 
-	points.RTF = {	farX,	farY,	farZ };
-	points.LTF = {-	farX,	farY,	farZ };
-	points.RBF = {	farX,-	farY,	farZ };
-	points.LBF = {-	farX,-	farY,	farZ };
+	points.RTF = { farX,	farY,	farZ };
+	points.LTF = { -farX,	farY,	farZ };
+	points.RBF = { farX,-farY,	farZ };
+	points.LBF = { -farX,-farY,	farZ };
 
 
 	float nearZ = frustumNear;
 	float nearY = tanf(fovInRadian / 2) * nearZ;
 	float nearX = aspectRatio * nearY;
 
-	points.RTN = {	nearX,	nearY,	nearZ };
-	points.LTN = {-	nearX,	nearY,	nearZ };
-	points.RBN = {	nearX,-	nearY,	nearZ };
-	points.LBN = {-	nearX,-	nearY,	nearZ };
+	points.RTN = { nearX,	nearY,	nearZ };
+	points.LTN = { -nearX,	nearY,	nearZ };
+	points.RBN = { nearX,-nearY,	nearZ };
+	points.LBN = { -nearX,-nearY,	nearZ };
 }
 
 void Camera::CalculateWorldPoints()
@@ -141,5 +142,15 @@ void Camera::CalculateWorldPoints()
 	worldPoints.LTN = XMVector4Transform(points.LTN, data.viewInv);
 	worldPoints.RBN = XMVector4Transform(points.RBN, data.viewInv);
 	worldPoints.LBN = XMVector4Transform(points.LBN, data.viewInv);
+
+	worldPoints.RTF += data.camPos;
+	worldPoints.LTF += data.camPos;
+	worldPoints.RBF += data.camPos;
+	worldPoints.LBF += data.camPos;
+
+	worldPoints.RTN += data.camPos;
+	worldPoints.LTN += data.camPos;
+	worldPoints.RBN += data.camPos;
+	worldPoints.LBN += data.camPos;
 }
 

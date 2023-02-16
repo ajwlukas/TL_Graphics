@@ -18,7 +18,7 @@
 
 cbuffer material : register(b12)
 {
-	float lodLevel;
+    float lodLevel;
 }
 
 
@@ -78,40 +78,40 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
             if (depthLinear <= 0.3f)
             {
                 info = shadowCamHigh;
-            //}
-            //else if (depthLinear <= 0.6f)
-            //{
-            //    info = shadowCamMid;
-            //}
-            //else
-            //{
-            //    info = shadowCamLow;
-            //}
-            
-                float3 shadowViewPos = mul(info.view, float4(pos_world, 1.0f)).xyz;
-                float3 shadowNDCPos = mul(info.proj, float4(shadowViewPos, 1.0f)).xyz;
-            
-                float2 UV = float2((shadowNDCPos.x + 1) * 0.5f, (-shadowNDCPos.y + 1) * 0.5f);
-            
-                float depth = shadowNDCPos.z;
-            
-                if (depthLinear <= 0.3f)
-                {
-                    ratio = depthFromLightHigh.SampleCmpLevelZero(Sampler_Comp, UV, depth).r;
-                }
-                else if (depthLinear <= 0.6f)
-                {
-                    ratio = depthFromLightMid.SampleCmpLevelZero(Sampler_Comp, UV, depth).r;
-                }
-                else
-                {
-                    ratio = depthFromLightLow.SampleCmpLevelZero(Sampler_Comp, UV, depth).r;
-                }
-            
-            
-                if (ratio == 0.0f)
-                    continue;
             }
+            else if (depthLinear <= 0.6f)
+            {
+                info = shadowCamMid;
+            }
+            else
+            {
+                info = shadowCamLow;
+            }
+            
+            float3 shadowViewPos = mul(info.view, float4(pos_world, 1.0f)).xyz;
+            float3 shadowNDCPos = mul(info.proj, float4(shadowViewPos, 1.0f)).xyz;
+            
+            float2 UV = float2((shadowNDCPos.x + 1) * 0.5f, (-shadowNDCPos.y + 1) * 0.5f);
+            
+            float depth = shadowNDCPos.z;
+            
+            if (depthLinear <= 0.3f)
+            {
+                ratio = depthFromLightHigh.SampleCmpLevelZero(Sampler_Comp, UV, depth).r;
+            }
+            else if (depthLinear <= 0.6f)
+            {
+                ratio = depthFromLightMid.SampleCmpLevelZero(Sampler_Comp, UV, depth).r;
+            }
+            else
+            {
+                ratio = depthFromLightLow.SampleCmpLevelZero(Sampler_Comp, UV, depth).r;
+            }
+            
+            
+            if (ratio == 0.0f)
+                continue;
+            
         }
         
         
@@ -173,7 +173,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
     
     //환경으로부터의 간접광들, environmentMap을 광원으로 삼음
-	float3 indirectLighting = 0.0f;
+    float3 indirectLighting = 0.0f;
     
     {
         //Diffuse
@@ -216,7 +216,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
         indirectLighting = specular + diffuse;
 	  
         
-		}
+    }
     
 	//indirectLighting = LinearTosRGB(indirectLighting);
     

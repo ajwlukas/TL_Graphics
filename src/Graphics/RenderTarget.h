@@ -14,7 +14,7 @@ public:
 	RenderTarget(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::string debugName = "");
 	virtual ~RenderTarget();
 
-	virtual void Set(UINT slot) ;
+	virtual ID3D11RenderTargetView* Set(UINT slot) ;
 	void SetOnce(UINT slot);
 	
 	void Clear(TL_Math::Vector4 color = { 0,0,0,0 });
