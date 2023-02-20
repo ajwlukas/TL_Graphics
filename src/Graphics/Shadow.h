@@ -12,11 +12,11 @@
 
 #include "RenderTargetTexture.h"
 
-const float max_depth = 8000.0f;
+const float max_depth = 20000.0f;
 
 const UINT rtSizeHigh = 3000;
-const UINT rtSizeMid = 500;
-const UINT rtSizeLow = 100;
+const UINT rtSizeMid = 2000;
+const UINT rtSizeLow = 1000;
 
 class Shadow
 {
@@ -25,6 +25,7 @@ public:
 	~Shadow();
 
 	void Execute();
+	void Execute(UINT indexCount, UINT startIndexLocation);
 private:
 	friend class Pipeline;
 	ID3D11DeviceContext* dc;
@@ -35,7 +36,7 @@ private:
 		TL_Math::Vector3 LTF, TL_Math::Vector3 RTF, TL_Math::Vector3 LBF, TL_Math::Vector3 RBF, TL_Math::Vector3& middlePoint, float& width, float& height);
 	void CalculateSizeOfFrustums();
 
-	TL_Math::Vector3 dir = { 0,0,1 };//일단 빛 생각하지 말아보자
+	TL_Math::Vector3 dir = { -1,-1, -1 };//일단 빛 생각하지 말아보자
 
 	__declspec(align(16)) struct Data
 	{
@@ -78,7 +79,6 @@ private:
 	Data lightCamLow;
 	TL_Math::Matrix lightTransformLow;
 
-	void ClearRTTs();
 	void CreateRTTs(OnResizeNotice* resizeNotice);
 	void CreateDepthStateAndView();
 	void DescViewport(float size);
@@ -89,4 +89,7 @@ private:
 	TL_Math::Vector3 axisZ;
 	TL_Math::Vector3 axisX;
 	TL_Math::Vector3 axisY;
+
+public:
+	void ClearRTTs();
 };

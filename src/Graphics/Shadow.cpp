@@ -38,8 +38,7 @@ Shadow::~Shadow()
 	SAFE_DELETE(shadowShader);
 }
 
-void Shadow::CalculateSizeOfFrustum(TL_Math::Vector3 LTN, TL_Math::Vector3 RTN, TL_Math::Vector3 LBN, TL_Math::Vector3 RBN,
-	TL_Math::Vector3 LTF, TL_Math::Vector3 RTF, TL_Math::Vector3 LBF, TL_Math::Vector3 RBF, TL_Math::Vector3& middlePoint, float& width, float& height)
+void Shadow::CalculateSizeOfFrustum(TL_Math::Vector3 LTN, TL_Math::Vector3 RTN, TL_Math::Vector3 LBN, TL_Math::Vector3 RBN,	TL_Math::Vector3 LTF, TL_Math::Vector3 RTF, TL_Math::Vector3 LBF, TL_Math::Vector3 RBF, TL_Math::Vector3& middlePoint, float& width, float& height)
 {
 	middlePoint = {};
 	//빛의 역방향을 쳐다 보고 있는 좌표계를 구함
@@ -288,8 +287,6 @@ void Shadow::CreateRTTs(OnResizeNotice* resizeNotice)
 
 void Shadow::Execute()
 {
-	ClearRTTs();
-
 	CalculateSizeOfFrustums();
 
 	ID3D11RasterizerState* oldRasteriszerState = pipeline->SetCurrentRasterState(rasterState);
@@ -353,6 +350,88 @@ void Shadow::Execute()
 	lightSpaceViewProjLow->Set(TL_Graphics::E_SHADER_TYPE::PS, 6);
 
 	pipeline->Draw();
+
+	pipeline->UnSetRenderTarget(0);
+	depthFromLightLow->SetT(TL_Graphics::E_SHADER_TYPE::PS, 18);
+
+
+	//Return To oldStates
+	pipeline->SetViewPort(oldViewPort);
+	pipeline->SetConstantBuffer(oldConstBuffer, TL_Graphics::E_SHADER_TYPE::VS, 0);
+	pipeline->SetCurrentRasterState(oldRasteriszerState);
+	for (int i = 0; i < 8; i++)
+	{
+		pipeline->SetRenderTarget(oldTargets[i], i);
+	}
+	pipeline->SetDepthStencilView(oldDSView);
+	pipeline->SetShader(oldPiexelShader);
+}
+
+void Shadow::Execute(UINT indexCount, UINT startIndexLocation)
+{
+	CalculateSizeOfFrustums();
+
+	ID3D11RasterizerState* oldRasteriszerState = pipeline->SetCurrentRasterState(rasterState);
+	ID3D11PixelShader* oldPiexelShader = (ID3D11PixelShader*)shadowShader->SetTest();
+
+	pipeline->SetShaderResource(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 16);
+	pipeline->SetShaderResource(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 17);
+	pipeline->SetShaderResource(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 18);
+	pipeline->BindShaderResourcesPS();
+
+	//High
+	DescViewport(rtSizeHigh);
+	D3D11_VIEWPORT* oldViewPort = pipeline->SetViewPort(&viewPort);
+
+	ID3D11RenderTargetView* oldTargets[8] = {};
+	oldTargets[0] = depthFromLightHigh->SetRTTEST(0);
+	for (int i = 1; i < 8; i++)
+	{
+		oldTargets[i] = pipeline->SetRenderTarget(nullptr, i);
+	}
+	ID3D11DepthStencilView* oldDSView = pipeline->SetDepthStencilView(depthStencilViewHigh);
+	//pipeline->BindRenderTargets();
+
+
+	lightSpaceViewProjHigh->Update(&lightCamHigh, sizeof(Data));
+	ID3D11Buffer* oldConstBuffer = lightSpaceViewProjHigh->SetTest(TL_Graphics::E_SHADER_TYPE::VS, 0);
+	lightSpaceViewProjHigh->Set(TL_Graphics::E_SHADER_TYPE::PS, 4);
+
+	pipeline->Draw(indexCount, startIndexLocation);
+
+	pipeline->UnSetRenderTarget(0);
+	depthFromLightHigh->SetT(TL_Graphics::E_SHADER_TYPE::PS, 16);
+
+	//Mid
+	DescViewport(rtSizeMid);
+	pipeline->SetViewPort(&viewPort);
+
+	depthFromLightMid->SetRTTEST(0);
+
+	pipeline->SetDepthStencilView(depthStencilViewMid);
+
+	lightSpaceViewProjMid->Update(&lightCamMid, sizeof(Data));
+	lightSpaceViewProjMid->SetTest(TL_Graphics::E_SHADER_TYPE::VS, 0);
+	lightSpaceViewProjMid->Set(TL_Graphics::E_SHADER_TYPE::PS, 5);
+
+	pipeline->Draw(indexCount, startIndexLocation);
+
+	pipeline->UnSetRenderTarget(0);
+	depthFromLightMid->SetT(TL_Graphics::E_SHADER_TYPE::PS, 17);
+
+	//Low
+	DescViewport(rtSizeLow);
+	pipeline->SetViewPort(&viewPort);
+
+	depthFromLightLow->SetRTTEST(0);
+
+	pipeline->SetDepthStencilView(depthStencilViewLow);
+
+	lightSpaceViewProjLow->Update(&lightCamLow, sizeof(Data));
+	lightSpaceViewProjLow->SetTest(TL_Graphics::E_SHADER_TYPE::VS, 0);
+	lightSpaceViewProjLow->Set(TL_Graphics::E_SHADER_TYPE::PS, 6);
+
+	pipeline->Draw(indexCount, startIndexLocation);
 
 	pipeline->UnSetRenderTarget(0);
 	depthFromLightLow->SetT(TL_Graphics::E_SHADER_TYPE::PS, 18);
