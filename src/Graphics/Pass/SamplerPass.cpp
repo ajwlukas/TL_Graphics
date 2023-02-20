@@ -15,6 +15,8 @@ SamplerPass::SamplerPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline
 
 	if (!shaderPS)
 		CreateShader();
+
+	DescViewPort();
 }
 
 SamplerPass::SamplerPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, UINT width, UINT height, Shader* shaderPS)
@@ -49,25 +51,48 @@ void SamplerPass::Set()
 void SamplerPass::Execute()
 {
 	ClearRenderTargets();
+	
+	assert(sourceTexture);
+	sourceTexture->Set(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
 
+	ResizeViewport();
 
-	if (isBasedWindowSize)
-		pipeline->ResizeViewPort(resizeNotice->GetWidth() * widthRatio, resizeNotice->GetHeight() * heightRatio);
-	else//!isBasedWindowSize
-		pipeline->ResizeViewPort(width, height);
+	auto oldViewport = pipeline->SetViewPort(&viewPort);
 
 	Set();
+
 	pipeline->Draw();
+
+
+	//정리
 	pipeline->UnSetRenderTarget(0);
-	rtt->SetT(TL_Graphics::E_SHADER_TYPE::PS, interPassSlot);
-
-
-	pipeline->ResizeViewPort(resizeNotice->GetWidth(), resizeNotice->GetHeight());
+	pipeline->BindRenderTargets();
+	pipeline->SetViewPort(oldViewport);
 }
 
 void SamplerPass::ClearRenderTargets()
 {
 	rtt->Clear();
+}
+
+void SamplerPass::SetSourceTexture(Texture* texture)
+{
+	assert(rtt != texture);//자기 자신의 텍스쳐는 꽂으면 안됨 ex) t->SetSourceTexture(t->GetDestTexture);
+	sourceTexture = texture;
+}
+
+void SamplerPass::SetRatio(float sizeX, float sizeY)
+{
+	isBasedWindowSize = true;
+	widthRatio = sizeX;
+	heightRatio = sizeY;
+}
+
+void SamplerPass::SetSize(UINT sizeX, UINT sizeY)
+{
+	isBasedWindowSize = false;
+	width = sizeX;
+	height = sizeY;
 }
 
 void SamplerPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
@@ -82,4 +107,38 @@ void SamplerPass::CreateShader()
 {
 	isShaderCreatedHere = true;
 	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/TL_SamplerPS.hlsl");
+}
+
+void SamplerPass::DescViewPort()
+{
+	viewPort.MinDepth = 0.0f;
+	viewPort.MaxDepth = 1.0f;
+	viewPort.TopLeftX = 0.0f;
+	viewPort.TopLeftY = 0.0f;
+}
+
+void SamplerPass::ResizeViewport()
+{
+	if (isBasedWindowSize)
+	{
+		assert(!widthRatio);//assert When value is not set
+		assert(!heightRatio);
+
+		viewPort.Width = resizeNotice->GetWidth() * widthRatio;
+		viewPort.Height = resizeNotice->GetHeight() * heightRatio;
+	}
+	else
+	{
+		assert(!width);
+		assert(!height);
+
+		viewPort.Width = (float)width;
+		viewPort.Height = (float)height;
+	}
+
+
+	//if (isBasedWindowSize)
+	//	pipeline->ResizeViewPort(resizeNotice->GetWidth() * widthRatio, resizeNotice->GetHeight() * heightRatio);
+	//else//!isBasedWindowSize
+	//	pipeline->ResizeViewPort(width, height);
 }
