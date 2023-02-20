@@ -34,7 +34,7 @@ void BloomPass::Execute()
 
 	//DownSampling을 실시한다. 약 3단계로
 
-	Texture* lightmap;
+	Texture* lightmap = nullptr;
 
 	//가장 낮은 해상도의 RT를 Blur한다.
 	gaussianBlurPassX->SetRatio(0.25f, 0.25f);
