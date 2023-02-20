@@ -10,11 +10,12 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
 	, resources(resources)
 	, pipeline(pipeline)
 	, format(format)
+	, resizeNotice(resizeNotice)
 {
 	sizeX = width;
 	sizeY = height;
-	resizeNotice->AddObserver(this);
-	OnResize(sizeX, sizeY);
+
+	ResizeRTT(sizeX, sizeY);
 
 	SetDebugName(debugName);
 }
@@ -28,14 +29,15 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
 	, resources(resources)
 	, pipeline(pipeline)
 	, format(format)
+	, resizeNotice(resizeNotice)
 {
 	resizeNotice->AddObserver(this);
 
-	OnResize(resizeNotice->GetWidth(), resizeNotice->GetHeight());
-
 	sizeX = resizeNotice->GetWidth() * widthRatio < 1 ? 1 : resizeNotice->GetWidth() * widthRatio;
 	sizeY = resizeNotice->GetHeight() * heightRatio < 1 ? 1 : resizeNotice->GetHeight();
-	
+
+	ResizeRTT(sizeX, sizeY);
+
 	SetDebugName(debugName);
 }
 
@@ -50,7 +52,6 @@ void RenderTargetTexture::SetRT(UINT slot)
 
 ID3D11RenderTargetView* RenderTargetTexture::SetRTTEST(UINT slot)
 {
-
 	return RenderTarget::Set(slot);
 }
 
@@ -71,17 +72,14 @@ void RenderTargetTexture::Clear(TL_Math::Vector4 color)
 
 void RenderTargetTexture::OnResize(uint32_t width, uint32_t height)
 {
-	if (!isBasedWindowSize && initialized) return;
+	sizeX = width * widthRatio < 1 ? 1 : width * widthRatio;
+	sizeY = height * heightRatio < 1 ? 1 : height * heightRatio;
 
-	initialized = true;
+	ResizeRTT(sizeX, sizeY);
+}
 
-	if (isBasedWindowSize)
-	{
-		sizeX = width * widthRatio < 1 ? 1 : width * widthRatio;
-		sizeY = height * heightRatio < 1 ? 1 : height * heightRatio;
-
-	}
-
+void RenderTargetTexture::ResizeRTT(UINT sizeX, UINT sizeY)
+{//
 	D3D11_TEXTURE2D_DESC desc = {};
 	desc.Width = sizeX;
 	desc.Height = sizeY;
@@ -96,7 +94,7 @@ void RenderTargetTexture::OnResize(uint32_t width, uint32_t height)
 
 	resources->texture2Ds->Create(texture, desc);
 
-
+	//
 	D3D11_RENDER_TARGET_VIEW_DESC rtvDesc = {};
 	rtvDesc.Format = desc.Format;
 	rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
@@ -104,6 +102,7 @@ void RenderTargetTexture::OnResize(uint32_t width, uint32_t height)
 
 	resources->rtvs->Create(rtv, rtvDesc, texture);
 
+	//
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 	srvDesc.Format = desc.Format;
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
@@ -111,6 +110,23 @@ void RenderTargetTexture::OnResize(uint32_t width, uint32_t height)
 	srvDesc.Texture2D.MipLevels = 1;
 
 	resources->srvs->Create(srv, srvDesc, texture);
+}
+
+void RenderTargetTexture::Resize(UINT sizeX, UINT sizeY)
+{
+	isBasedWindowSize = false;
+
+	ResizeRTT(sizeX, sizeY);
+}
+
+void RenderTargetTexture::ResizeRatio(float widthRatio, float heightRatio)
+{
+	isBasedWindowSize = true;
+
+	this->widthRatio = widthRatio;
+	this->heightRatio = heightRatio;
+
+	OnResize(resizeNotice->GetWidth(), resizeNotice->GetHeight());
 }
 
 void RenderTargetTexture::SetDebugName(std::string debugName)
