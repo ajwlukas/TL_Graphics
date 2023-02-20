@@ -41,7 +41,7 @@ void GaussianBlurPass::Execute()
 	pipeline->Draw();
 
 	pipeline->UnSetRenderTarget(0);
-	rtt->SetT(TL_Graphics::E_SHADER_TYPE::PS, interPassSlot);
+	rtt->SetT(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
 }
 
 void GaussianBlurPass::ClearRenderTargets()

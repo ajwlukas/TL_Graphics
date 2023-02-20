@@ -30,7 +30,7 @@ void DeferredRenderPass::Execute()
 
 	pipeline->UnSetRenderTarget(0);
 	pipeline->BindRenderTargets();
-	rtt->SetT(TL_Graphics::E_SHADER_TYPE::PS, interPassSlot);
+	rtt->SetT(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
 }
 
 void DeferredRenderPass::ClearRenderTargets()
