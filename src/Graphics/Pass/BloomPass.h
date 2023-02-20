@@ -8,6 +8,12 @@
 
 #include "ConstantBuffer.h"
 
+#include "SamplerPass.h"
+
+#include "GaussianBlurPass.h"
+
+#include "AccumulatorPass.h"
+
 class BloomPass : public IRenderPass
 {
 public:
@@ -24,9 +30,14 @@ public:
 private:
 	OnResizeNotice* resizeNotice;
 
-	RenderTargetTexture* rtt[4];
-
 	Shader* shaderPS;
+
+	GaussianBlurPass* gaussianBlurPassX;
+	GaussianBlurPass* gaussianBlurPassY;
+
+	AccumulatorPass* accumulatorPass;
+
+	SamplerPass* samplerPass;
 
 private:
 	void CreateRenderTarget(OnResizeNotice* resizeNotice);

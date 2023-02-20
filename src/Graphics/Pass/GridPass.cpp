@@ -4,9 +4,8 @@
 #include "Pipeline.h"
 
 GridPass::GridPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
-	:IRenderPass(dc, resources, pipeline)
+	:IRenderPass(dc, resources, pipeline, resizeNotice, 1, 0)
 {
-	//CreateRenderTarget(resizeNotice);
 	CreateShader();
 }
 
@@ -32,9 +31,9 @@ void GridPass::ClearRenderTargets()
 {
 }
 
-//void GridPass::CreateRenderTargets(OnResizeNotice* resizeNotice)
-//{
-//}
+void GridPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
+{
+}
 
 void GridPass::CreateShader()
 {

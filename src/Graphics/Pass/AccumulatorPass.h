@@ -4,15 +4,17 @@
 
 #include "RenderTargetTexture.h"
 
-#include "Mesh.h"
-
 #include "Shader.h"
 
-class CubeMapPass : public IRenderPass
+#include "ConstantBuffer.h"
+
+#include "SamplerPass.h"
+
+class AccumulatorPass : public IRenderPass
 {
 public:
-	CubeMapPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, std::wstring fileName);
-	~CubeMapPass();
+	AccumulatorPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	~AccumulatorPass();
 
 	// IRenderPass을(를) 통해 상속됨
 	virtual void Set() override;
@@ -22,18 +24,13 @@ public:
 	virtual void ClearRenderTargets() override;
 
 private:
-	Mesh* mesh;
-
-	Texture* texture;
-	Texture* irradianceMap;
-	Texture* prefilteredEnvMap;
-	Texture* iblBRDF;
+	OnResizeNotice* resizeNotice;
 
 	Shader* shaderPS;
+
+	SamplerPass* samplerPass;
 private:
 	void CreateRenderTarget(OnResizeNotice* resizeNotice);
 
 	void CreateShader();
-
-	void CreateMesh();
 };

@@ -29,8 +29,6 @@ public:
 
 
 private:
-	RenderTargetTexture* rtts[8];
-
 	Shader* shaderPS;
 
 	Resource<ID3D11BlendState> blendState;//Deferred에 필요한 GBuffer을 뽑을 때 쓰는 BlendState

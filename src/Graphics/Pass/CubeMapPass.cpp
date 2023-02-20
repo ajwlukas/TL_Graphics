@@ -6,11 +6,17 @@
 #include "Vertex.h"
 
 CubeMapPass::CubeMapPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, std::wstring fileName)
-	:IRenderPass(dc, resources, pipeline)
+	:IRenderPass(dc, resources, pipeline, resizeNotice,1,0)
 {
 	texture = new Texture(dc, resources, pipeline, fileName);
+    irradianceMap = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/CubeMaps/ValleyDiffuseHDR.dds");
+    prefilteredEnvMap = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/CubeMaps/ValleySpecularHDR.dds");
+    iblBRDF = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/ibl_brdf_lut.png");
 
 	texture->Set(TL_Graphics::E_SHADER_TYPE::PS, 10);
+    irradianceMap->Set(TL_Graphics::E_SHADER_TYPE::PS, 12);
+    prefilteredEnvMap->Set(TL_Graphics::E_SHADER_TYPE::PS, 13);
+    iblBRDF->Set(TL_Graphics::E_SHADER_TYPE::PS, 15);
 
 	CreateRenderTarget(resizeNotice);
 	CreateShader();
@@ -21,13 +27,15 @@ CubeMapPass::~CubeMapPass()
 {
 	SAFE_DELETE(mesh);
 	SAFE_DELETE(texture);
-	SAFE_DELETE(rtt);
+	SAFE_DELETE(irradianceMap);
+	SAFE_DELETE(prefilteredEnvMap);
+	SAFE_DELETE(iblBRDF);
+	SAFE_DELETE(rtts[0]);
 	SAFE_DELETE(shaderPS);
 }
 
 void CubeMapPass::Set()
 {
-	//rtt->SetRT(0);
     pipeline->SetSwapChainRenderTargetView(0);
     mesh->Set();
 	shaderPS->Set();
@@ -40,17 +48,17 @@ void CubeMapPass::Execute()
 	pipeline->Draw();
 
 	pipeline->UnSetRenderTarget(0);
-	rtt->SetT(TL_Graphics::E_SHADER_TYPE::PS, 14);
+	rtts[0]->SetT(TL_Graphics::E_SHADER_TYPE::PS, 14);
 }
 
 void CubeMapPass::ClearRenderTargets()
 {
-	rtt->Clear();
+	rtts[0]->Clear();
 }
 
 void CubeMapPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
-	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "SkyBox");
+	rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "SkyBox");
 }
 
 void CubeMapPass::CreateShader()

@@ -26,7 +26,6 @@ public:
 
 
 private:
-	//RenderTargetTexture* rtt;
 
 	Shader* shaderPS;
 private:

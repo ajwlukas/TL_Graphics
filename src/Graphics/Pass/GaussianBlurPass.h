@@ -26,7 +26,6 @@ public:
 
 private:
 	OnResizeNotice* resizeNotice;
-	RenderTargetTexture* rtt;
 
 	Shader* shaderPS;
 	Shader* shaderPS1;

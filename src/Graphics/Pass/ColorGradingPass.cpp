@@ -4,7 +4,7 @@
 #include "Pipeline.h"
 
 ColorGradingPass::ColorGradingPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
-	:IRenderPass(dc, resources, pipeline)
+	:IRenderPass(dc, resources, pipeline, resizeNotice,1,1)
 	, resizeNotice(resizeNotice)
 {
 	CreateRenderTarget(resizeNotice);
@@ -18,7 +18,7 @@ ColorGradingPass::~ColorGradingPass()
 {
 	SAFE_DELETE(LUT);
 
-	SAFE_DELETE(rtt);
+	SAFE_DELETE(rtts[0]);
 	SAFE_DELETE(shaderPS);
 }
 
@@ -26,7 +26,7 @@ void ColorGradingPass::Set()
 {
 	LUT->Set(TL_Graphics::E_SHADER_TYPE::PS, LUTSlot);
 
-	rtt->SetRT(0);
+	rtts[0]->SetRT(0);
 	shaderPS->Set();
 }
 
@@ -38,17 +38,17 @@ void ColorGradingPass::Execute()
 	pipeline->Draw();
 	pipeline->UnSetRenderTarget(0);
 	pipeline->BindRenderTargets();
-	rtt->SetT(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
+	rtts[0]->SetT(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
 }
 
 void ColorGradingPass::ClearRenderTargets()
 {
-	rtt->Clear();
+	rtts[0]->Clear();
 }
 
 void ColorGradingPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
-	rtt = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "ColorGrading");
+	rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "ColorGrading");
 }
 
 void ColorGradingPass::CreateShader()

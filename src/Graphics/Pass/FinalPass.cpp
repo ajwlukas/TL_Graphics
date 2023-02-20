@@ -4,7 +4,7 @@
 #include "Pipeline.h"
 
 FinalPass::FinalPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
-	:IRenderPass(dc, resources, pipeline)
+	:IRenderPass(dc, resources, pipeline, resizeNotice,0,1)
 {
 	CreateShader();
 }

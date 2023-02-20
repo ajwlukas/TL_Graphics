@@ -8,12 +8,14 @@
 
 GBufferRenderPass::GBufferRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
 	: 
-	IRenderPass(dc, resources, pipeline)
+	IRenderPass(dc, resources, pipeline, resizeNotice,8, 0)
 {
 	CreateRenderTargets(resizeNotice);
 	CreateBlendStates();
 	CreateShader();
 
+
+	rtts.resize(8);
 }
 
 GBufferRenderPass::~GBufferRenderPass()

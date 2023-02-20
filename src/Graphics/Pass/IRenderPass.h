@@ -6,12 +6,16 @@
 
 #include "ShaderResourceSlotPS.h"
 
+#include "Texture.h"
+
+#include "RenderTargetTexture.h"
+
 class Pipeline;
 
 class IRenderPass
 {
 public:
-	IRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
+	IRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, UINT rttNum, UINT sourceTextureNum);
 	~IRenderPass();
 
 	virtual void Set() = 0;
@@ -20,10 +24,32 @@ public:
 
 	virtual void ClearRenderTargets() = 0;
 
+	//자기 자신의 텍스쳐는 꽂으면 안됨 ex) t->SetSourceTexture(t->GetDestTexture); 추후 UAV공부해서 계선 할 수 있을 듯?
+	void SetSourceTexture(Texture* texture, UINT sourceTextureNum = 0);
+
+	Texture* GetDestTexture(UINT destTextureNum = 0);
+
+	//둘 중 하나만 동작함, Ratio는 화면 비율, Size = 픽셀 수
+	void SetRatio(float sizeX, float sizeY);//(0.0, 1.0]
+	void SetSize(UINT sizeX, UINT sizeY);
+
 protected:
 	friend class Pipeline;
 	ID3D11DeviceContext* dc;
 	Resources* resources;
 	Pipeline* pipeline;
+	OnResizeNotice* resizeNotice;
 
+	vector<RenderTargetTexture*> rtts;
+	vector<Texture*> sourceTextures;
+
+	//rtts Size
+	bool isBasedWindowSize = true;
+	float widthRatio = 1.0f, heightRatio = 1.0f;
+	UINT width = 0, height = 0;
+	D3D11_VIEWPORT viewPort;
+
+	void DescViewPort();
+	void ResizeViewport();
+	void ResizeRTTs();
 };
