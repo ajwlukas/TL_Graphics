@@ -260,6 +260,8 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="inc\Graphics\RenderSystem.h" />
     <ClInclude Include="inc\Graphics\ShaderType.h" />
     <ClInclude Include="src\Graphics\Line.h" />
+    <ClInclude Include="src\Graphics\Pass\AccumulatorPass.h" />
+    <ClInclude Include="src\Graphics\Pass\BloomPass.h" />
     <ClInclude Include="src\Graphics\Pass\ColorGradingPass.h" />
     <ClInclude Include="src\Graphics\Pass\CubeMapPass.h" />
     <ClInclude Include="src\Graphics\Pass\DeferredRenderPass.h" />
@@ -299,6 +301,8 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Graphics\Line.cpp" />
+    <ClCompile Include="src\Graphics\Pass\AccumulatorPass.cpp" />
+    <ClCompile Include="src\Graphics\Pass\BloomPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\ColorGradingPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\CubeMapPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\DeferredRenderPass.cpp" />

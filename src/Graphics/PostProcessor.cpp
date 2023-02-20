@@ -14,8 +14,8 @@ PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipe
 
 	gridPass = new GridPass(dc, resources, pipeline, resizeNotice);
 
-	downSamplerPass = new SamplerPass(dc, resources, pipeline, resizeNotice, 0.5f, 0.5f);
-	//downSamplerPass = new SamplerPass(dc, resources, pipeline, resizeNotice, (UINT)1, (UINT)1);
+	downSamplerPass = new SamplerPass(dc, resources, pipeline, resizeNotice);
+	downSamplerPass->SetRatio(0.5f, 0.5f);
 
 	colorGradingPass = new ColorGradingPass(dc, resources, pipeline, resizeNotice);
 
@@ -27,7 +27,7 @@ PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipe
 
 	finalPass = new FinalPass(dc, resources, pipeline, resizeNotice);
 
-	cubeMapPass = new CubeMapPass(dc, resources, pipeline, resizeNotice, L"_DevelopmentAssets/Texture/CubeMaps/GardenEnvHDR.dds");
+	cubeMapPass = new CubeMapPass(dc, resources, pipeline, resizeNotice, L"_DevelopmentAssets/Texture/CubeMaps/ValleyEnvHDR.dds");
 }
 
 PostProcessor::~PostProcessor()
@@ -49,7 +49,11 @@ PostProcessor::~PostProcessor()
 
 void PostProcessor::Execute()
 {
+	Texture* before = nullptr;
+
 	pipeline->SetDepthDisabled();
+
+	auto oldDSView = pipeline->SetDepthStencilView(nullptr);
 
 	if (cubeMapPass)
 		cubeMapPass->Execute();
@@ -61,9 +65,13 @@ void PostProcessor::Execute()
 		gridPass->Execute();
 
 	deferredRenderPass->Execute();
+	before = deferredRenderPass->GetDestTexture();
 
 	if (control.doDownSample)
-	downSamplerPass->Execute();
+	{
+		downSamplerPass->SetSourceTexture(before);
+		downSamplerPass->Execute();
+	}
 
 	if (control.doColorGrading)
 	colorGradingPass->Execute();
@@ -78,7 +86,10 @@ void PostProcessor::Execute()
 	lightAdaptionPass->Execute();*/
 
 	finalPass->Execute();
+
+	//Á¤¸®
 	UnBindGBuffers();
+	pipeline->SetDepthStencilView(oldDSView);
 }
 
 void PostProcessor::UnBindGBuffers()

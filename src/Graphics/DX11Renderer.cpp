@@ -200,6 +200,7 @@ void DX11Renderer::Clear()
 {
     float color[4] = { 0.0f, 0.7f, 1.0f, 1.0f };
     pipeline->Clear(color);
+    shadow->ClearRTTs();
 }
 
 void DX11Renderer::Present()
@@ -256,10 +257,16 @@ ConstantBuffer* DX11Renderer::CreateConstantBuffer(void* data, size_t dataSize)
 
 Camera* DX11Renderer::CreateCamera()
 {
+    static bool flag = true;
+
     cam = new Camera(dc, resources, pipeline, &onResizeNotice, 80.0f, 1.0f, 2000.0f);
 
 
-    shadow = new Shadow(dc, resources, pipeline, &onResizeNotice, cam, (UINT)1);
+    if (flag)
+    {
+        shadow = new Shadow(dc, resources, pipeline, &onResizeNotice, cam, (UINT)1);
+        flag = false;
+    }
 
     return cam;
 }
@@ -306,6 +313,8 @@ void DX11Renderer::Draw()
 void DX11Renderer::Draw(UINT indexCount, UINT startIndexLocation)
 {
     pipeline->Draw(indexCount, startIndexLocation);
+    shadow->Execute(indexCount, startIndexLocation);
+
 }
 
 void DX11Renderer::DrawInstanced(UINT numInstance)
