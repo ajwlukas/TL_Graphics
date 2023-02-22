@@ -10,13 +10,17 @@
 
 #include "Pass/SamplerPass.h"
 
-const unsigned int downSamplingCount = 6;
+#include "Pass/AveragePass.h"
 
-class LightAdaptionPass : public IRenderPass
+#include "Pass/GreyScalePass.h"
+
+class LuminancePass : public IRenderPass
 {
 public:
-	LightAdaptionPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
-	~LightAdaptionPass();
+	LuminancePass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	~LuminancePass();
+
+	void Init();
 
 	// IRenderPass을(를) 통해 상속됨
 	virtual void Set() override;
@@ -27,8 +31,11 @@ private:
 	OnResizeNotice* resizeNotice;
 
 	Shader* shaderPS;
-private:
-	void CreateRenderTarget(OnResizeNotice* resizeNotice);
 
+	GreyScalePass* greyScalePass;
+	AveragePass* averagePass;
+	AveragePass* averagePass0;
+
+private:
 	void CreateShader();
 };

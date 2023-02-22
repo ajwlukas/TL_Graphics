@@ -26,6 +26,14 @@
 
 #include "Pass/LightPass.h"
 
+#include "Pass/GreyScalePass.h"
+
+#include "Pass/AveragePass.h"
+
+#include "Pass/LuminanacePass.h"
+
+#include "Pass/LightAdaptionPass.h"
+
 /// <summary>
 /// 후처리 담당
 /// </summary>
@@ -69,6 +77,13 @@ private:
 	LightPass* lightPass = nullptr;
 
 	BloomPass* bloomPass = nullptr;
+
+	GreyScalePass* greyScalePass = nullptr;
+
+	AveragePass* averagePass = nullptr;
+
+	LuminancePass* luminancePass = nullptr;
+
 
 	FinalPass* finalPass;
 

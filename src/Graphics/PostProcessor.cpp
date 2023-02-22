@@ -36,11 +36,32 @@ PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipe
 	bloomPass->CreateDestTexture();
 
 	lightPass = new LightPass(dc, resources, pipeline, resizeNotice);
+
+	greyScalePass = new GreyScalePass(dc, resources, pipeline, resizeNotice);
+	greyScalePass->CreateDestTexture(0,"GreyScale", DXGI_FORMAT_R32_FLOAT);
+
+	averagePass = new AveragePass(dc, resources, pipeline, resizeNotice);
+	averagePass->CreateDestTexture(0, "Average");
+
+	luminancePass = new LuminancePass(dc, resources, pipeline, resizeNotice);
+	luminancePass->CreateDestTexture(0, "Luminance");
+	luminancePass->Init();
+
+	lightAdaptionPass = new LightAdaptionPass(dc, resources, pipeline, resizeNotice);
+	lightAdaptionPass->CreateDestTexture(0, "LightAdaption");
 }
 
 PostProcessor::~PostProcessor()
 {
 	bloomPass->DeleteDestTextures();
+
+	SAFE_DELETE(lightAdaptionPass);
+
+	SAFE_DELETE(averagePass);
+
+	SAFE_DELETE(luminancePass);
+
+	SAFE_DELETE(greyScalePass);
 
 	SAFE_DELETE(gBufferRenderPass);
 
@@ -103,7 +124,23 @@ void PostProcessor::Execute()
 	bloomPass->Execute();
 	before = bloomPass->GetDestTexture();
 
+	/*greyScalePass->SetSourceTexture(before);
+	greyScalePass->Execute();
+	before = greyScalePass->GetDestTexture();*/
 
+	/*averagePass->SetRatio(0.09f, 0.09f);
+	averagePass->SetSourceTexture(before);
+	averagePass->Execute();
+	before = averagePass->GetDestTexture();*/
+
+	luminancePass->SetSourceTexture(before);
+	luminancePass->Execute();
+	Texture* luminance = luminancePass->GetDestTexture();
+
+	lightAdaptionPass->SetSourceTexture(before,0);
+	lightAdaptionPass->SetSourceTexture(luminance, 1);
+	lightAdaptionPass->Execute();
+	before = lightAdaptionPass->GetDestTexture();
 
 	finalPass->SetSourceTexture(before);
 	finalPass->Execute();

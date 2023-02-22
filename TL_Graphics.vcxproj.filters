@@ -183,6 +183,18 @@
     <ClInclude Include="src\Graphics\Pass\LightPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\Pass\ToneMappingPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Pass\GreyScalePass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Pass\AveragePass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Pass\LuminanacePass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Graphics\Camera.cpp">
@@ -296,6 +308,18 @@
     <ClCompile Include="src\Graphics\Pass\LightPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Pass\ToneMappingPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Pass\GreyScalePass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Pass\AveragePass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Pass\LuminanacePass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Graphics\SimpleMath.inl">
@@ -329,7 +353,7 @@
     <FxCompile Include="Shader\PS\PostProcessors\TL_DOF.hlsl" />
     <FxCompile Include="Shader\PS\PostProcessors\TL_ToneMapping.hlsl" />
     <FxCompile Include="Shader\PS\PostProcessors\TL_LightAdaptionPass.hlsl" />
-    <FxCompile Include="Shader\PS\PostProcessors\TL_DownSampler3x3Average.hlsl" />
+    <FxCompile Include="Shader\PS\PostProcessors\TL_3x3Average.hlsl" />
     <FxCompile Include="Shader\PS\PostProcessors\TL_Luminance.hlsl" />
     <FxCompile Include="Shader\PS\TestObjectGBuffers.hlsl" />
     <FxCompile Include="Shader\VS\TL_SkyBoxVS.hlsl" />

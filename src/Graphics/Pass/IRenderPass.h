@@ -29,7 +29,7 @@ public:
 	//자기 자신의 텍스쳐는 꽂으면 안됨 ex) t->SetSourceTexture(t->GetDestTexture); 추후 UAV공부해서 계선 할 수 있을 듯?
 	void SetSourceTexture(Texture* texture, UINT sourceTextureNum = 0);
 
-	void CreateDestTexture(UINT renderTargetNum = 0, string debugName = "");
+	void CreateDestTexture(UINT renderTargetNum = 0, string debugName = "", DXGI_FORMAT format = DXGI_FORMAT_R32G32B32A32_FLOAT);
 	void DeleteDestTextures();
 	void SetDestTexture(RenderTargetTexture* renderTarget, UINT renderTargetNum = 0);
 	RenderTargetTexture* GetDestTexture(UINT destTextureNum = 0);

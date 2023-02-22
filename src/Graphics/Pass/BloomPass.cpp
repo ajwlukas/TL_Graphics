@@ -15,7 +15,6 @@ BloomPass::BloomPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pi
 	accumulatorPass0 = new AccumulatorPass(dc, resources, pipeline, resizeNotice);
 
 	samplerPass = new SamplerPass(dc, resources, pipeline, resizeNotice);
-	samplerPass0 = new SamplerPass(dc, resources, pipeline, resizeNotice);
 
 	lightPass = new LightPass(dc, resources, pipeline, resizeNotice);
 

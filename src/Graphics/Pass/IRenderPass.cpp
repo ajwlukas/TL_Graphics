@@ -28,9 +28,9 @@ void IRenderPass::SetSourceTexture(Texture* texture, UINT sourceTextureNum)
 	sourceTextures[sourceTextureNum] = texture;
 }
 
-void IRenderPass::CreateDestTexture(UINT renderTargetNum, string debugName)
+void IRenderPass::CreateDestTexture(UINT renderTargetNum, string debugName, DXGI_FORMAT format)
 {
-	rtts[renderTargetNum] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, debugName);
+	rtts[renderTargetNum] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, debugName, format);
 }
 
 void IRenderPass::DeleteDestTextures()

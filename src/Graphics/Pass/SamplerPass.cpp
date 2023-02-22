@@ -32,15 +32,14 @@ void SamplerPass::Set()
 	//pipeline->SetSwapChainRenderTargetView(0);
 	rtts[0]->SetRT(0);
 	shaderPS->Set();
+
+	assert(sourceTextures[0]);
+	sourceTextures[0]->Set(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
 }
 
 void SamplerPass::Execute()
 {
 	//ClearRenderTargets();
-
-	assert(sourceTextures[0]);
-
-	sourceTextures[0]->Set(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
 
 	auto oldViewport = pipeline->SetViewPort(&viewPort);
 

@@ -261,11 +261,14 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="inc\Graphics\ShaderType.h" />
     <ClInclude Include="src\Graphics\Line.h" />
     <ClInclude Include="src\Graphics\Pass\AccumulatorPass.h" />
+    <ClInclude Include="src\Graphics\Pass\AveragePass.h" />
     <ClInclude Include="src\Graphics\Pass\BloomPass.h" />
     <ClInclude Include="src\Graphics\Pass\ColorGradingPass.h" />
     <ClInclude Include="src\Graphics\Pass\CubeMapPass.h" />
     <ClInclude Include="src\Graphics\Pass\DeferredRenderPass.h" />
+    <ClInclude Include="src\Graphics\Pass\GreyScalePass.h" />
     <ClInclude Include="src\Graphics\Pass\LightPass.h" />
+    <ClInclude Include="src\Graphics\Pass\LuminanacePass.h" />
     <ClInclude Include="src\Graphics\Pass\SamplerPass.h" />
     <ClInclude Include="src\Graphics\Pass\FinalPass.h" />
     <ClInclude Include="src\Graphics\Pass\GaussianBlurPass.h" />
@@ -274,6 +277,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClInclude Include="src\Graphics\Pass\IRenderPass.h" />
     <ClInclude Include="src\Graphics\Light.h" />
     <ClInclude Include="src\Graphics\Pass\LightAdaptionPass.h" />
+    <ClInclude Include="src\Graphics\Pass\ToneMappingPass.h" />
     <ClInclude Include="src\Graphics\PostProcessor.h" />
     <ClInclude Include="src\Graphics\RenderTarget.h" />
     <ClInclude Include="src\Graphics\RenderTargetTexture.h" />
@@ -303,11 +307,14 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
   <ItemGroup>
     <ClCompile Include="src\Graphics\Line.cpp" />
     <ClCompile Include="src\Graphics\Pass\AccumulatorPass.cpp" />
+    <ClCompile Include="src\Graphics\Pass\AveragePass.cpp" />
     <ClCompile Include="src\Graphics\Pass\BloomPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\ColorGradingPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\CubeMapPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\DeferredRenderPass.cpp" />
+    <ClCompile Include="src\Graphics\Pass\GreyScalePass.cpp" />
     <ClCompile Include="src\Graphics\Pass\LightPass.cpp" />
+    <ClCompile Include="src\Graphics\Pass\LuminanacePass.cpp" />
     <ClCompile Include="src\Graphics\Pass\SamplerPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\FinalPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\GaussianBlurPass.cpp" />
@@ -316,6 +323,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClCompile Include="src\Graphics\Pass\IRenderPass.cpp" />
     <ClCompile Include="src\Graphics\Light.cpp" />
     <ClCompile Include="src\Graphics\Pass\LightAdaptionPass.cpp" />
+    <ClCompile Include="src\Graphics\Pass\ToneMappingPass.cpp" />
     <ClCompile Include="src\Graphics\PostProcessor.cpp" />
     <ClCompile Include="src\Graphics\RenderTarget.cpp" />
     <ClCompile Include="src\Graphics\RenderTargetTexture.cpp" />
@@ -399,7 +407,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="Shader\PS\PostProcessors\TL_DownSampler3x3Average.hlsl">
+    <FxCompile Include="Shader\PS\PostProcessors\TL_3x3Average.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>

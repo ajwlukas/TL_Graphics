@@ -16,33 +16,21 @@
 
 #include "LightPass.h"
 
-class BloomPass : public IRenderPass
+class ToneMappingPass : public IRenderPass
 {
 public:
-	BloomPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
-	~BloomPass();
+	ToneMappingPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	~ToneMappingPass();
 
 	// IRenderPass을(를) 통해 상속됨
 	virtual void Set() override;
 
 	virtual void Execute() override;
 
-
 private:
 	OnResizeNotice* resizeNotice;
 
 	Shader* shaderPS;
-
-	GaussianBlurPass* gaussianBlurPassX;
-	GaussianBlurPass* gaussianBlurPassY;
-
-	AccumulatorPass* accumulatorPass;
-	AccumulatorPass* accumulatorPass0;
-
-	SamplerPass* samplerPass;
-
-	LightPass* lightPass;
-
 
 private:
 	void CreateRenderTargets(OnResizeNotice* resizeNotice);
