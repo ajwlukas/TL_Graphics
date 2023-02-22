@@ -6,5 +6,5 @@
 
 float4 main(VS_Out_ScreenSpace surface) : SV_Target0
 {
-    return accumulateA.Sample(Sampler_Wrap, surface.uv) + accumulateB.Sample(Sampler_Wrap, surface.uv);
+    return float4(sourceSlot0.Sample(Sampler_Clamp, surface.uv) + sourceSlot1.Sample(Sampler_Clamp, surface.uv).rgb, 1.0f);
 }

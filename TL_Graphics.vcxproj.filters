@@ -180,6 +180,9 @@
     <ClInclude Include="src\Graphics\Pass\AccumulatorPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\Pass\LightPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Graphics\Camera.cpp">
@@ -290,6 +293,9 @@
     <ClCompile Include="src\Graphics\Pass\AccumulatorPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Pass\LightPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Graphics\SimpleMath.inl">
@@ -330,5 +336,6 @@
     <FxCompile Include="Shader\PS\TL_SkyBoxPS.hlsl" />
     <FxCompile Include="Shader\VS\TL_StaticMeshVS_Instanced.hlsl" />
     <FxCompile Include="Shader\PS\TL_DepthFromLight.hlsl" />
+    <FxCompile Include="Shader\PS\PostProcessors\TL_LightPass.hlsl" />
   </ItemGroup>
 </Project>

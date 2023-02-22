@@ -36,7 +36,9 @@ CubeMapPass::~CubeMapPass()
 
 void CubeMapPass::Set()
 {
-    pipeline->SetSwapChainRenderTargetView(0);
+    //pipeline->SetSwapChainRenderTargetView(0);
+
+    rtts[0]->SetRT(0);
     mesh->Set();
 	shaderPS->Set();
 }
@@ -51,10 +53,6 @@ void CubeMapPass::Execute()
 	rtts[0]->SetT(TL_Graphics::E_SHADER_TYPE::PS, 14);
 }
 
-void CubeMapPass::ClearRenderTargets()
-{
-	rtts[0]->Clear();
-}
 
 void CubeMapPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {

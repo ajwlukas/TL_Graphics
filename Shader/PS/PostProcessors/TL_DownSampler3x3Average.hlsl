@@ -13,7 +13,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_TARGET0
         for (int x = -1; x <= 1; x++)
         {
             // Compute the sum of color values
-            ret += interPass.Sample(Sampler_Clamp, surface.uv, int2(x, y));
+            ret += sourceSlot0.Sample(Sampler_Clamp, surface.uv, int2(x, y));
         }
     }
     

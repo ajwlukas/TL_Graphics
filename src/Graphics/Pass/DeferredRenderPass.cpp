@@ -6,13 +6,13 @@
 DeferredRenderPass::DeferredRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
 	:IRenderPass(dc, resources, pipeline, resizeNotice,1,8)
 {
-	CreateRenderTarget(resizeNotice);
+	//CreateRenderTarget(resizeNotice);
 	CreateShader();
 }
 
 DeferredRenderPass::~DeferredRenderPass()
 {
-	SAFE_DELETE(rtts[0]);
+	//SAFE_DELETE(rtts[0]);
 	SAFE_DELETE(shaderPS);
 }
 
@@ -24,7 +24,7 @@ void DeferredRenderPass::Set()
 
 void DeferredRenderPass::Execute()
 {
-	ClearRenderTargets();
+	//ClearRenderTargets();
 	Set();
 	pipeline->Draw();
 
@@ -33,14 +33,10 @@ void DeferredRenderPass::Execute()
 	rtts[0]->SetT(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
 }
 
-void DeferredRenderPass::ClearRenderTargets()
-{
-	rtts[0]->Clear();
-}
 
 void DeferredRenderPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
-	rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "Deferred");
+	//rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "Deferred");
 }
 
 void DeferredRenderPass::CreateShader()

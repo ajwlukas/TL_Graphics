@@ -22,6 +22,10 @@
 
 #include "Pass/CubeMapPass.h"
 
+#include "Pass/BloomPass.h"
+
+#include "Pass/LightPass.h"
+
 /// <summary>
 /// 후처리 담당
 /// </summary>
@@ -57,6 +61,10 @@ private:
 	LightAdaptionPass* lightAdaptionPass;
 
 	CubeMapPass* cubeMapPass = nullptr;
+
+	LightPass* lightPass = nullptr;
+
+	BloomPass* bloomPass = nullptr;
 
 	FinalPass* finalPass;
 

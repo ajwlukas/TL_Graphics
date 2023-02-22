@@ -50,14 +50,6 @@ void GBufferRenderPass::SetGBuffers()
 	}
 }
 
-void GBufferRenderPass::ClearRenderTargets()
-{
-	for (UINT i = 0; i < 8; i++)
-	{
-		rtts[i]->Clear();
-	}
-}
-
 void GBufferRenderPass::CreateRenderTargets(OnResizeNotice* resizeNotice)
 {
 		rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f,1.0f,"G_Albedo_Opacity");

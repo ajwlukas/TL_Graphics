@@ -17,12 +17,34 @@ IRenderPass::~IRenderPass()
 {
 }
 
+void IRenderPass::ClearRenderTargets(TL_Math::Vector4 color)
+{
+	for (auto rtt : rtts)
+		rtt->Clear(color);
+}
+
 void IRenderPass::SetSourceTexture(Texture* texture, UINT sourceTextureNum)
 {
 	sourceTextures[sourceTextureNum] = texture;
 }
 
-Texture* IRenderPass::GetDestTexture(UINT destTextureNum)
+void IRenderPass::CreateDestTexture(UINT renderTargetNum, string debugName)
+{
+	rtts[renderTargetNum] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, debugName);
+}
+
+void IRenderPass::DeleteDestTextures()
+{
+	for (auto rtt : rtts)
+		delete rtt;
+}
+
+void IRenderPass::SetDestTexture(RenderTargetTexture* renderTarget, UINT renderTargetNum)
+{
+	rtts[renderTargetNum] = renderTarget;
+}
+
+RenderTargetTexture* IRenderPass::GetDestTexture(UINT destTextureNum)
 {
 	return rtts[destTextureNum];
 }

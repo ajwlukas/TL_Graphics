@@ -18,16 +18,13 @@ void FinalPass::Set()
 {
 	pipeline->SetSwapChainRenderTargetView(0);
 	shaderPS->Set();
+	sourceTextures[0]->Set(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
 }
 
 void FinalPass::Execute()
 {
 	Set();
 	pipeline->Draw();
-}
-
-void FinalPass::ClearRenderTargets()
-{
 }
 
 void FinalPass::CreateShader()

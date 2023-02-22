@@ -220,6 +220,10 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
 	//indirectLighting = LinearTosRGB(indirectLighting);
     
-    return float4(LinearTosRGB(directLighting + indirectLighting), opacity);
+    float3 ret = directLighting + indirectLighting;
+    if (length(ret) == 0)
+        return float4(0, 0, 0, 0);
+    
+    return float4(LinearTosRGB(ret), opacity);
     //return float4(LinearTosRGB(directLighting), opacity);
 }

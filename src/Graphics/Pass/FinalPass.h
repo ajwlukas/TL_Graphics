@@ -24,7 +24,6 @@ public:
 
 	virtual void Execute() override;
 
-	virtual void ClearRenderTargets() override;
 
 private:
 

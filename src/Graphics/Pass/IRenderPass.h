@@ -8,6 +8,8 @@
 
 #include "Texture.h"
 
+#include "RenderTarget.h"
+
 #include "RenderTargetTexture.h"
 
 class Pipeline;
@@ -22,12 +24,15 @@ public:
 
 	virtual void Execute() {};
 
-	virtual void ClearRenderTargets() = 0;
+	void ClearRenderTargets(TL_Math::Vector4 color = { 0,0,0,0 });
 
 	//자기 자신의 텍스쳐는 꽂으면 안됨 ex) t->SetSourceTexture(t->GetDestTexture); 추후 UAV공부해서 계선 할 수 있을 듯?
 	void SetSourceTexture(Texture* texture, UINT sourceTextureNum = 0);
 
-	Texture* GetDestTexture(UINT destTextureNum = 0);
+	void CreateDestTexture(UINT renderTargetNum = 0, string debugName = "");
+	void DeleteDestTextures();
+	void SetDestTexture(RenderTargetTexture* renderTarget, UINT renderTargetNum = 0);
+	RenderTargetTexture* GetDestTexture(UINT destTextureNum = 0);
 
 	//둘 중 하나만 동작함, Ratio는 화면 비율, Size = 픽셀 수
 	void SetRatio(float sizeX, float sizeY);//(0.0, 1.0]

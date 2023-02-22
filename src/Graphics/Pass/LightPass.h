@@ -8,24 +8,23 @@
 
 #include "ConstantBuffer.h"
 
-class ColorGradingPass : public IRenderPass
+
+class LightPass : public IRenderPass
 {
 public:
-	ColorGradingPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
-	~ColorGradingPass();
+	LightPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	~LightPass();
 
 	// IRenderPass을(를) 통해 상속됨
 	virtual void Set() override;
 
 	virtual void Execute() override;
 
-
 private:
 	OnResizeNotice* resizeNotice;
 
 	Shader* shaderPS;
 
-	Texture* LUT;
 
 private:
 	void CreateRenderTarget(OnResizeNotice* resizeNotice);

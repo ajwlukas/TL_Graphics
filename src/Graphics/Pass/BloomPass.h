@@ -14,6 +14,8 @@
 
 #include "AccumulatorPass.h"
 
+#include "LightPass.h"
+
 class BloomPass : public IRenderPass
 {
 public:
@@ -25,7 +27,6 @@ public:
 
 	virtual void Execute() override;
 
-	virtual void ClearRenderTargets() override;
 
 private:
 	OnResizeNotice* resizeNotice;
@@ -36,11 +37,21 @@ private:
 	GaussianBlurPass* gaussianBlurPassY;
 
 	AccumulatorPass* accumulatorPass;
+	AccumulatorPass* accumulatorPass0;
 
 	SamplerPass* samplerPass;
+	SamplerPass* samplerPass0;
+
+	LightPass* lightPass;
+
+	/*RenderTargetTexture* x25;
+	RenderTargetTexture* x50;
+	RenderTargetTexture* x75;
+	RenderTargetTexture* x100;*/
 
 private:
-	void CreateRenderTarget(OnResizeNotice* resizeNotice);
+	void CreateRenderTargets(OnResizeNotice* resizeNotice);
+	void DeleteRenderTargets();
 
 	void CreateShader();
 };

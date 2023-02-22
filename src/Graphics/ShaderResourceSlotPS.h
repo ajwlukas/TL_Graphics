@@ -28,6 +28,8 @@ constexpr unsigned int roughness_DeferredSlot = 24;
 constexpr unsigned int mainRenderSlot = 30;
 constexpr unsigned int source0Slot = 31;
 constexpr unsigned int sampledTextureSlot = 32;
+constexpr unsigned int source1Slot = 33;
+
 
 
 //40 ~ 49

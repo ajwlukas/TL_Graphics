@@ -58,14 +58,6 @@ void LightAdaptionPass::Execute()
 	rtts[0]->SetT(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
 }
 
-void LightAdaptionPass::ClearRenderTargets()
-{
-	rtts[0]->Clear();
-
-	for (UINT i = 0; i < downSamplingCount; i++)
-		downSamplers[i]->ClearRenderTargets();
-}
-
 void LightAdaptionPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
 	rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice);

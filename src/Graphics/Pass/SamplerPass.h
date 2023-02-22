@@ -19,8 +19,6 @@ public:
 
 	virtual void Execute() override;
 
-	virtual void ClearRenderTargets() override;
-
 	Texture* GetDestTexture() { return rtts[0]; }
 
 private:

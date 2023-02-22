@@ -12,7 +12,7 @@ GaussianBlurPass::GaussianBlurPass(ID3D11DeviceContext* dc, Resources* resources
 
 	dirInfoBuffer = new ConstantBuffer(dc, resources, pipeline, &dir_info, sizeof(Dir_Info));
 
-	CreateRenderTarget(resizeNotice);
+	//CreateRenderTarget(resizeNotice);
 	CreateShader();
 }
 
@@ -20,7 +20,7 @@ GaussianBlurPass::~GaussianBlurPass()
 {
 	SAFE_DELETE(dirInfoBuffer);
 
-	SAFE_DELETE(rtts[0]);
+	//SAFE_DELETE(rtts[0]);
 	SAFE_DELETE(shaderPS);
 }
 
@@ -29,33 +29,38 @@ void GaussianBlurPass::Set()
 	rtts[0]->SetRT(0);
 	shaderPS->Set();
 
+	sourceTextures[0]->Set(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
+
 	dirInfoBuffer->Set(TL_Graphics::E_SHADER_TYPE::PS, 10);
 }
 
 void GaussianBlurPass::Execute()
 {
-	ClearRenderTargets();
+	//ClearRenderTargets();
 	Set();
 
+	auto oldViewport = pipeline->SetViewPort(&viewPort);
 
 	pipeline->Draw();
 
-	pipeline->UnSetRenderTarget(0);
-	rtts[0]->SetT(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
-}
+	//rtts[0]->SetT(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
 
-void GaussianBlurPass::ClearRenderTargets()
-{
-	rtts[0]->Clear();
+	pipeline->UnSetRenderTarget(0);
+	pipeline->BindRenderTargets();
+	pipeline->SetViewPort(oldViewport);
 }
+//
+//void GaussianBlurPass::ClearRenderTargets()
+//{
+//	rtts[0]->Clear();
+//}
 
 void GaussianBlurPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
-	rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "GaussianBlur");
+	//rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "GaussianBlur");
 }
 
 void GaussianBlurPass::CreateShader()
 {
 	shaderPS = new Shader(dc, resources, pipeline, TL_Graphics::E_SHADER_TYPE::PS, L"Shader/GaussianBlur.hlsl");
-\
 }

@@ -27,10 +27,6 @@ void GridPass::Execute()
 	pipeline->Draw();
 }
 
-void GridPass::ClearRenderTargets()
-{
-}
-
 void GridPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
 }

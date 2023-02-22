@@ -41,10 +41,6 @@ void ColorGradingPass::Execute()
 	rtts[0]->SetT(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
 }
 
-void ColorGradingPass::ClearRenderTargets()
-{
-	rtts[0]->Clear();
-}
 
 void ColorGradingPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {

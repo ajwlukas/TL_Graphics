@@ -8,7 +8,7 @@ SamplerPass::SamplerPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline
 	, resizeNotice(resizeNotice)
 	, shaderPS(shaderPS)
 {
-	CreateRenderTarget(resizeNotice);
+	//CreateRenderTarget(resizeNotice);
 
 	if (!shaderPS)
 		CreateShader();
@@ -21,7 +21,7 @@ SamplerPass::SamplerPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline
 
 SamplerPass::~SamplerPass()
 {
-	SAFE_DELETE(rtts[0]);
+	//SAFE_DELETE(rtts[0]);
 
 	if(isShaderCreatedHere)//스마트 포인터 공부하고 고칠 것
 	SAFE_DELETE(shaderPS);
@@ -36,7 +36,7 @@ void SamplerPass::Set()
 
 void SamplerPass::Execute()
 {
-	ClearRenderTargets();
+	//ClearRenderTargets();
 
 	assert(sourceTextures[0]);
 
@@ -54,17 +54,12 @@ void SamplerPass::Execute()
 	pipeline->SetViewPort(oldViewport);
 }
 
-void SamplerPass::ClearRenderTargets()
-{
-	rtts[0]->Clear();
-}
-
 void SamplerPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
-	if (isBasedWindowSize)
-		rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, widthRatio, heightRatio);
-	else //!isBasedWindowSize
-		rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, width, height);
+	//if (isBasedWindowSize)
+	//	rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, widthRatio, heightRatio);
+	//else //!isBasedWindowSize
+	//	rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, width, height);
 }
 
 void SamplerPass::CreateShader()

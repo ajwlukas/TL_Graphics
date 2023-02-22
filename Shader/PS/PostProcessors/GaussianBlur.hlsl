@@ -41,11 +41,13 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
     for (int i = 0; i < POSTEFFECT_BLUR_SAMPLING_COUNT; i++)
     {
-        Result += interPass.Sample(Sampler_Wrap, float2(surface.uv + step * indices[i])) * weights[i];
+        
+        
+        Result += max(0.001f, sourceSlot0.Sample(Sampler_Clamp, float2(surface.uv + step * indices[i]))) * weights[i];
     }
     
     
-    return float4(Result.rgb, interPass.Sample(Sampler_Wrap, surface.uv).a);
+    //return float4(Result.rgb, sourceSlot0.Sample(Sampler_Clamp, surface.uv).a);
     
     return float4(Result.rgb, 1.0f);
 }

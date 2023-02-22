@@ -17,7 +17,7 @@ public:
 
 	virtual void Execute() override;
 
-	virtual void ClearRenderTargets() override;
+	//virtual void ClearRenderTargets() override;
 
 private : 
 	Shader* shaderPS;
