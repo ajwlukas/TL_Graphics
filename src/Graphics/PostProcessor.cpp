@@ -8,6 +8,9 @@ PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipe
 	, resources(resources)
 	, pipeline(pipeline)
 {
+
+	gBufferRenderPass = new GBufferRenderPass(dc, resources, pipeline, resizeNotice);
+
 	screenMesh = new ScreenMesh(dc, resources, pipeline);
 
 	deferredRenderPass = new DeferredRenderPass(dc, resources, pipeline, resizeNotice);
@@ -38,6 +41,9 @@ PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipe
 PostProcessor::~PostProcessor()
 {
 	bloomPass->DeleteDestTextures();
+
+	SAFE_DELETE(gBufferRenderPass);
+
 	SAFE_DELETE(finalPass);
 
 	SAFE_DELETE(lightPass);
@@ -57,18 +63,24 @@ PostProcessor::~PostProcessor()
 	SAFE_DELETE(screenMesh);
 }
 
+void PostProcessor::CollectGBufferInfos()
+{
+	gBufferRenderPass->ClearRenderTargets();
+	gBufferRenderPass->Set();//화면 기하정보 뽑아냄
+}
+
 void PostProcessor::Execute()
 {
 	pipeline->SetDepthDisabled();
 	auto oldDSView = pipeline->SetDepthStencilView(nullptr);
-
-
 
 	cubeMapPass->Execute();
 	RenderTargetTexture* cubeMap = cubeMapPass->GetDestTexture();
 
 	screenMesh->Set();
 
+	for(UINT i = 0; i < 8; i++)
+	deferredRenderPass->SetSourceTexture(gBufferRenderPass->GetDestTexture(i),i);
 	deferredRenderPass->SetDestTexture(cubeMap);
 	deferredRenderPass->Execute();
 	RenderTargetTexture* proto = deferredRenderPass->GetDestTexture();
@@ -102,7 +114,7 @@ void PostProcessor::Execute()
 
 
 
-
+	gBufferRenderPass->ClearRenderTargets();
 	//정리
 	UnBindGBuffers();
 	pipeline->SetDepthStencilView(oldDSView);

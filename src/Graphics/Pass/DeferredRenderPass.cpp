@@ -20,6 +20,10 @@ void DeferredRenderPass::Set()
 {
 	rtts[0]->SetRT(0);
 	shaderPS->Set();
+
+	for (UINT i = 0; i < 8; i++)
+		sourceTextures[i]->Set(TL_Graphics::E_SHADER_TYPE::PS, albedo_DeferredSlot + i);
+
 }
 
 void DeferredRenderPass::Execute()

@@ -121,8 +121,6 @@ private:
 	virtual void EndSetLight() override;
 
 
-	GBufferRenderPass* gBufferRenderPass;
-
 	Shadow* shadow;
 
 	PostProcessor* postProcessor;

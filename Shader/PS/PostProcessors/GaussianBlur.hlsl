@@ -41,13 +41,10 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
     for (int i = 0; i < POSTEFFECT_BLUR_SAMPLING_COUNT; i++)
     {
-        
-        
+        //너무 작은 수 들어가니까 NaN 떠서 0.001f로 함
         Result += max(0.001f, sourceSlot0.Sample(Sampler_Clamp, float2(surface.uv + step * indices[i]))) * weights[i];
     }
     
-    
-    //return float4(Result.rgb, sourceSlot0.Sample(Sampler_Clamp, surface.uv).a);
     
     return float4(Result.rgb, 1.0f);
 }

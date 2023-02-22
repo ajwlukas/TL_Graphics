@@ -33,6 +33,7 @@ Texture2D metalness_Deferred: register(t23);
 Texture2D roughness_Deferred: register(t24);
 Texture2D depth_Deferred: register(t25);
 Texture2D depthLinear_Deferred : register(t26);
+Texture2D emissive_Deferred : register(t27);
 
 
 

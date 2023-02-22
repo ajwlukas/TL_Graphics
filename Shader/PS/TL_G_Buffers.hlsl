@@ -32,6 +32,8 @@ PS_Out main(VS_Out surface)
     normal = normalize(mul(normal, TBN));
     ///
     
+    float3 emissive = emissiveMap.Sample(Sampler_Clamp, surface.uv);
+    
     //todo : 추후 opacity 추가할 것
     //ret.out0 = basecolor_opacity; //albedo
     ret.out0 = float4(basecolor_opacity.rgb, 1.0f); //albedo
@@ -43,6 +45,7 @@ PS_Out main(VS_Out surface)
     ret.out4 = float4(r_s_m_ao.r, 0.0f, 0.0f, 0.0f); //roughness
     ret.out5 = float4(surface.pos_NDC.z, 0.0f, 0.0f, 0.0f);
     ret.out6 = float4(surface.linearDepth, 0.0f, 0.0f, 0.0f);
+    ret.out7 = float4(emissive, 0.0f);
     
     return ret;
 }

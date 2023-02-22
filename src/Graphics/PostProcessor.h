@@ -36,6 +36,8 @@ public:
 	PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
 	~PostProcessor();
 	
+	void CollectGBufferInfos();
+
 	void Execute();
 
 	TL_Graphics::ControlPanel control;
@@ -44,6 +46,8 @@ private:
 	ID3D11DeviceContext* dc;
 	Resources* resources;
 	Pipeline* pipeline;
+
+	GBufferRenderPass* gBufferRenderPass;
 
 	GridPass* gridPass;//후처리에 해당되지 않음, screenMesh 활용하기 위해서 같이 있음
 

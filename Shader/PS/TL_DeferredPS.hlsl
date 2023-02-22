@@ -26,15 +26,20 @@ cbuffer material : register(b12)
  //https://github.com/Nadrin/PBR/blob/master/data/shaders/hlsl/pbr.hlsl
 float4 main(VS_Out_ScreenSpace surface) : SV_Target0
 {
+    float3 emissive = emissive_Deferred.Sample(Sampler_Clamp, surface.uv).rgb;
     
-    float3 albedo = albedo_Deferred.Sample(Sampler_Wrap, surface.uv).rgb;
-    float opacity = albedo_Deferred.Sample(Sampler_Wrap, surface.uv).a;
-    float metalness = metalness_Deferred.Sample(Sampler_Wrap, surface.uv).r;
-    float roughness = roughness_Deferred.Sample(Sampler_Wrap, surface.uv).r;
+    if (length(emissive) > 0)
+        return float4(emissive * 1.5f, 1.0f);
+    
+    
+    float3 albedo = albedo_Deferred.Sample(Sampler_Clamp, surface.uv).rgb;
+    float opacity = albedo_Deferred.Sample(Sampler_Clamp, surface.uv).a;
+    float metalness = metalness_Deferred.Sample(Sampler_Clamp, surface.uv).r;
+    float roughness = roughness_Deferred.Sample(Sampler_Clamp, surface.uv).r;
     //roughness = max(0.01f, roughness);
     
-    float3 pos_world = pos_world_Deferred.Sample(Sampler_Wrap, surface.uv).rgb;
-    float3 normal = normal_world_Deferred.Sample(Sampler_Wrap, surface.uv).rgb;
+    float3 pos_world = pos_world_Deferred.Sample(Sampler_Clamp, surface.uv).rgb;
+    float3 normal = normal_world_Deferred.Sample(Sampler_Clamp, surface.uv).rgb;
     
     float depthLinear = depthLinear_Deferred.Sample(Sampler_Clamp, surface.uv).r;
     

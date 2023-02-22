@@ -17,8 +17,6 @@ DX11Renderer::~DX11Renderer()
 
     SAFE_DELETE(shadow);
 
-    SAFE_DELETE(gBufferRenderPass);
-
     SAFE_DELETE(lights);
 
     SAFE_DELETE(pipeline);
@@ -43,7 +41,7 @@ HRESULT DX11Renderer::Init()
 
     lights = new Light(dc, resources, pipeline);
 
-    gBufferRenderPass = new GBufferRenderPass(dc, resources, pipeline, &onResizeNotice);
+    //gBufferRenderPass = new GBufferRenderPass(dc, resources, pipeline, &onResizeNotice);
 
 
     postProcessor = new PostProcessor(dc, resources, pipeline, &onResizeNotice);
@@ -173,11 +171,7 @@ Line* DX11Renderer::CreateLine(TL_Math::Vector3 startPoint, TL_Math::Vector3 end
 
 void DX11Renderer::PreRender()
 {
-    /*for (int i = 0; i < 8; i++)
-        pipeline->UnSetShaderResource(TL_Graphics::E_SHADER_TYPE::PS ,20 + i);*/
-
-    gBufferRenderPass->ClearRenderTargets();
-    gBufferRenderPass->Set();//화면 기하정보 뽑아냄
+    postProcessor->CollectGBufferInfos();
 
     pipeline->SetDepthEnabled();
 }
@@ -186,7 +180,7 @@ void DX11Renderer::PostRender()
 {
     pipeline->SetStatesDefualt();
     UnSetAllRenderTargets();
-    gBufferRenderPass->SetGBuffers();
+    //gBufferRenderPass->SetGBuffers();
 
     SetSwapChainRenderTargetView();
 
