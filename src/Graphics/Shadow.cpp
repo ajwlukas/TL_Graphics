@@ -300,7 +300,8 @@ void Shadow::Execute()
 {
 	CalculateSizeOfFrustums();
 
-	ID3D11RasterizerState* oldRasteriszerState = pipeline->SetCurrentRasterState(rasterState);
+	ID3D11RasterizerState* oldRasteriszerState = nullptr;
+	oldRasteriszerState = pipeline->SetCurrentRasterState(rasterState);
 	ID3D11PixelShader* oldPiexelShader = nullptr;
 	oldPiexelShader = (ID3D11PixelShader*)shadowShader->SetTest();
 
@@ -383,7 +384,8 @@ void Shadow::Execute(UINT indexCount, UINT startIndexLocation)
 {
 	CalculateSizeOfFrustums();
 
-	ID3D11RasterizerState* oldRasteriszerState = pipeline->SetCurrentRasterState(rasterState);
+	ID3D11RasterizerState* oldRasteriszerState = nullptr;
+	oldRasteriszerState = pipeline->SetCurrentRasterState(rasterState);
 	ID3D11PixelShader* oldPiexelShader = nullptr;
 	oldPiexelShader = (ID3D11PixelShader*)shadowShader->SetTest();
 

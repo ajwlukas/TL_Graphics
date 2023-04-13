@@ -58,7 +58,7 @@ void VertexShaderResources::Get(Resource< ID3D11VertexShader>& dest, std::wstrin
 	if (vertexShaders.find(shaderFileName) == vertexShaders.end())//해당하는 쉐이더가 없으면
 	{
 		HRESULT hr;
-		if (Utility::ExistFileW(shaderFileName))
+		if (Utility::ExistFile(shaderFileName))
 		{
 			hr = resources->device->CreateVertexShader(GetBlob(shaderFileName)->GetBufferPointer(), GetBlob(shaderFileName)->GetBufferSize(), NULL, &vertexShaders[shaderFileName].data);
 		}
@@ -118,6 +118,8 @@ ID3DBlob* VertexShaderResources::GetBlob(wstring shaderFileName)
 
 void VertexShaderResources::Release()
 {
+	for (auto shader : vertexShaders)
+		shader.second.data->Release();
 	for (auto shader : vertexShaderBlobs)
 		shader.second->Release();
 }
@@ -136,7 +138,7 @@ void InputLayoutResources::Get(Resource<ID3D11InputLayout>& dest, D3D11_INPUT_EL
 	if (inputLayouts.find(key) == inputLayouts.end())//못 찾으면
 	{
 		HRESULT hr;
-		if (Utility::ExistFileW(vertexShaderFileName))
+		if (Utility::ExistFile(vertexShaderFileName))
 		{
 			hr = resources->device->CreateInputLayout(desc, descSize, resources->vertexShaders->GetBlob(vertexShaderFileName)->GetBufferPointer(),
 				resources->vertexShaders->GetBlob(vertexShaderFileName)->GetBufferSize(), &inputLayouts[key].data);
@@ -191,7 +193,7 @@ void PixelShaderResources::Get(Resource< ID3D11PixelShader>& dest, wstring shade
 	if (pixelShaders.find(shaderFileName) == pixelShaders.end())//해당하는 쉐이더가 없으면
 	{
 		HRESULT hr;
-		if (Utility::ExistFileW(shaderFileName))
+		if (Utility::ExistFile(shaderFileName))
 		{
 			hr = resources->device->CreatePixelShader(GetBlob(shaderFileName)->GetBufferPointer(), GetBlob(shaderFileName)->GetBufferSize(), NULL, &pixelShaders[shaderFileName].data);
 		}

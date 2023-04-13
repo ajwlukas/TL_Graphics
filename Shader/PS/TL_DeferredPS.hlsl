@@ -77,55 +77,6 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
         //ºûÀ¸·Î ÇâÇÏ´Â º¤ÅÍ
         float3 lightDir = GetLightDirection(light, pos_world);
         
-        float ratio = 1.0f;
-        
-        if (light.type == LightType_Directional)
-        {
-            
-            CamInfo info;
-            if (depthLinear <= 0.3f)
-            {
-                info = shadowCamHigh;
-            }
-            else if (depthLinear <= 0.6f)
-            {
-                info = shadowCamMid;
-            }
-            else
-            {
-                info = shadowCamLow;
-            }
-            
-            
-            float3 shadowViewPos = mul(info.view, float4(pos_world, 1.0f)).xyz;
-            float3 shadowNDCPos = mul(info.proj, float4(shadowViewPos, 1.0f)).xyz;
-            
-            float2 UV = float2((shadowNDCPos.x + 1) * 0.5f, (-shadowNDCPos.y + 1) * 0.5f);
-            
-            //UV = saturate(UV);
-            
-            //UV = saturate(UV);
-            
-            float depth = shadowNDCPos.z;
-            
-            if (depthLinear <= 0.3f)
-            {
-                ratio = depthFromLightHigh.SampleCmpLevelZero(Sampler_Comp, UV, depth).r;
-            }
-            else if (depthLinear <= 0.6f)
-            {
-                ratio = depthFromLightMid.SampleCmpLevelZero(Sampler_Comp, UV, depth).r;
-            }
-            else
-            {
-                ratio = depthFromLightLow.SampleCmpLevelZero(Sampler_Comp, UV, depth).r;
-            }
-            
-            
-            if (ratio == 0.0f)
-                continue;
-            
-        }
         
         
         //°¨¼èµÈ ºûÀÇ ¼¼±â
@@ -178,7 +129,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
 
 		// Total contribution for this light.
         directLighting = directLighting + illuminance * (diffuse + specularBRDF);
-        directLighting *= ratio;
+        //directLighting *= ratio;
 
     }
     

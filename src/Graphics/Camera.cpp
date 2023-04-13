@@ -1,3 +1,6 @@
+#include "..\..\..\TL_GraphicsSample\src\GameObject\Camera.h"
+#include "..\..\..\TL_GraphicsSample\src\GameObject\Camera.h"
+#include "..\..\..\TL_GraphicsSample\src\GameObject\Camera.h"
 #include "pch_dx_11.h"
 #include "Camera.h"
 
@@ -30,6 +33,8 @@ Camera::Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline
 	CalculatePoints();
 	CalculateWorldPoints();
 }
+
+
 
 Camera::~Camera()
 {

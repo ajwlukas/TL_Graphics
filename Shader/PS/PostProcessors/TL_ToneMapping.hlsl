@@ -18,7 +18,6 @@ cbuffer Dir_Info : register(b10)
 
 float4 main(VS_Out_ScreenSpace surface) : SV_TARGET0
 {
-    //float4 vColor = 0;
     float4 vColor = sourceSlot0.Sample(Sampler_Clamp, surface.uv);
     
     float luminance = Luminance(vColor.rgb);
