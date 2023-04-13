@@ -289,8 +289,10 @@ void Shadow::Execute()
 {
 	CalculateSizeOfFrustums();
 
-	ID3D11RasterizerState* oldRasteriszerState = pipeline->SetCurrentRasterState(rasterState);
-	ID3D11PixelShader* oldPiexelShader = (ID3D11PixelShader*)shadowShader->SetTest();
+	ID3D11RasterizerState* oldRasteriszerState = nullptr;
+	oldRasteriszerState = pipeline->SetCurrentRasterState(rasterState);
+	ID3D11PixelShader* oldPiexelShader = nullptr;
+	oldPiexelShader = (ID3D11PixelShader*)shadowShader->SetTest();
 
 	pipeline->SetShaderResource(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 16);
 	pipeline->SetShaderResource(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 17);
@@ -371,8 +373,10 @@ void Shadow::Execute(UINT indexCount, UINT startIndexLocation)
 {
 	CalculateSizeOfFrustums();
 
-	ID3D11RasterizerState* oldRasteriszerState = pipeline->SetCurrentRasterState(rasterState);
-	ID3D11PixelShader* oldPiexelShader = (ID3D11PixelShader*)shadowShader->SetTest();
+	ID3D11RasterizerState* oldRasteriszerState = nullptr;
+	oldRasteriszerState = pipeline->SetCurrentRasterState(rasterState);
+	ID3D11PixelShader* oldPiexelShader = nullptr;
+	oldPiexelShader = (ID3D11PixelShader*)shadowShader->SetTest();
 
 	pipeline->SetShaderResource(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 16);
 	pipeline->SetShaderResource(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 17);

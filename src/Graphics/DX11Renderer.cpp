@@ -194,6 +194,8 @@ void DX11Renderer::Clear()
 {
     float color[4] = { 0.0f, 0.7f, 1.0f, 1.0f };
     pipeline->Clear(color);
+
+    if(shadow)
     shadow->ClearRTTs();
 }
 
@@ -256,7 +258,7 @@ Camera* DX11Renderer::CreateCamera()
     cam = new Camera(dc, resources, pipeline, &onResizeNotice, 80.0f, 1.0f, 2000.0f);
 
 
-    if (flag)
+    if (false)//여기 어떻게 할 것..
     {
         shadow = new Shadow(dc, resources, pipeline, &onResizeNotice, cam, (UINT)1);
         flag = false;
@@ -300,6 +302,7 @@ void DX11Renderer::Draw()
 {
     pipeline->Draw();
 
+    if(shadow)
     shadow->Execute();
 
 }
@@ -307,6 +310,8 @@ void DX11Renderer::Draw()
 void DX11Renderer::Draw(UINT indexCount, UINT startIndexLocation)
 {
     pipeline->Draw(indexCount, startIndexLocation);
+
+    if(shadow)
     shadow->Execute(indexCount, startIndexLocation);
 
 }

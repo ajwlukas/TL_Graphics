@@ -209,14 +209,18 @@ void Pipeline::SetTexture(Texture* texture, TL_Graphics::E_SHADER_TYPE type, UIN
 {
 	TexInfo info = {};
 
-	info.texX = texture->GetSizeX();
-	info.texY = texture->GetSizeY();
-	info.texXInv = 1 / (float)info.texX;
-	info.texYInv = 1 / (float)info.texY;
+	SetShaderResource(texture, type, slot);
+
+	if (texture)
+	{
+		info.texX = texture->GetSizeX();
+		info.texY = texture->GetSizeY();
+		info.texXInv = 1 / (float)info.texX;
+		info.texYInv = 1 / (float)info.texY;
+	}
 
 	texInfos[slot] = info;
 
-	SetShaderResource(texture, type, slot);
 
 	//todo : 여기 조금 비효율 적일지도? 나중에 검토할것
 	texInfoBuffer->Update(texInfos, sizeof(TexInfo) * 4096);
@@ -397,6 +401,8 @@ void Pipeline::Draw()
 	for (auto reserve : reservations)
 		reserve();
 	reservations.clear();
+
+	SetTexture(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 3);
 }
 
 void Pipeline::Draw(UINT indexCount, UINT startIndexLocation)
@@ -409,6 +415,8 @@ void Pipeline::Draw(UINT indexCount, UINT startIndexLocation)
 	for (auto reserve : reservations)
 		reserve();
 	reservations.clear();
+
+	SetTexture(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 3);
 }
 
 void Pipeline::DrawInstanced(UINT numInstance)
