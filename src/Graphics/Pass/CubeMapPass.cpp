@@ -50,7 +50,7 @@ void CubeMapPass::Execute()
 	pipeline->Draw();
 
 	pipeline->UnSetRenderTarget(0);
-	rtts[0]->SetT(TL_Graphics::E_SHADER_TYPE::PS, 14);
+    pipeline->BindRenderTargets();
 }
 
 

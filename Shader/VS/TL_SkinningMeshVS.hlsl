@@ -44,7 +44,7 @@ VS_Out main(VS_In_SkinningMesh v)
 
     ret.normal_world = normalize(normalL);
     ret.tangent_world = normalize(tangentL);
-    // ret.bitangent_world = LocalToWorldDirOnly(tangentL); // TODO
+    ret.bitangent_world = LocalToWorldDirOnly(tangentL);
 
     // end skin
 

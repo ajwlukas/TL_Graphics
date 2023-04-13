@@ -12,9 +12,9 @@
 
 #include "RenderTargetTexture.h"
 
-const float max_depth = 20000.0f;
+const float max_depth = 5000.0f;
 
-const UINT rtSizeHigh = 3000;
+const UINT rtSizeHigh = 10000;
 const UINT rtSizeMid = 2000;
 const UINT rtSizeLow = 1000;
 
@@ -36,7 +36,7 @@ private:
 		TL_Math::Vector3 LTF, TL_Math::Vector3 RTF, TL_Math::Vector3 LBF, TL_Math::Vector3 RBF, TL_Math::Vector3& middlePoint, float& width, float& height);
 	void CalculateSizeOfFrustums();
 
-	TL_Math::Vector3 dir = { -1,-1, -1 };//일단 빛 생각하지 말아보자
+	TL_Math::Vector3 dir = { 1,-1, 0 };//일단 빛 생각하지 말아보자
 
 	__declspec(align(16)) struct Data
 	{

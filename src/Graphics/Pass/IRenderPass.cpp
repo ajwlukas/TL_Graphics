@@ -7,6 +7,7 @@ IRenderPass::IRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline
 	, pipeline(pipeline)
 	, resizeNotice(resizeNotice)
 {
+	resizeNotice->AddObserver(this);
 	rtts.resize(rttNum);
 	sourceTextures.resize(sourceTextureNum);
 	DescViewPort();
@@ -106,7 +107,10 @@ void IRenderPass::ResizeRTTs()
 		assert(heightRatio > 0.0f);
 
 		for (auto rtt : rtts)
+		{
+			if(rtt)
 			rtt->ResizeRatio(widthRatio, heightRatio);
+		}
 	}
 	else
 	{
@@ -114,6 +118,15 @@ void IRenderPass::ResizeRTTs()
 		assert(height > 0);
 
 		for (auto rtt : rtts)
+		{
+			if (rtt)
 			rtt->Resize(width, height);
+		}
 	}
+}
+
+void IRenderPass::OnResize(uint32_t width, uint32_t height)
+{
+	ResizeViewport();
+	ResizeRTTs();
 }

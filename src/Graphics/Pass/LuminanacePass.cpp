@@ -3,7 +3,7 @@
 
 #include "Pipeline.h"
 
-const UINT initSize = 243;//==3^5
+const UINT initSize = 729;//==3^5
 
 LuminancePass::LuminancePass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
 	:IRenderPass(dc, resources, pipeline, resizeNotice, 1, 1)
@@ -27,9 +27,9 @@ void LuminancePass::Init()
 	greyScalePass->CreateDestTexture();
 	averagePass = new AveragePass(dc, resources, pipeline, resizeNotice);
 	//averagePass->CreateDestTexture();
-	averagePass->SetDestTexture(rtts[0]);
+	averagePass->CreateDestTexture();
 	averagePass0 = new AveragePass(dc, resources, pipeline, resizeNotice);
-	averagePass0->CreateDestTexture();
+	averagePass0->SetDestTexture(rtts[0]);
 }
 
 void LuminancePass::Set()
@@ -84,6 +84,13 @@ void LuminancePass::Execute()
 	averagePass->SetSize(size, size);
 	averagePass->SetSourceTexture(averagePass0->GetDestTexture());
 	averagePass->Execute();
+
+	//하나더 추가
+	size /= 3;
+	averagePass0->ClearRenderTargets();
+	averagePass0->SetSize(size, size);
+	averagePass0->SetSourceTexture(averagePass->GetDestTexture());
+	averagePass0->Execute();
 
 	pipeline->UnSetRenderTarget(0);
 	pipeline->BindRenderTargets();

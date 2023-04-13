@@ -38,7 +38,7 @@ PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipe
 	lightPass = new LightPass(dc, resources, pipeline, resizeNotice);
 
 	greyScalePass = new GreyScalePass(dc, resources, pipeline, resizeNotice);
-	greyScalePass->CreateDestTexture(0,"GreyScale", DXGI_FORMAT_R32_FLOAT);
+	greyScalePass->CreateDestTexture(0, "GreyScale", DXGI_FORMAT_R32_FLOAT);
 
 	averagePass = new AveragePass(dc, resources, pipeline, resizeNotice);
 	averagePass->CreateDestTexture(0, "Average");
@@ -49,11 +49,16 @@ PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipe
 
 	lightAdaptionPass = new LightAdaptionPass(dc, resources, pipeline, resizeNotice);
 	lightAdaptionPass->CreateDestTexture(0, "LightAdaption");
+
+	toneMappingPass = new ToneMappingPass(dc, resources, pipeline, resizeNotice);
+	toneMappingPass->CreateDestTexture(0, "toneMapping");
 }
 
 PostProcessor::~PostProcessor()
 {
 	bloomPass->DeleteDestTextures();
+
+	SAFE_DELETE(toneMappingPass);
 
 	SAFE_DELETE(lightAdaptionPass);
 
@@ -100,8 +105,8 @@ void PostProcessor::Execute()
 
 	screenMesh->Set();
 
-	for(UINT i = 0; i < 8; i++)
-	deferredRenderPass->SetSourceTexture(gBufferRenderPass->GetDestTexture(i),i);
+	for (UINT i = 0; i < 8; i++)
+		deferredRenderPass->SetSourceTexture(gBufferRenderPass->GetDestTexture(i), i);
 	deferredRenderPass->SetDestTexture(cubeMap);
 	deferredRenderPass->Execute();
 	RenderTargetTexture* proto = deferredRenderPass->GetDestTexture();
@@ -112,7 +117,7 @@ void PostProcessor::Execute()
 	RenderTargetTexture* before = proto;
 
 	if (control.doColorGrading)
-	colorGradingPass->Execute();
+		colorGradingPass->Execute();
 
 
 	//lightPass->SetSourceTexture(before);
@@ -120,9 +125,6 @@ void PostProcessor::Execute()
 	//before = lightPass->GetDestTexture();
 
 	//bloomPass->SetDestTexture(before);
-	bloomPass->SetSourceTexture(before, 0);
-	bloomPass->Execute();
-	before = bloomPass->GetDestTexture();
 
 	/*greyScalePass->SetSourceTexture(before);
 	greyScalePass->Execute();
@@ -133,14 +135,27 @@ void PostProcessor::Execute()
 	averagePass->Execute();
 	before = averagePass->GetDestTexture();*/
 
-	luminancePass->SetSourceTexture(before);
-	luminancePass->Execute();
-	Texture* luminance = luminancePass->GetDestTexture();
+	{
+		luminancePass->SetSourceTexture(before);
+		luminancePass->Execute();
+		Texture* luminance = luminancePass->GetDestTexture();
 
-	lightAdaptionPass->SetSourceTexture(before,0);
-	lightAdaptionPass->SetSourceTexture(luminance, 1);
-	lightAdaptionPass->Execute();
-	before = lightAdaptionPass->GetDestTexture();
+		lightAdaptionPass->SetSourceTexture(before, 0);
+		lightAdaptionPass->SetSourceTexture(luminance, 1);
+		lightAdaptionPass->Execute();
+		before = lightAdaptionPass->GetDestTexture();
+	}
+
+	toneMappingPass->SetSourceTexture(before, 0);
+	toneMappingPass->Execute();
+	before = toneMappingPass->GetDestTexture();
+
+	bloomPass->SetSourceTexture(before, 0);
+	bloomPass->Execute();
+	before = bloomPass->GetDestTexture();
+
+
+
 
 	finalPass->SetSourceTexture(before);
 	finalPass->Execute();

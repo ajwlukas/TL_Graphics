@@ -19,6 +19,8 @@
 cbuffer material : register(b12)
 {
     float lodLevel;
+    float emissiveStrength;
+    float pad[2];
 }
 
 
@@ -29,7 +31,8 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     float3 emissive = emissive_Deferred.Sample(Sampler_Clamp, surface.uv).rgb;
     
     if (length(emissive) > 0)
-        return float4(emissive * 1.5f, 1.0f);
+        //return float4(emissive * emissiveStrength, 1.0f);
+        return float4(emissive * 15.0f, 1.0f);
     
     
     float3 albedo = albedo_Deferred.Sample(Sampler_Clamp, surface.uv).rgb;
@@ -93,10 +96,15 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
                 info = shadowCamLow;
             }
             
+            
             float3 shadowViewPos = mul(info.view, float4(pos_world, 1.0f)).xyz;
             float3 shadowNDCPos = mul(info.proj, float4(shadowViewPos, 1.0f)).xyz;
             
             float2 UV = float2((shadowNDCPos.x + 1) * 0.5f, (-shadowNDCPos.y + 1) * 0.5f);
+            
+            //UV = saturate(UV);
+            
+            //UV = saturate(UV);
             
             float depth = shadowNDCPos.z;
             

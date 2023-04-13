@@ -34,6 +34,8 @@
 
 #include "Pass/LightAdaptionPass.h"
 
+#include "Pass/ToneMappingPass.h"
+
 /// <summary>
 /// 후처리 담당
 /// </summary>
@@ -84,6 +86,7 @@ private:
 
 	LuminancePass* luminancePass = nullptr;
 
+	ToneMappingPass* toneMappingPass = nullptr;
 
 	FinalPass* finalPass;
 

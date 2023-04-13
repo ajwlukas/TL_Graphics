@@ -22,25 +22,32 @@ Shadow::Shadow(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline
 
 	dir.Normalize();
 
+	//좌표계 맞고
 	axisZ = dir;
-	axisX = TL_Math::Vector3(0, 1, 0).Cross(axisZ);
+	axisX =  TL_Math::Vector3(0, 1, 0).Cross(axisZ);
 	axisY = axisZ.Cross(axisX);
+
+	axisX.Normalize();
+	axisY.Normalize();
 }
 
 Shadow::~Shadow()
 {
 	SAFE_DELETE(lightSpaceViewProjHigh);
 	SAFE_DELETE(lightSpaceViewProjMid);
-	SAFE_DELETE(lightSpaceViewProjLow);
+	//SAFE_DELETE(lightSpaceViewProjLow);
 	SAFE_DELETE(depthFromLightHigh);
 	SAFE_DELETE(depthFromLightMid);
-	SAFE_DELETE(depthFromLightLow);
+	//SAFE_DELETE(depthFromLightLow);
 	SAFE_DELETE(shadowShader);
 }
 
 void Shadow::CalculateSizeOfFrustum(TL_Math::Vector3 LTN, TL_Math::Vector3 RTN, TL_Math::Vector3 LBN, TL_Math::Vector3 RBN,	TL_Math::Vector3 LTF, TL_Math::Vector3 RTF, TL_Math::Vector3 LBF, TL_Math::Vector3 RBF, TL_Math::Vector3& middlePoint, float& width, float& height)
 {
 	middlePoint = {};
+
+	width = 0;
+	height = 0;
 	//빛의 역방향을 쳐다 보고 있는 좌표계를 구함
 
 	lightTransformHigh = TL_Math::Matrix(axisX, axisY, axisZ);
@@ -86,6 +93,8 @@ void Shadow::CalculateSizeOfFrustum(TL_Math::Vector3 LTN, TL_Math::Vector3 RTN, 
 
 		width = max - min;
 
+		width *= 1.1f;
+
 		TL_Math::Vector3 temp = XMVectorScale(axisX, (max + min) * 0.5f);
 
 		middlePoint += temp;
@@ -130,6 +139,8 @@ void Shadow::CalculateSizeOfFrustum(TL_Math::Vector3 LTN, TL_Math::Vector3 RTN, 
 		min = min < axisScalar ? min : axisScalar;
 
 		height = max - min;
+
+		height *= 1.1f;
 
 		TL_Math::Vector3 temp = XMVectorScale(axisY, (max + min) * 0.5f);
 
@@ -213,12 +224,12 @@ void Shadow::CalculateSizeOfFrustums()
 	TL_Math::Vector3 RT3 = RT0 + div3 * GapRT;
 	TL_Math::Vector3 LB3 = LB0 + div3 * GapLB;
 	TL_Math::Vector3 RB3 = RB0 + div3 * GapRB;
-
+	//여기까지맞고
 	TL_Math::Vector3 middlePoint;
 	float width = 0, height = 0;
 
 	//High
-	CalculateSizeOfFrustum(LT0, RT0, LB0, RB0, LT1, RT1, LB1, RB1, middlePoint, width, height);
+	CalculateSizeOfFrustum(LT0, RT0, LB0, RB0, LT2, RT2, LB2, RB2, middlePoint, width, height);
 
 	lightTransformHigh = TL_Math::Matrix(axisX, axisY, axisZ);
 
@@ -233,7 +244,7 @@ void Shadow::CalculateSizeOfFrustums()
 	lightCamHigh.camPos = middlePoint;
 	lightCamHigh.frustumFar = max_depth;
 
-	//Mid
+	////Mid
 	CalculateSizeOfFrustum(LT1, RT1, LB1, RB1, LT2, RT2, LB2, RB2, middlePoint, width, height);
 
 	lightTransformMid = TL_Math::Matrix(axisX, axisY, axisZ);
@@ -290,7 +301,8 @@ void Shadow::Execute()
 	CalculateSizeOfFrustums();
 
 	ID3D11RasterizerState* oldRasteriszerState = pipeline->SetCurrentRasterState(rasterState);
-	ID3D11PixelShader* oldPiexelShader = (ID3D11PixelShader*)shadowShader->SetTest();
+	ID3D11PixelShader* oldPiexelShader = nullptr;
+	oldPiexelShader = (ID3D11PixelShader*)shadowShader->SetTest();
 
 	pipeline->SetShaderResource(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 16);
 	pipeline->SetShaderResource(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 17);
@@ -337,7 +349,7 @@ void Shadow::Execute()
 	pipeline->UnSetRenderTarget(0);
 	depthFromLightMid->SetT(TL_Graphics::E_SHADER_TYPE::PS, 17);
 
-	//Low
+	////Low
 	DescViewport(rtSizeLow);
 	pipeline->SetViewPort(&viewPort);
 
@@ -372,7 +384,8 @@ void Shadow::Execute(UINT indexCount, UINT startIndexLocation)
 	CalculateSizeOfFrustums();
 
 	ID3D11RasterizerState* oldRasteriszerState = pipeline->SetCurrentRasterState(rasterState);
-	ID3D11PixelShader* oldPiexelShader = (ID3D11PixelShader*)shadowShader->SetTest();
+	ID3D11PixelShader* oldPiexelShader = nullptr;
+	oldPiexelShader = (ID3D11PixelShader*)shadowShader->SetTest();
 
 	pipeline->SetShaderResource(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 16);
 	pipeline->SetShaderResource(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 17);
@@ -419,7 +432,7 @@ void Shadow::Execute(UINT indexCount, UINT startIndexLocation)
 	pipeline->UnSetRenderTarget(0);
 	depthFromLightMid->SetT(TL_Graphics::E_SHADER_TYPE::PS, 17);
 
-	//Low
+	////Low
 	DescViewport(rtSizeLow);
 	pipeline->SetViewPort(&viewPort);
 

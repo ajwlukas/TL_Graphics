@@ -12,5 +12,5 @@
 
 float4 main(VS_Out surface) : SV_Target0
 {
-    return float4(surface.pos_NDC.zzz, 1.0f);
+    return float4(surface.pos_NDC.z,0.0f, 0.0f, 1.0f);
 }

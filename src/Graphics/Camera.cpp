@@ -112,7 +112,7 @@ void Camera::OnResize(UINT width, UINT height)
 void Camera::CalculatePoints()
 {
 	float farZ = frustumFar;
-	float farY = tanf(fovInRadian / 2) * farZ;
+	float farY = tanf(fovInRadian / 2.0f) * farZ;
 	float farX = aspectRatio * farY;
 
 	points.RTF = { farX,	farY,	farZ };
@@ -122,7 +122,7 @@ void Camera::CalculatePoints()
 
 
 	float nearZ = frustumNear;
-	float nearY = tanf(fovInRadian / 2) * nearZ;
+	float nearY = tanf(fovInRadian / 2.0f) * nearZ;
 	float nearX = aspectRatio * nearY;
 
 	points.RTN = { nearX,	nearY,	nearZ };

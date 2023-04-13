@@ -30,10 +30,15 @@ void LightAdaptionPass::Execute()
 {
 	ClearRenderTargets();
 
+	auto oldViewport = pipeline->SetViewPort(&viewPort);
+
 	Set();
 
 	pipeline->Draw();
+
 	pipeline->UnSetRenderTarget(0);
+	pipeline->BindRenderTargets();
+	pipeline->SetViewPort(oldViewport);
 }
 
 void LightAdaptionPass::CreateRenderTarget(OnResizeNotice* resizeNotice)

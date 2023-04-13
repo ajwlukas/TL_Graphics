@@ -209,10 +209,14 @@ void Pipeline::SetTexture(Texture* texture, TL_Graphics::E_SHADER_TYPE type, UIN
 {
 	TexInfo info = {};
 
-	info.texX = texture->GetSizeX();
-	info.texY = texture->GetSizeY();
-	info.texXInv = 1 / (float)info.texX;
-	info.texYInv = 1 / (float)info.texY;
+	if (texture)
+	{
+		info.texX = texture->GetSizeX();
+		info.texY = texture->GetSizeY();
+		info.texXInv = 1 / (float)info.texX;
+		info.texYInv = 1 / (float)info.texY;
+	}
+	
 
 	texInfos[slot] = info;
 
@@ -397,6 +401,8 @@ void Pipeline::Draw()
 	for (auto reserve : reservations)
 		reserve();
 	reservations.clear();
+
+	SetTexture(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 3);
 }
 
 void Pipeline::Draw(UINT indexCount, UINT startIndexLocation)
@@ -406,9 +412,13 @@ void Pipeline::Draw(UINT indexCount, UINT startIndexLocation)
 
 	dc->DrawIndexed(indexCount, startIndexLocation, 0);
 
+
+
 	for (auto reserve : reservations)
 		reserve();
 	reservations.clear();
+
+	SetTexture(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 3);
 }
 
 void Pipeline::DrawInstanced(UINT numInstance)
@@ -420,6 +430,8 @@ void Pipeline::DrawInstanced(UINT numInstance)
 	for (auto reserve : reservations)
 		reserve();
 	reservations.clear();
+
+	SetTexture(nullptr, TL_Graphics::E_SHADER_TYPE::PS, 3);
 }
 
 void Pipeline::CreateDefaultStates()
