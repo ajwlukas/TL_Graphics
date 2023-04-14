@@ -4,7 +4,11 @@
 
 #include "TL_TexturesPS.hlsli"
 
-static const float MIDDLE_GRAY = 0.15f;
+cbuffer Figure : register(b10)
+{
+    float MIDDLE_GRAY;
+    
+};
 
 float4 main(VS_Out_ScreenSpace surface) : SV_TARGET0
 {

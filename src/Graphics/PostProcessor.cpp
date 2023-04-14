@@ -111,30 +111,10 @@ void PostProcessor::Execute()
 	deferredRenderPass->Execute();
 	RenderTargetTexture* proto = deferredRenderPass->GetDestTexture();
 
-
-
 	///여기부터 후처리
 	RenderTargetTexture* before = proto;
 
-	if (control.doColorGrading)
-		colorGradingPass->Execute();
-
-
-	//lightPass->SetSourceTexture(before);
-	//lightPass->Execute();
-	//before = lightPass->GetDestTexture();
-
-	//bloomPass->SetDestTexture(before);
-
-	/*greyScalePass->SetSourceTexture(before);
-	greyScalePass->Execute();
-	before = greyScalePass->GetDestTexture();*/
-
-	/*averagePass->SetRatio(0.09f, 0.09f);
-	averagePass->SetSourceTexture(before);
-	averagePass->Execute();
-	before = averagePass->GetDestTexture();*/
-
+	if(control.doLightAdaption)
 	{
 		luminancePass->SetSourceTexture(before);
 		luminancePass->Execute();
@@ -142,28 +122,43 @@ void PostProcessor::Execute()
 
 		lightAdaptionPass->SetSourceTexture(before, 0);
 		lightAdaptionPass->SetSourceTexture(luminance, 1);
+
+		lightAdaptionPass->SetMiddleGrey(control.middleGrey);
+
 		lightAdaptionPass->Execute();
 		before = lightAdaptionPass->GetDestTexture();
 	}
 
-	toneMappingPass->SetSourceTexture(before, 0);
-	toneMappingPass->Execute();
-	before = toneMappingPass->GetDestTexture();
+	if (control.doToneMapping)
+	{
+		toneMappingPass->SetSourceTexture(before, 0);
 
-	bloomPass->SetSourceTexture(before, 0);
-	bloomPass->Execute();
-	before = bloomPass->GetDestTexture();
+		toneMappingPass->SetMaxWhite(control.maxWhite);
 
+		toneMappingPass->Execute();
+		before = toneMappingPass->GetDestTexture();
+	}
+
+	if (control.doBloom)
+	{
+		bloomPass->SetSourceTexture(before, 0);
+		bloomPass->Execute();
+		before = bloomPass->GetDestTexture();
+	}
+
+	if (control.doColorGrading)
+	{
+		colorGradingPass->SetSourceTexture(before);
+
+		colorGradingPass->Execute();
+
+		before = colorGradingPass->GetDestTexture();
+	}
 
 
 
 	finalPass->SetSourceTexture(before);
 	finalPass->Execute();
-
-
-
-
-
 
 
 	gBufferRenderPass->ClearRenderTargets();

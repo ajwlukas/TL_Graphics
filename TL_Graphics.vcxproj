@@ -106,7 +106,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch_dx_11.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/;../Utility;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,7 +142,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch_dx_11.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/;../Utility;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -178,7 +178,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch_dx_11.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/;../Utility;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -214,7 +214,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch_dx_11.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../TL_Common/inc/;inc/Graphics/;src/Graphics/;../Utility;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -349,7 +349,6 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
     <ClCompile Include="src\Graphics\Resources.cpp" />
     <ClCompile Include="src\Graphics\TextureBuffer.cpp" />
     <ClCompile Include="src\Graphics\ShaderResource.cpp" />
-    <ClCompile Include="src\Graphics\Utility.cpp" />
     <ClCompile Include="src\Graphics\Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>

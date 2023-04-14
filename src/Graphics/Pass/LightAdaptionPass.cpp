@@ -10,11 +10,14 @@ LightAdaptionPass::LightAdaptionPass(ID3D11DeviceContext* dc, Resources* resourc
 	CreateRenderTarget(resizeNotice);
 	CreateShader();
 
+	figureBuffer = new ConstantBuffer(dc, resources, pipeline, &m_Figure, sizeof(m_Figure));
+	figureBuffer->SetDebugName("MiddleGrey");
 }
 
 LightAdaptionPass::~LightAdaptionPass()
 {
 	SAFE_DELETE(shaderPS);
+	SAFE_DELETE(figureBuffer);
 }
 
 void LightAdaptionPass::Set()
@@ -24,6 +27,8 @@ void LightAdaptionPass::Set()
 
 	sourceTextures[0]->Set(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);//original
 	sourceTextures[1]->Set(TL_Graphics::E_SHADER_TYPE::PS, source1Slot);//Luminanace
+
+	figureBuffer->Set(TL_Graphics::E_SHADER_TYPE::PS, 10);
 }
 
 void LightAdaptionPass::Execute()

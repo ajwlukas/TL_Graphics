@@ -18,6 +18,7 @@ VS_Out main(VS_In_StaticMesh v)
     ret.tangent_world = LocalToWorldDirOnly(v.tangent_local);
     ret.bitangent_world = LocalToWorldDirOnly(v.bitangent_local);
     
+    ret.instanceID = 0;
     
 	return ret;
 }

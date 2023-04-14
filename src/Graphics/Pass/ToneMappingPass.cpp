@@ -8,11 +8,15 @@ ToneMappingPass::ToneMappingPass(ID3D11DeviceContext* dc, Resources* resources, 
 	, resizeNotice(resizeNotice)
 {
 	CreateShader();
+
+	figureBuffer = new ConstantBuffer(dc, resources, pipeline, &m_Figure, sizeof(m_Figure));
+	figureBuffer->SetDebugName("MaxWhite");
 }
 
 ToneMappingPass::~ToneMappingPass()
 {
 	SAFE_DELETE(shaderPS);
+	SAFE_DELETE(figureBuffer);
 }
 
 void ToneMappingPass::Set()
@@ -21,6 +25,8 @@ void ToneMappingPass::Set()
 	shaderPS->Set();
 
 	sourceTextures[0]->Set(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
+
+	figureBuffer->Set(TL_Graphics::E_SHADER_TYPE::PS, 10);
 }
 
 void ToneMappingPass::Execute()

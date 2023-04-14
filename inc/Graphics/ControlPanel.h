@@ -13,10 +13,14 @@ namespace TL_Graphics
 	{
 		bool doGrid = true;
 
-		bool doDownSample = false;
-
-		bool doGaussianBlur = false;
-
 		bool doColorGrading = false;
+
+		bool doLightAdaption = false;
+		float middleGrey = 0.5f;
+
+		bool doToneMapping = false;
+		float maxWhite = 7.0f;
+
+		bool doBloom = false;
 	};
 }

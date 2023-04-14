@@ -44,7 +44,7 @@ void ColorGradingPass::Execute()
 
 void ColorGradingPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
 {
-	rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "ColorGrading");
+	rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "ColorGrading", DXGI_FORMAT_R8G8B8A8_UNORM);
 }
 
 void ColorGradingPass::CreateShader()

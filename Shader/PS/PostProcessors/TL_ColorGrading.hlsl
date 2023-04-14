@@ -15,7 +15,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_TARGET0
     float4 rgba = sourceSlot0.Sample(Sampler_Clamp, surface.uv);
     
     
-    return float4(LUT.Sample(Sampler_Clamp, rgba.rgb).rgb, rgba.a);
+    return float4(LUT.Sample(Sampler_Clamp, rgba.rgb).rgb, 1.0f);
 
 }
 

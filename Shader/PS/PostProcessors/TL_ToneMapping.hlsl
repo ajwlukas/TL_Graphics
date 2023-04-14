@@ -12,7 +12,6 @@
 
 cbuffer Dir_Info : register(b10)
 {
-    float middleGrey;
     float maxWhite;
 };
 
@@ -22,7 +21,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_TARGET0
     
     float luminance = Luminance(vColor.rgb);
     
-    luminance = Reinhard_Luminance(luminance, 7.0f);
+    luminance = Reinhard_Luminance(luminance, maxWhite);
     
     vColor.rgb = Change_luminance(vColor.rgb, luminance);
     

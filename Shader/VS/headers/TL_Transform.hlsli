@@ -80,6 +80,7 @@ float4 LocalToNDC(float3 localPos, uint instanceID)//로컬 포지션을 월드로
     return WorldToNDC(ret);
 }
 
+
 ///벡터용
 float3 LocalToWorldDirOnly(float3 localDir, uint instanceID)//로컬 포지션을 월드로
 {
