@@ -37,7 +37,7 @@ VS_Out main(VS_In_SkinningMesh v)
 
     ret.pos_world = posW;
     ret.pos_view = WorldToView(ret.pos_world);
-    ret.linearDepth = ret.pos_view.z / frustumFar;
+    //ret.linearDepth = ret.pos_view.z / frustumFar;
     ret.pos_NDC = ViewToNDC(ret.pos_view);
 
     ret.uv = v.uv;
