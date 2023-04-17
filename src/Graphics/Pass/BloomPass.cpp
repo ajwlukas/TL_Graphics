@@ -124,25 +124,24 @@ void BloomPass::Execute()
 
 	//마지막으로 원본과 합쳐준다.
 	accumulatorPass0->SetDestTexture(rtts[0]);
-	accumulatorPass0->SetRatio(1.0f, 1.0f);
 	accumulatorPass0->SetSourceTexture(accumulatorPass->GetDestTexture(), 0);
 	accumulatorPass0->SetSourceTexture(sourceTextures[0], 1);
 	accumulatorPass0->Execute();
 
 	accumulatorPass->ClearRenderTargets();
 
-	pipeline->UnSetRenderTarget(0);
+	pipeline->UnSetAllRenderTargets();
 	pipeline->BindRenderTargets();
 }
 
 void BloomPass::CreateRenderTargets(OnResizeNotice* resizeNotice)
 {
-	samplerPass->CreateDestTexture(0,"BloomSampler0");
-	gaussianBlurPassX->CreateDestTexture(0,"BloomSampler0");
-	gaussianBlurPassY->CreateDestTexture(0,"BloomSampler0");
-	accumulatorPass->CreateDestTexture(0,"BloomSampler0");
+	samplerPass->CreateDestTexture(0,"Bloom_Sampler");
+	gaussianBlurPassX->CreateDestTexture(0,"Bloom_GaussianX");
+	gaussianBlurPassY->CreateDestTexture(0,"Bloom_GaussianY");
+	accumulatorPass->CreateDestTexture(0,"Bloom_Accumulator");
 	//accumulatorPass0->CreateDestTexture(0,"BloomSampler0");
-	lightPass->CreateDestTexture(0,"BloomSampler0");
+	lightPass->CreateDestTexture(0,"Bloom_LightPass");
 }
 
 void BloomPass::DeleteRenderTargets()

@@ -46,7 +46,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
     float depthLinear = depthLinear_Deferred.Sample(Sampler_Clamp, surface.uv).r;
     
-    albedo = sRGBtoLinear(albedo);
+    albedo = max(float3(0.0f, 0.0f, 0.0f), sRGBtoLinear(albedo));
     
     //표면으로 부터 눈으로 향하는 방향 벡터
     float3 toEye = normalize(cam.camPos - pos_world);
@@ -186,7 +186,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
     float3 ret = directLighting + indirectLighting;
     if (length(ret) == 0)
-        return float4(0, 0, 0, 0);
+        return float4(0, 0, 0, opacity);
     
     return float4(LinearTosRGB(ret), opacity);
     //return float4(LinearTosRGB(directLighting), opacity);

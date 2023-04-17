@@ -12,6 +12,11 @@
 
 Buffer<float4> MaterialTest : register(t50);
 
+cbuffer Color : register(b10)
+{
+    float3 color;
+}
+
 float2 GetMaterialByInstanceID(uint instanceID)
 {
     return MaterialTest.Load(instanceID).xy;
@@ -23,9 +28,8 @@ PS_Out main(VS_Out surface)
 	
 	float4 basecolor_opacity = baseColor_opcityMap.Sample(Sampler_Wrap, surface.uv);
     
-	//ret.out0 = float4(basecolor_opacity.rgb, 1.0f); //albedo
     float test = surface.instanceID / 20.0f;
-    ret.out0 = float4(1.0f, 0.0f, 0.0f, 1.0f); //albedo
+    ret.out0 = float4(color.r, color.g, color.b, 1.0f); //albedo
 
 	ret.out1 = float4(surface.normal_world, 1.0f); //normal_world
     

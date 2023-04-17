@@ -32,8 +32,12 @@ void AccumulatorPass::Execute()
 
 	pipeline->Draw();
 
-	pipeline->UnSetRenderTarget(0);
+	pipeline->UnSetAllRenderTargets();
 	pipeline->BindRenderTargets();
+
+	pipeline->UnSetShaderResource(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
+	pipeline->UnSetShaderResource(TL_Graphics::E_SHADER_TYPE::PS, source1Slot);
+
 	pipeline->SetViewPort(oldViewport);
 }
 

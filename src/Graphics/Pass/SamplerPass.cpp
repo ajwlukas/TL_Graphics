@@ -48,7 +48,7 @@ void SamplerPass::Execute()
 	pipeline->Draw();
 
 	//Á¤¸®
-	pipeline->UnSetRenderTarget(0);
+	pipeline->UnSetAllRenderTargets();
 	pipeline->BindRenderTargets();
 	pipeline->SetViewPort(oldViewport);
 }

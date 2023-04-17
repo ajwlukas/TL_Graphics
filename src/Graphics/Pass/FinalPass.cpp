@@ -25,6 +25,8 @@ void FinalPass::Execute()
 {
 	Set();
 	pipeline->Draw();
+
+
 }
 
 void FinalPass::CreateShader()

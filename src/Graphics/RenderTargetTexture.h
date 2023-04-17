@@ -55,4 +55,5 @@ private:
 	DXGI_FORMAT format;
 
 	void SetDebugName(std::string debugName);
+	std::string m_DebugName;
 };

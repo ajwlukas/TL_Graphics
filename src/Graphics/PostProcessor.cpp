@@ -33,7 +33,7 @@ PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipe
 	cubeMapPass = new CubeMapPass(dc, resources, pipeline, resizeNotice, L"_DevelopmentAssets/Texture/CubeMaps/ValleyEnvHDR.dds");
 
 	bloomPass = new BloomPass(dc, resources, pipeline, resizeNotice);
-	bloomPass->CreateDestTexture();
+	bloomPass->CreateDestTexture(0, "BloomRT");
 
 	lightPass = new LightPass(dc, resources, pipeline, resizeNotice);
 
@@ -139,12 +139,15 @@ void PostProcessor::Execute()
 		before = toneMappingPass->GetDestTexture();
 	}
 
+
 	if (control.doBloom)
 	{
 		bloomPass->SetSourceTexture(before, 0);
 		bloomPass->Execute();
 		before = bloomPass->GetDestTexture();
 	}
+
+
 
 	if (control.doColorGrading)
 	{

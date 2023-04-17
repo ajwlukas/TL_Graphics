@@ -30,6 +30,9 @@ void LightPass::Execute()
 	Set();
 
 	pipeline->Draw();
+
+	pipeline->UnSetAllRenderTargets();
+	pipeline->BindRenderTargets();
 }
 
 

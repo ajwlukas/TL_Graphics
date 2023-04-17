@@ -45,7 +45,8 @@ void GaussianBlurPass::Execute()
 
 	//rtts[0]->SetT(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
 
-	pipeline->UnSetRenderTarget(0);
+
+	pipeline->UnSetAllRenderTargets();
 	pipeline->BindRenderTargets();
 	pipeline->SetViewPort(oldViewport);
 }

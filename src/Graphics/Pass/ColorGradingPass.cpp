@@ -27,6 +27,9 @@ void ColorGradingPass::Set()
 	LUT->Set(TL_Graphics::E_SHADER_TYPE::PS, LUTSlot);
 
 	rtts[0]->SetRT(0);
+
+	sourceTextures[0]->Set(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
+
 	shaderPS->Set();
 }
 
@@ -36,9 +39,9 @@ void ColorGradingPass::Execute()
 
 	Set();
 	pipeline->Draw();
-	pipeline->UnSetRenderTarget(0);
+
+	pipeline->UnSetAllRenderTargets();
 	pipeline->BindRenderTargets();
-	rtts[0]->SetT(TL_Graphics::E_SHADER_TYPE::PS, source0Slot);
 }
 
 

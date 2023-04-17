@@ -11,6 +11,7 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
 	, pipeline(pipeline)
 	, format(format)
 	, resizeNotice(resizeNotice)
+	, m_DebugName(debugName)
 {
 	sizeX = width;
 	sizeY = height;
@@ -30,6 +31,7 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
 	, pipeline(pipeline)
 	, format(format)
 	, resizeNotice(resizeNotice)
+	, m_DebugName(debugName)
 {
 	resizeNotice->AddObserver(this);
 
@@ -110,6 +112,8 @@ void RenderTargetTexture::ResizeRTT(UINT sizeX, UINT sizeY)
 	srvDesc.Texture2D.MipLevels = 1;
 
 	resources->srvs->Create(srv, srvDesc, texture);
+
+	SetDebugName(m_DebugName);
 }
 
 void RenderTargetTexture::Resize(UINT sizeX, UINT sizeY)
