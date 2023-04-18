@@ -88,7 +88,7 @@ float3 GetLightIntensity(Light light, float3 pos_world)
 //surface To Light
 float3 GetLightDirection(Light light, float3 pos_world)
 {
-    if (light.type != LightType_Spot)
+    if (light.type != LightType_Point)
         return -normalize(light.direction);
     
     return normalize(light.position - pos_world);
@@ -99,8 +99,8 @@ bool IsValid(Light light, float3 pos_world)
     if (light.type == LightType_Directional)
         return true;
     
-    //if(light.type != LightType_Directional)
-    //    return length(light.position - pos_world) < light.range;
+    if (light.type != LightType_Directional)
+        return length(light.position - pos_world) < light.range;
     
     //todo : if spotlight
     return true;
