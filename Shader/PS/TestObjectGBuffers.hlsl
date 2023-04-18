@@ -11,16 +11,19 @@
 #include "TL_PBR.hlsli"
 
 Buffer<float4> MaterialTest : register(t50);
+Buffer<float4> ColorTest : register(t51);
 
-cbuffer Color : register(b10)
-{
-    float3 color;
-}
 
 float2 GetMaterialByInstanceID(uint instanceID)
 {
     return MaterialTest.Load(instanceID).xy;
 }
+
+float3 GetColorByInstanceID(uint instanceID)
+{
+    return ColorTest.Load(instanceID).rgb;
+}
+
 
 PS_Out main(VS_Out surface)
 {
@@ -28,12 +31,15 @@ PS_Out main(VS_Out surface)
 	
 	float4 basecolor_opacity = baseColor_opcityMap.Sample(Sampler_Wrap, surface.uv);
     
-    float test = surface.instanceID / 20.0f;
+    float3 color = GetColorByInstanceID(surface.instanceID);
+    
     ret.out0 = float4(color.r, color.g, color.b, 1.0f); //albedo
 
-	ret.out1 = float4(surface.normal_world, 1.0f); //normal_world
+    ret.out1 = float4(surface.normal_world, 1.0f); //normal_world
+    //ret.out1 = float4(float3(1.0f, 0.0f, 0.0f), 1.0f); //normal_world
     
     float2 mr = GetMaterialByInstanceID(surface.instanceID);
+    
 	
     float metallic = mr.x;
     float roughness = mr.y;
