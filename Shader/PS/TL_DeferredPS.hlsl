@@ -42,7 +42,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     //roughness = max(0.01f, roughness);
     
     float3 pos_world = pos_world_Deferred.Sample(Sampler_Clamp, surface.uv).rgb;
-    float3 normal = normal_world_Deferred.Sample(Sampler_Clamp, surface.uv).rgb;
+    float3 normal = normalize(normal_world_Deferred.Sample(Sampler_Clamp, surface.uv).rgb);
     
     float depthLinear = depthLinear_Deferred.Sample(Sampler_Clamp, surface.uv).r;
     
@@ -66,7 +66,6 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     // 여러 광원으로부터 직접광 (Diffuse + Specular) 더해줄 변수 선언
     float3 directLighting = 0.0f;
     
-    [unroll(20)]
     for (uint i = 0; i < NumLights; ++i)
     {
         Light light = LoadLightInfo(i);
@@ -106,9 +105,9 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
         
         // 분포함수, n을 노말로 갖고 있는 표면에 ,h를 노말로 갖고 있는 미세표면이 얼마나 있는지?
         // 사실 아직도 확신 못하겠음
-        float D = D_Beckmann(roughness * roughness, nDotH);
+        //float D = D_Beckmann(roughness * roughness, nDotH);
         //float D = ndfGGX(cosLh, roughness);
-        //float D = D_GGX(roughness * roughness, nDotH);
+        float D = D_GGX(roughness * roughness, nDotH);
         
 		// 기하감쇠율, masking, shadowing 으로 인한 빛의 손실율
         float G = gaSchlickGGX(nDotL, nDotToEye, roughness);
@@ -184,9 +183,10 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
 	//indirectLighting = LinearTosRGB(indirectLighting);
     
-    float3 ret = directLighting + indirectLighting;
-    if (length(ret) == 0)
-        return float4(0, 0, 0, opacity);
+    //float3 ret = directLighting + indirectLighting;
+    //float3 ret = indirectLighting;
+    float3 ret = directLighting;
+    
     
     return float4(LinearTosRGB(ret), opacity);
     //return float4(LinearTosRGB(directLighting), opacity);
