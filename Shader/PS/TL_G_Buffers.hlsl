@@ -38,8 +38,8 @@ PS_Out main(VS_Out surface)
     //ret.out0 = basecolor_opacity; //albedo
     ret.out0 = float4(basecolor_opacity.rgb, 1.0f); //albedo
 
-    //ret.out1 = float4(normal, 1.0f); //normal_world
-    ret.out1 = float4(surface.normal_world, 1.0f); //normal_world
+    ret.out1 = float4(normal, 1.0f); //normal_world
+    //ret.out1 = float4(surface.normal_world, 1.0f); //normal_world
     
     ret.out2 = float4(surface.pos_world, 1.0f); //pos_world
     ret.out3 = float4(r_s_m_ao.b, 1.0f, 1.0f, 0.0f); //metalness
