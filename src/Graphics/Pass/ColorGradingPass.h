@@ -19,13 +19,14 @@ public:
 
 	virtual void Execute() override;
 
+	void SetLUT(TL_Graphics::ITexture* texture) { LUT = texture; }
 
 private:
 	OnResizeNotice* resizeNotice;
 
 	Shader* shaderPS;
 
-	Texture* LUT;
+	TL_Graphics::ITexture* LUT = nullptr;
 
 private:
 	void CreateRenderTarget(OnResizeNotice* resizeNotice);

@@ -10,9 +10,12 @@ public:
 	Texture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::wstring fileName, std::string debugName = "");
 	Texture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, std::string debugName = "");
 	virtual ~Texture();
-	
+
 	virtual void Set(TL_Graphics::E_SHADER_TYPE type,
 		UINT slot) override;
+
+	// ITexture을(를) 통해 상속됨
+	virtual ID3D11ShaderResourceView* GetpSRV() override { return srv; }
 
 	UINT GetSizeX() { return sizeX; }
 	UINT GetSizeY() { return sizeY; }
@@ -24,4 +27,7 @@ protected:
 	void LoadTexInfo();
 	///if sizeZ = 0; 2d, sizeZ >= 1 3d
 	UINT sizeX = 0, sizeY = 0, sizeZ = 0;
+
+
+
 };

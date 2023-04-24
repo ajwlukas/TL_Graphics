@@ -14,5 +14,9 @@ namespace TL_Graphics
 		virtual void Set(TL_Graphics::E_SHADER_TYPE type,
 			UINT slot) = 0;
 
+
+
+		virtual struct ID3D11ShaderResourceView* GetpSRV() = 0;
+
 	};
 }

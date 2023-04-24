@@ -15,6 +15,8 @@ namespace TL_Graphics
 
 		bool doColorGrading = false;
 
+		class ITexture* colorGradingLUT = nullptr;
+
 		bool doLightAdaption = false;
 		float middleGrey = 0.5f;
 

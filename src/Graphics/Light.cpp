@@ -3,10 +3,10 @@
 
 #include "ShaderResourceSlotPS.h"
 
-Light::Light(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
-	:maxLightNum (100)
+Light::Light(ID3D11Device* device, ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
+	:maxLightNum (200)
 {
-	textureBuffer = new TextureBuffer(dc, resources, pipeline, nullptr, sizeof(MetaData) + sizeof(TL_Graphics::DirectionalLight) * maxLightNum,"Light");
+	textureBuffer = new TextureBuffer(device, dc, resources, pipeline, nullptr, sizeof(MetaData) + sizeof(TL_Graphics::DirectionalLight) * maxLightNum,"Light");
 }
 
 Light::~Light()

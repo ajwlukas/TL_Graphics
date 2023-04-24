@@ -47,7 +47,4 @@ Texture2D sourceSlot1 : register(t33);
 
 //40 ~ 49
 Texture3D LUT : register(t40);
-
-Texture2D accumulateA : register(t41);
-Texture2D accumulateB : register(t42);
 #endif

@@ -9,15 +9,10 @@ ColorGradingPass::ColorGradingPass(ID3D11DeviceContext* dc, Resources* resources
 {
 	CreateRenderTarget(resizeNotice);
 	CreateShader();
-
-
-	LUT = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/volumeTexture_Greenish.dds", "ColorGradingLUT");
 }
 
 ColorGradingPass::~ColorGradingPass()
 {
-	SAFE_DELETE(LUT);
-
 	SAFE_DELETE(rtts[0]);
 	SAFE_DELETE(shaderPS);
 }

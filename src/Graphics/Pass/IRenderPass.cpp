@@ -24,7 +24,7 @@ void IRenderPass::ClearRenderTargets(TL_Math::Vector4 color)
 		rtt->Clear(color);
 }
 
-void IRenderPass::SetSourceTexture(Texture* texture, UINT sourceTextureNum)
+void IRenderPass::SetSourceTexture(TL_Graphics::ITexture* texture, UINT sourceTextureNum)
 {
 	sourceTextures[sourceTextureNum] = texture;
 }

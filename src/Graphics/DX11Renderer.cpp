@@ -39,7 +39,7 @@ HRESULT DX11Renderer::Init()
     resources = new Resources(device);
     pipeline = new Pipeline(dc, swapChain, &onResizeNotice, resources);
 
-    lights = new Light(dc, resources, pipeline);
+    lights = new Light(device,dc, resources, pipeline);
 
     //gBufferRenderPass = new GBufferRenderPass(dc, resources, pipeline, &onResizeNotice);
 
@@ -255,7 +255,7 @@ Camera* DX11Renderer::CreateCamera()
 {
     static bool flag = true;
 
-    cam = new Camera(dc, resources, pipeline, &onResizeNotice, 80.0f, 1.0f, 2000.0f);
+    cam = new Camera(dc, resources, pipeline, &onResizeNotice, 80.0f, 1.0f, 4000.0f);
 
 
     if (false)//여기 어떻게 할 것..
@@ -275,7 +275,7 @@ Texture* DX11Renderer::CreateTexture(std::wstring fileName)
 
 TextureBuffer* DX11Renderer::CreateTextureBuffer(void* data, size_t dataSize)
 {
-    return new TextureBuffer(dc, resources, pipeline, data, dataSize);
+    return new TextureBuffer(device, dc, resources, pipeline, data, dataSize);
 }
 
 RenderTargetTexture* DX11Renderer::CreateRenderTargetTexture(float widthRatio , float heightRatio )

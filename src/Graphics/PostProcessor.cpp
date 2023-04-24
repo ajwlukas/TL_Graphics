@@ -152,6 +152,7 @@ void PostProcessor::Execute()
 	if (control.doColorGrading)
 	{
 		colorGradingPass->SetSourceTexture(before);
+		colorGradingPass->SetLUT(control.colorGradingLUT);
 
 		colorGradingPass->Execute();
 

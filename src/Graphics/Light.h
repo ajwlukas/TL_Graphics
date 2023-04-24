@@ -6,7 +6,7 @@
 class Light
 {
 public:
-	Light(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
+	Light(ID3D11Device* device, ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~Light();
 
 	void BeginLightSet();
@@ -30,7 +30,4 @@ private:
 
 		TL_Math::Vector3 pad;
 	}metaData;
-
-	//directionals dirs
-	//static vector<TL_Math::Vector3> dirs;
 };
