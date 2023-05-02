@@ -54,8 +54,8 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     float depthLinear = depthLinear_Deferred.Sample(Sampler_Clamp, surface.uv).r;
     
     
-    //if (enableDirectLight == 0 && enableInDirectLight == 0)
-    //    return float4(0, 0, 0, opacity);
+    if (enableDirectLight == 0 && enableInDirectLight == 0)
+        return float4(0, 0, 0, opacity);
     
     albedo = max(float3(0.0f, 0.0f, 0.0f), sRGBtoLinear(albedo));
     
@@ -77,7 +77,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     // 여러 광원으로부터 직접광 (Diffuse + Specular) 더해줄 변수 선언
     float3 directLighting = 0.0f;
     
-    //if (enableDirectLight)
+    if (enableDirectLight)
     {
         
         for (uint i = 0; i < NumLights; ++i)
@@ -152,7 +152,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
     //환경으로부터의 간접광들, environmentMap을 광원으로 삼음
     float3 indirectLighting = 0.0f;
-    //if(enableInDirectLight)
+    if (enableInDirectLight)
     {
         //Diffuse
         

@@ -24,9 +24,9 @@ VS_Out main(VS_In_SkinningMesh v)
         {
             totalWeight += boneWeight;
             
-            posW += boneWeight * mul(g_BoneTransforms[boneIndex], float4(v.pos_local, 1.0f)).xyz;
-            normalL += boneWeight * mul((float3x3) g_BoneTransforms[boneIndex], v.normal_local).xyz;
-            tangentL += boneWeight * mul((float3x3) g_BoneTransforms[boneIndex], v.tangent_local).xyz;
+            posW += boneWeight * mul(skinnedMatrices.g_BoneTransforms[boneIndex], float4(v.pos_local, 1.0f)).xyz;
+            normalL += boneWeight * mul((float3x3) skinnedMatrices.g_BoneTransforms[boneIndex], v.normal_local).xyz;
+            tangentL += boneWeight * mul((float3x3) skinnedMatrices.g_BoneTransforms[boneIndex], v.tangent_local).xyz;
         }
     }
 
@@ -37,7 +37,6 @@ VS_Out main(VS_In_SkinningMesh v)
 
     ret.pos_world = posW;
     ret.pos_view = WorldToView(ret.pos_world);
-    //ret.linearDepth = ret.pos_view.z / frustumFar;
     ret.pos_NDC = ViewToNDC(ret.pos_view);
 
     ret.uv = v.uv;
@@ -45,17 +44,8 @@ VS_Out main(VS_In_SkinningMesh v)
     ret.normal_world = normalize(normalL);
     ret.tangent_world = normalize(tangentL);
     ret.bitangent_world = LocalToWorldDirOnly(tangentL);
-
-    // end skin
-
-    // ret.pos_world = LocalToWorld(float4(v.pos_local, 1.0f));
-    // ret.pos_NDC = WorldToNDC(float4(ret.pos_world, 1.0f));
-    //
-    // ret.uv = v.uv;
-    //
-    // ret.normal_world = LocalToWorldDirOnly(v.normal_local);
-    // ret.tangent_world = LocalToWorldDirOnly(v.tangent_local);
-    // ret.bitangent_world = LocalToWorldDirOnly(v.bitangent_local);
+    
+    ret.instanceID = 0;
     
     return ret;
 }

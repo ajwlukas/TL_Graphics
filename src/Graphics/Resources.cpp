@@ -717,7 +717,7 @@ void BufferResources::Create(Resource<ID3D11Buffer>& dest, D3D11_BUFFER_DESC des
 	ID3D11Texture2D* data;
 
 	HRESULT hr = resources->device->CreateBuffer(&desc, pInitData, dest);
-
+	
 	assert(SUCCEEDED(hr));
 
 	buffers[dest].data = dest;

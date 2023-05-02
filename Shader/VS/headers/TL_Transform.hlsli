@@ -73,7 +73,7 @@ float3 LocalToWorld(float3 localPos, uint instanceID)//로컬 포지션을 월드로
     return mul(float4(localPos, 1.0f), GetInstanceWorldTransform(instanceID)).xyz;
 }
 
-float4 LocalToNDC(float3 localPos, uint instanceID)//로컬 포지션을 월드로
+float4 LocalToNDC(float3 localPos, uint instanceID)//로컬 포지션을 NDC로
 {
     float3 ret = LocalToWorld(localPos, instanceID);
     

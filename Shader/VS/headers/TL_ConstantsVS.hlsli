@@ -16,13 +16,25 @@ cbuffer World : register(b1)
     float4x4 world;
 }
 
+struct AnimationMatirces
+{
+    matrix g_BoneTransforms[200];
+};
 
 cbuffer SkinnedObject : register(b2)
 {
-    matrix g_BoneTransforms[200];
+    AnimationMatirces skinnedMatrices;
 }
 
-//cbuffer a : register(b13)
+cbuffer SkinnedInstanced : register(b3)
+{
+    AnimationMatirces skinnedMatrices_instanced[5];
+}
+
+cbuffer a : register(b13)
+{
+    float4x4 test[1024];
+}
 
 
 //struct test

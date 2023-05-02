@@ -28,6 +28,7 @@ public:
 private:
 	Resource<ID3D11Buffer> buffer;
 	ID3D11Texture1D* texture;
+	ID3D11Texture2D* texture2D;
 	ID3D11DeviceContext* dc;
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
