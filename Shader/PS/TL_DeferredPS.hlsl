@@ -27,10 +27,11 @@ cbuffer test : register(b10)
 {
     int enableDirectLight = 1;
     int enableInDirectLight = 1;
+    
+    int select;
 }
 
 
-//TextureCube prefilteredEnvMap : register(t13); //Texture for IBL(Specular)
  //https://github.com/Nadrin/PBR/blob/master/data/shaders/hlsl/pbr.hlsl
 float4 main(VS_Out_ScreenSpace surface) : SV_Target0
 {
@@ -38,36 +39,23 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     float3 emissive = emissive_Deferred.Sample(Sampler_Clamp, surface.uv).rgb;
     
     if (length(emissive) > 0)
-        //return float4(emissive * emissiveStrength, 1.0f);
         return float4(emissive * 15.0f, 1.0f);
-    
     
     float3 albedo = albedo_Deferred.Sample(Sampler_Clamp, surface.uv).rgb;
     float opacity = albedo_Deferred.Sample(Sampler_Clamp, surface.uv).a;
     float metalness = metalness_Deferred.Sample(Sampler_Clamp, surface.uv).r;
     float roughness = roughness_Deferred.Sample(Sampler_Clamp, surface.uv).r;
-    //roughness = max(0.01f, roughness);
-    
     float3 pos_world = pos_world_Deferred.Sample(Sampler_Clamp, surface.uv).rgb;
     float3 normal = normalize(normal_world_Deferred.Sample(Sampler_Clamp, surface.uv).rgb);
+    float AO = AO_Deferred.Sample(Sampler_Wrap, surface.uv).r;
     
-    float depthLinear = depthLinear_Deferred.Sample(Sampler_Clamp, surface.uv).r;
-    
-    
-    if (enableDirectLight == 0 && enableInDirectLight == 0)
-        return float4(0, 0, 0, opacity);
+    //if (enableDirectLight == 0 && enableInDirectLight == 0)
+        //return float4(0, 0, 0, opacity);
     
     albedo = max(float3(0.0f, 0.0f, 0.0f), sRGBtoLinear(albedo));
-    
-    //표면으로 부터 눈으로 향하는 방향 벡터
-    float3 toEye = normalize(cam.camPos - pos_world);
-    
-    
-    // 노말과 눈방향의 각
-    float nDotToEye = max(0.0, dot(normal, toEye));
-    
-    // 프레넬0의 값, 메탈의 경우 albedo 값으로 대체
-    float3 F0 = lerp(Fdielectric, albedo, metalness);
+    float3 toEye = normalize(cam.camPos - pos_world);//표면으로 부터 눈으로 향하는 방향 벡터
+    float nDotToEye = max(0.0, dot(normal, toEye)); // 노말과 눈방향의 각
+    float3 F0 = lerp(Fdielectric, albedo, metalness); // 프레넬0의 값, 메탈의 경우 albedo 값으로 대체
     
     
     //Light 갯수 Load from register(t11), TL_TexturesPS 확인
@@ -77,9 +65,8 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     // 여러 광원으로부터 직접광 (Diffuse + Specular) 더해줄 변수 선언
     float3 directLighting = 0.0f;
     
-    if (enableDirectLight)
+    //if (enableDirectLight)
     {
-        
         for (uint i = 0; i < NumLights; ++i)
         {
             Light light = LoadLightInfo(i);
@@ -89,8 +76,6 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
         
         //빛으로 향하는 벡터
             float3 lightDir = GetLightDirection(light, pos_world);
-        
-        
         
         //감쇠된 빛의 세기
             float3 intensity = GetLightIntensity(light, pos_world);
@@ -152,10 +137,9 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
     //환경으로부터의 간접광들, environmentMap을 광원으로 삼음
     float3 indirectLighting = 0.0f;
-    if (enableInDirectLight)
+    //if (enableInDirectLight)
     {
         //Diffuse
-        
         float3 diffuseIrradiance = sRGBtoLinear(irradianceMap.Sample(Sampler_Clamp, normal));
         
         // 빛의 입사각을 특정할 수 없어서 half대신 normal로
@@ -168,7 +152,6 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
         float3 kd = lerp(refracted, float3(0.0f, 0.0f, 0.0f), metalness);
         
         float3 diffuse = kd * albedo * diffuseIrradiance;
-
         
         float3 ref = normalize(reflect(-toEye, normal));
         
@@ -184,23 +167,21 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
         float3 specular = specularIrradiance * (F0 * specularBRDF.x + specularBRDF.y);
         
         
-        //return float4(0.0f, specularBRDF.g, 0.0f, 1.0f);
-        //return float4(specularBRDF.r, 0.0f, 0.0f, 1.0f);
-        //return float4(specularBRDF.r, specularBRDF.g, 0.0f, 1.0f);
-        
-        //return float4(F, 1.0f);
-        //return float4(LinearTosRGB(diffuse), 1.0f);
-        
         indirectLighting = specular + diffuse;
-	  
-        
     }
     
 	//indirectLighting = LinearTosRGB(indirectLighting);
     
     float3 ret = directLighting + indirectLighting;
+    
+    ret = ret * AO;
     //float3 ret = indirectLighting;
     //float3 ret = directLighting;
+    
+    if (select == 0)
+        return float4(LinearTosRGB(ret), opacity);
+    //else if(select == 1)
+    //    return float4()
     
     
     return float4(LinearTosRGB(ret), opacity);
