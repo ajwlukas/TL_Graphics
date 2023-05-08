@@ -8,7 +8,7 @@ Texture2D baseColor_opcityMap : register(t0);
 Texture2D roughness_specular_metallic_AOMap : register(t1);
 Texture2D normalMap : register(t2);
 Texture2D emissiveMap : register(t3);
-//Texture2D alphaMap : register(t4);
+Texture2D AOMap : register(t4);
 //Texture2D emissiveMap : register(t5);
 //Texture2D AO_Map : register(t6);
 
@@ -32,7 +32,7 @@ Texture2D pos_world_Deferred : register(t22);
 Texture2D metalness_Deferred: register(t23);
 Texture2D roughness_Deferred: register(t24);
 Texture2D depth_Deferred: register(t25);
-Texture2D depthLinear_Deferred : register(t26);
+Texture2D AO_Deferred : register(t26);
 Texture2D emissive_Deferred : register(t27);
 
 
