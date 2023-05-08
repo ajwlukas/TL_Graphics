@@ -317,9 +317,6 @@
     <ClCompile Include="src\Graphics\Pass\LuminanacePass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\Utility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Graphics\SimpleMath.inl">
@@ -361,5 +358,6 @@
     <FxCompile Include="Shader\VS\TL_StaticMeshVS_Instanced.hlsl" />
     <FxCompile Include="Shader\PS\TL_DepthFromLight.hlsl" />
     <FxCompile Include="Shader\PS\PostProcessors\TL_LightPass.hlsl" />
+    <FxCompile Include="Shader\PS\PBR_G_Buffers.hlsl" />
   </ItemGroup>
 </Project>
