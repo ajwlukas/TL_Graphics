@@ -49,3 +49,22 @@ VS_Out main(VS_In_SkinningMesh v)
     
     return ret;
 }
+
+
+//인스턴싱 위한 임시 코드
+Buffer<float4> SkinningInfos;
+
+float4x4 GetBone(uint instanceID, uint boneIndex)
+{
+    //한 인스턴스당 본의 갯수
+    uint boneNum = SkinningInfos.Load(0).x;
+    
+    float4 r0 = SkinningInfos.Load(1 + boneNum * instanceID + boneIndex + 0);
+    float4 r1 = SkinningInfos.Load(1 + boneNum * instanceID + boneIndex + 1);
+    float4 r2 = SkinningInfos.Load(1 + boneNum * instanceID + boneIndex + 2);
+    float4 r3 = SkinningInfos.Load(1 + boneNum * instanceID + boneIndex + 3);
+    
+    
+    
+    return float4x4(r0, r1, r2, r3);
+}
