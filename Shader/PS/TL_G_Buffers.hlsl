@@ -21,6 +21,9 @@ PS_Out main(VS_Out surface)
     
     float4 r_s_m_ao = roughness_specular_metallic_AOMap.Sample(Sampler_Wrap, surface.uv);
     
+    float ao = 1.0f;
+    if(AOMap.Sample(Sampler_Wrap, surface.uv).a > 0.0f)
+        ao = AOMap.Sample(Sampler_Wrap, surface.uv).r;
     
     //normal Mapping
     float3 normal = normalMap.Sample(Sampler_Wrap, surface.uv);
@@ -46,7 +49,7 @@ PS_Out main(VS_Out surface)
     ret.out4 = float4(r_s_m_ao.r, 0.0f, 0.0f, 0.0f); //roughness
     ret.out5 = float4(surface.pos_NDC.z, 0.0f, 0.0f, 0.0f);
     //ret.out6 = float4(surface.linearDepth, 0.0f, 0.0f, 0.0f);
-    ret.out6 = float4(0.0f, 0.0f, 0.0f, 0.0f);
+    ret.out6 = float4(ao, 0.0f, 0.0f, 0.0f);
     ret.out7 = float4(emissive, 0.0f);
     
     return ret;
