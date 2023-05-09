@@ -5,7 +5,7 @@
 #include "ShaderResource.h"
 
 /// <summary>
-/// 이거 생각해보니 벡터처럼 컨테이너화 시켜서 쓰면 편할 듯?
+/// todo : 템플릿 컨테이너화 시킬 것
 /// </summary>
 class TextureBuffer : public TL_Graphics::ITextureBuffer, public ShaderResource
 {
