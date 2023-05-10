@@ -27,8 +27,6 @@ cbuffer test : register(b10)
 {
     int enableDirectLight = 1;
     int enableInDirectLight = 1;
-    
-    int select;
 }
 
 
@@ -49,8 +47,8 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     float3 normal = normalize(normal_world_Deferred.Sample(Sampler_Clamp, surface.uv).rgb);
     float AO = AO_Deferred.Sample(Sampler_Wrap, surface.uv).r;
     
-    //if (enableDirectLight == 0 && enableInDirectLight == 0)
-        //return float4(0, 0, 0, opacity);
+    if (enableDirectLight == 0 && enableInDirectLight == 0)
+        return float4(0, 0, 0, opacity);
     
     albedo = max(float3(0.0f, 0.0f, 0.0f), sRGBtoLinear(albedo));
     float3 toEye = normalize(cam.camPos - pos_world);//표면으로 부터 눈으로 향하는 방향 벡터
@@ -65,7 +63,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     // 여러 광원으로부터 직접광 (Diffuse + Specular) 더해줄 변수 선언
     float3 directLighting = 0.0f;
     
-    //if (enableDirectLight)
+    if (enableDirectLight)
     {
         for (uint i = 0; i < NumLights; ++i)
         {
@@ -137,7 +135,7 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
     //환경으로부터의 간접광들, environmentMap을 광원으로 삼음
     float3 indirectLighting = 0.0f;
-    //if (enableInDirectLight)
+    if (enableInDirectLight)
     {
         //Diffuse
         float3 diffuseIrradiance = sRGBtoLinear(irradianceMap.Sample(Sampler_Clamp, normal));
@@ -174,12 +172,12 @@ float4 main(VS_Out_ScreenSpace surface) : SV_Target0
     
     float3 ret = directLighting + indirectLighting;
     
-    ret = ret * AO;
+    //ret = ret * AO;
     //float3 ret = indirectLighting;
     //float3 ret = directLighting;
     
-    if (select == 0)
-        return float4(LinearTosRGB(ret), opacity);
+    //if (select == 0)
+    //    return float4(LinearTosRGB(ret), opacity);
     //else if(select == 1)
     //    return float4()
     

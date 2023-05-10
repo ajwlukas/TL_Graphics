@@ -13,6 +13,12 @@ namespace TL_Graphics
 	{
 		bool doGrid = true;
 
+		class ITexture* cubeMap = nullptr;
+		class ITexture* irradianceMap = nullptr;
+		class ITexture* prefilteredEnvMap = nullptr;
+		class ITexture* iblBRDF = nullptr;
+
+
 		bool doColorGrading = false;
 
 		class ITexture* colorGradingLUT = nullptr;

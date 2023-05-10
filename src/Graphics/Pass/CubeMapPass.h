@@ -11,7 +11,7 @@
 class CubeMapPass : public IRenderPass
 {
 public:
-	CubeMapPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, std::wstring fileName);
+	CubeMapPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
 	~CubeMapPass();
 
 	// IRenderPass을(를) 통해 상속됨
@@ -23,7 +23,7 @@ public:
 private:
 	Mesh* mesh;
 
-	Texture* texture;
+	Texture* cubeMap;
 	Texture* irradianceMap;
 	Texture* prefilteredEnvMap;
 	Texture* iblBRDF;

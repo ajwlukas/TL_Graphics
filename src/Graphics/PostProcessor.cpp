@@ -30,7 +30,7 @@ PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipe
 
 	finalPass = new FinalPass(dc, resources, pipeline, resizeNotice);
 
-	cubeMapPass = new CubeMapPass(dc, resources, pipeline, resizeNotice, L"_DevelopmentAssets/Texture/CubeMaps/ValleyEnvHDR.dds");
+	cubeMapPass = new CubeMapPass(dc, resources, pipeline, resizeNotice);
 
 	bloomPass = new BloomPass(dc, resources, pipeline, resizeNotice);
 	bloomPass->CreateDestTexture(0, "BloomRT");
@@ -100,6 +100,10 @@ void PostProcessor::Execute()
 	pipeline->SetDepthDisabled();
 	auto oldDSView = pipeline->SetDepthStencilView(nullptr);
 
+	cubeMapPass->SetSourceTexture(control.cubeMap, 0);
+	cubeMapPass->SetSourceTexture(control.irradianceMap, 1);
+	cubeMapPass->SetSourceTexture(control.prefilteredEnvMap, 2);
+	cubeMapPass->SetSourceTexture(control.iblBRDF, 3);
 	cubeMapPass->Execute();
 	RenderTargetTexture* cubeMap = cubeMapPass->GetDestTexture();
 
@@ -148,7 +152,6 @@ void PostProcessor::Execute()
 	}
 
 
-
 	if (control.doColorGrading)
 	{
 		colorGradingPass->SetSourceTexture(before);
@@ -158,7 +161,6 @@ void PostProcessor::Execute()
 
 		before = colorGradingPass->GetDestTexture();
 	}
-
 
 
 	finalPass->SetSourceTexture(before);
@@ -183,51 +185,3 @@ void PostProcessor::UnBindGBuffers()
 
 	pipeline->BindShaderResourcesPS();
 }
-
-
-
-//void PostProcessor::Execute()
-//{
-//	Texture* before = nullptr;
-//
-//	pipeline->SetDepthDisabled();
-//
-//	auto oldDSView = pipeline->SetDepthStencilView(nullptr);
-//
-//	cubeMapPass->Execute();
-//	Texture* cubeMap = cubeMapPass->GetDestTexture();
-//
-//	screenMesh->Set();
-//
-//
-//	if (control.doGrid)
-//		gridPass->Execute();
-//
-//	deferredRenderPass->Execute();
-//	before = deferredRenderPass->GetDestTexture();
-//
-//	if (control.doDownSample)
-//	{
-//		downSamplerPass->SetSourceTexture(before);
-//		downSamplerPass->Execute();
-//	}
-//
-//	if (control.doColorGrading)
-//		colorGradingPass->Execute();
-//
-//	if (control.doGaussianBlur)
-//	{
-//		gaussianBlurPassX->Execute();
-//		gaussianBlurPassY->Execute();
-//	}
-//	/*if (control.doDownSample)
-//
-//	lightAdaptionPass->Execute();*/
-//
-//	finalPass->SetSourceTexture(cubeMap);
-//	finalPass->Execute();
-//
-//	//Á¤¸®
-//	UnBindGBuffers();
-//	pipeline->SetDepthStencilView(oldDSView);
-//}
