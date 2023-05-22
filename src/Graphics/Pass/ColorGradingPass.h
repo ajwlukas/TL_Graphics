@@ -11,7 +11,7 @@
 class ColorGradingPass : public IRenderPass
 {
 public:
-	ColorGradingPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	ColorGradingPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~ColorGradingPass();
 
 	// IRenderPass을(를) 통해 상속됨
@@ -22,14 +22,13 @@ public:
 	void SetLUT(TL_Graphics::ITexture* texture) { LUT = texture; }
 
 private:
-	OnResizeNotice* resizeNotice;
 
 	Shader* shaderPS;
 
 	TL_Graphics::ITexture* LUT = nullptr;
 
 private:
-	void CreateRenderTarget(OnResizeNotice* resizeNotice);
+	void CreateRenderTarget();
 
 	void CreateShader();
 };

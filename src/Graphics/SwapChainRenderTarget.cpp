@@ -3,10 +3,9 @@
 
 #include "Pipeline.h"
 
-SwapChainRenderTarget::SwapChainRenderTarget(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
+SwapChainRenderTarget::SwapChainRenderTarget(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
 	:RenderTarget(dc, resources, pipeline)
 {
-	resizeNotice->AddObserver(this);
 }
 
 SwapChainRenderTarget::~SwapChainRenderTarget()

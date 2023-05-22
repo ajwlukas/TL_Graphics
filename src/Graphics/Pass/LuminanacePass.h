@@ -17,7 +17,7 @@
 class LuminancePass : public IRenderPass
 {
 public:
-	LuminancePass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	LuminancePass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~LuminancePass();
 
 	void Init();
@@ -28,8 +28,6 @@ public:
 	virtual void Execute() override;
 
 private:
-	OnResizeNotice* resizeNotice;
-
 	Shader* shaderPS;
 
 	GreyScalePass* greyScalePass;

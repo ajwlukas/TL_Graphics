@@ -43,7 +43,7 @@
 class PostProcessor
 {
 public:
-	PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~PostProcessor();
 	
 	void CollectGBufferInfos();

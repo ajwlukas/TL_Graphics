@@ -7,7 +7,7 @@
 class SwapChainRenderTarget : public RenderTarget, public OnResize_Observer
 {
 public:
-	SwapChainRenderTarget(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	SwapChainRenderTarget(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~SwapChainRenderTarget();
 
 	void Init(uint32_t width, uint32_t height);

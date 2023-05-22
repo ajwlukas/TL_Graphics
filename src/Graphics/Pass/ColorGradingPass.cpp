@@ -3,11 +3,10 @@
 
 #include "Pipeline.h"
 
-ColorGradingPass::ColorGradingPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
-	:IRenderPass(dc, resources, pipeline, resizeNotice,1,1)
-	, resizeNotice(resizeNotice)
+ColorGradingPass::ColorGradingPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
+	:IRenderPass(dc, resources, pipeline,1,1)
 {
-	CreateRenderTarget(resizeNotice);
+	CreateRenderTarget();
 	CreateShader();
 }
 
@@ -40,9 +39,9 @@ void ColorGradingPass::Execute()
 }
 
 
-void ColorGradingPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
+void ColorGradingPass::CreateRenderTarget()
 {
-	rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "ColorGrading", DXGI_FORMAT_R8G8B8A8_UNORM);
+	rtts[0] = new RenderTargetTexture(dc, resources, pipeline, 1.0f, 1.0f, "ColorGrading", DXGI_FORMAT_R8G8B8A8_UNORM);
 }
 
 void ColorGradingPass::CreateShader()

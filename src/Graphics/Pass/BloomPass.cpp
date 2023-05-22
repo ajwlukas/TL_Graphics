@@ -3,22 +3,21 @@
 
 #include "Pipeline.h"
 
-BloomPass::BloomPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
-	:IRenderPass(dc, resources, pipeline, resizeNotice,1,1)
-	, resizeNotice(resizeNotice)
+BloomPass::BloomPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
+	:IRenderPass(dc, resources, pipeline, 1,1)
 {
 
-	gaussianBlurPassX = new GaussianBlurPass(dc, resources, pipeline, resizeNotice, { 1,0 });
-	gaussianBlurPassY = new GaussianBlurPass(dc, resources, pipeline, resizeNotice, { 0,1 });
+	gaussianBlurPassX = new GaussianBlurPass(dc, resources, pipeline, { 1,0 });
+	gaussianBlurPassY = new GaussianBlurPass(dc, resources, pipeline, { 0,1 });
 
-	accumulatorPass = new AccumulatorPass(dc, resources, pipeline, resizeNotice);
-	accumulatorPass0 = new AccumulatorPass(dc, resources, pipeline, resizeNotice);
+	accumulatorPass = new AccumulatorPass(dc, resources, pipeline) ;
+	accumulatorPass0 = new AccumulatorPass(dc, resources, pipeline);
 
-	samplerPass = new SamplerPass(dc, resources, pipeline, resizeNotice);
+	samplerPass = new SamplerPass(dc, resources, pipeline);
 
-	lightPass = new LightPass(dc, resources, pipeline, resizeNotice);
+	lightPass = new LightPass(dc, resources, pipeline);
 
-	CreateRenderTargets(resizeNotice);
+	CreateRenderTargets();
 	CreateShader();
 }
 
@@ -134,7 +133,7 @@ void BloomPass::Execute()
 	pipeline->BindRenderTargets();
 }
 
-void BloomPass::CreateRenderTargets(OnResizeNotice* resizeNotice)
+void BloomPass::CreateRenderTargets()
 {
 	samplerPass->CreateDestTexture(0,"Bloom_Sampler");
 	gaussianBlurPassX->CreateDestTexture(0,"Bloom_GaussianX");

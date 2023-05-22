@@ -16,7 +16,7 @@
 class GBufferRenderPass : public IRenderPass
 {
 public:
-	GBufferRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	GBufferRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~GBufferRenderPass();
 
 
@@ -32,7 +32,7 @@ private:
 
 	Resource<ID3D11BlendState> blendState;//Deferred에 필요한 GBuffer을 뽑을 때 쓰는 BlendState
 private:
-	void CreateRenderTargets(OnResizeNotice* resizeNotice);
+	void CreateRenderTargets();
 
 	void CreateBlendStates();
 

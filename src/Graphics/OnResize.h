@@ -3,9 +3,16 @@
 #include <stdint.h>
 #include <vector>
 
+class OnResizeNotice;
+
 class OnResize_Observer
 {
+public:
+	OnResize_Observer();
+	~OnResize_Observer();
+
 private:
+
 	friend class OnResizeNotice;
 	virtual void  OnResize(uint32_t width, uint32_t height) = 0;
 };
@@ -13,7 +20,13 @@ private:
 class OnResizeNotice
 {
 	using Observer = OnResize_Observer;
+	OnResizeNotice() {};
 public:
+	static OnResizeNotice& Get() { static OnResizeNotice instance; return instance; }
+
+	OnResizeNotice(const OnResizeNotice&) = delete;
+	void operator=(const OnResizeNotice&) = delete;
+
 	void AddObserver(Observer* observer)
 	{
 		observers.push_back(observer);
@@ -54,3 +67,4 @@ private:
 
 	std::vector<Observer*> observers;
 };
+

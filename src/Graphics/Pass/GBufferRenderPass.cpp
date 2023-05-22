@@ -6,11 +6,11 @@
 #include "ShaderResourceSlotPS.h"
 
 
-GBufferRenderPass::GBufferRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
+GBufferRenderPass::GBufferRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
 	: 
-	IRenderPass(dc, resources, pipeline, resizeNotice,8, 0)
+	IRenderPass(dc, resources, pipeline,8, 0)
 {
-	CreateRenderTargets(resizeNotice);
+	CreateRenderTargets();
 	CreateBlendStates();
 	CreateShader();
 
@@ -50,15 +50,15 @@ void GBufferRenderPass::SetGBuffers()
 	}
 }
 
-void GBufferRenderPass::CreateRenderTargets(OnResizeNotice* resizeNotice)
+void GBufferRenderPass::CreateRenderTargets()
 {
-		rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f,1.0f,"G_Albedo_Opacity");
-		rtts[1] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice,1.0f,1.0f,"G_Normal");
-		rtts[2] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice,1.0f,1.0f,"G_WorldPos");
-		rtts[3] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice,1.0f,1.0f,"G_Metalness");
-		rtts[4] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice,1.0f,1.0f,"G_Roughness");
+		rtts[0] = new RenderTargetTexture(dc, resources, pipeline, 1.0f,1.0f,"G_Albedo_Opacity");
+		rtts[1] = new RenderTargetTexture(dc, resources, pipeline, 1.0f,1.0f,"G_Normal");
+		rtts[2] = new RenderTargetTexture(dc, resources, pipeline, 1.0f,1.0f,"G_WorldPos");
+		rtts[3] = new RenderTargetTexture(dc, resources, pipeline, 1.0f,1.0f,"G_Metalness");
+		rtts[4] = new RenderTargetTexture(dc, resources, pipeline, 1.0f,1.0f,"G_Roughness");
 	for (UINT i = 5; i < 8; i++)
-		rtts[i] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice);
+		rtts[i] = new RenderTargetTexture(dc, resources, pipeline);
 }
 
 void GBufferRenderPass::CreateBlendStates()

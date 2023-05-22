@@ -19,7 +19,7 @@
 class ToneMappingPass : public IRenderPass
 {
 public:
-	ToneMappingPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	ToneMappingPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~ToneMappingPass();
 
 	// IRenderPass을(를) 통해 상속됨
@@ -33,8 +33,6 @@ public:
 	}
 
 private:
-	OnResizeNotice* resizeNotice;
-
 	Shader* shaderPS;
 
 

@@ -13,7 +13,7 @@
 class GreyScalePass : public IRenderPass
 {
 public:
-	GreyScalePass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	GreyScalePass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~GreyScalePass();
 
 	// IRenderPass을(를) 통해 상속됨
@@ -22,8 +22,6 @@ public:
 	virtual void Execute() override;
 
 private:
-	OnResizeNotice* resizeNotice;
-
 	Shader* shaderPS;
 
 private:

@@ -13,7 +13,7 @@
 class AveragePass : public IRenderPass
 {
 public:
-	AveragePass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	AveragePass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~AveragePass();
 
 	// IRenderPass을(를) 통해 상속됨
@@ -22,8 +22,6 @@ public:
 	virtual void Execute() override;
 
 private:
-	OnResizeNotice* resizeNotice;
-
 	Shader* shaderPS;
 
 private:

@@ -14,7 +14,7 @@
 class GaussianBlurPass : public IRenderPass
 {
 public:
-	GaussianBlurPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, TL_Math::Vector2 direction);
+	GaussianBlurPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, TL_Math::Vector2 direction);
 	~GaussianBlurPass();
 
 	// IRenderPass을(를) 통해 상속됨
@@ -25,7 +25,6 @@ public:
 	//virtual void ClearRenderTargets() override;
 
 private:
-	OnResizeNotice* resizeNotice;
 
 	Shader* shaderPS;
 	Shader* shaderPS1;

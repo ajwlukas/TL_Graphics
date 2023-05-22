@@ -5,9 +5,8 @@
 
 const UINT initSize = 729;//==3^5
 
-LuminancePass::LuminancePass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
-	:IRenderPass(dc, resources, pipeline, resizeNotice, 1, 1)
-	, resizeNotice(resizeNotice)
+LuminancePass::LuminancePass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
+	:IRenderPass(dc, resources, pipeline, 1, 1)
 {
 }
 
@@ -23,12 +22,12 @@ LuminancePass::~LuminancePass()
 
 void LuminancePass::Init()
 {
-	greyScalePass = new GreyScalePass(dc, resources, pipeline, resizeNotice);
+	greyScalePass = new GreyScalePass(dc, resources, pipeline);
 	greyScalePass->CreateDestTexture();
-	averagePass = new AveragePass(dc, resources, pipeline, resizeNotice);
+	averagePass = new AveragePass(dc, resources, pipeline);
 	//averagePass->CreateDestTexture();
 	averagePass->CreateDestTexture();
-	averagePass0 = new AveragePass(dc, resources, pipeline, resizeNotice);
+	averagePass0 = new AveragePass(dc, resources, pipeline);
 	averagePass0->SetDestTexture(rtts[0]);
 }
 

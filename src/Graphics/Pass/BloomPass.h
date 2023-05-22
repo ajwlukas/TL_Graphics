@@ -19,7 +19,7 @@
 class BloomPass : public IRenderPass
 {
 public:
-	BloomPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	BloomPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~BloomPass();
 
 	// IRenderPass을(를) 통해 상속됨
@@ -29,8 +29,6 @@ public:
 
 
 private:
-	OnResizeNotice* resizeNotice;
-
 	Shader* shaderPS;
 
 	GaussianBlurPass* gaussianBlurPassX;
@@ -45,7 +43,7 @@ private:
 
 
 private:
-	void CreateRenderTargets(OnResizeNotice* resizeNotice);
+	void CreateRenderTargets();
 	void DeleteRenderTargets();
 
 	void CreateShader();

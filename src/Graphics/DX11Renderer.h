@@ -85,7 +85,6 @@ private:
 	ID3D11DeviceContext* dc;
 	IDXGISwapChain* swapChain;
 
-	OnResizeNotice onResizeNotice;
 
 	Resources* resources;//this class represent device
 	Pipeline* pipeline;//this class represent device context

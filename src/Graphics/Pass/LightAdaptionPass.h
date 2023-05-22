@@ -15,7 +15,7 @@ const unsigned int downSamplingCount = 6;
 class LightAdaptionPass : public IRenderPass
 {
 public:
-	LightAdaptionPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	LightAdaptionPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~LightAdaptionPass();
 
 	// IRenderPass을(를) 통해 상속됨
@@ -29,7 +29,6 @@ public:
 	}
 
 private:
-	OnResizeNotice* resizeNotice;
 
 	Shader* shaderPS;
 
@@ -42,7 +41,7 @@ private:
 	}m_Figure;
 
 private:
-	void CreateRenderTarget(OnResizeNotice* resizeNotice);
+	void CreateRenderTarget();
 
 	void CreateShader();
 };

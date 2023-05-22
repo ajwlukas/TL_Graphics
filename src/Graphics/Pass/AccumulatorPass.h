@@ -13,7 +13,7 @@
 class AccumulatorPass : public IRenderPass
 {
 public:
-	AccumulatorPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	AccumulatorPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~AccumulatorPass();
 
 	// IRenderPass을(를) 통해 상속됨
@@ -23,13 +23,12 @@ public:
 
 
 private:
-	OnResizeNotice* resizeNotice;
 
 	Shader* shaderPS;
 
 	SamplerPass* samplerPass;
 private:
-	void CreateRenderTarget(OnResizeNotice* resizeNotice);
+	void CreateRenderTarget();
 
 	void CreateShader();
 };

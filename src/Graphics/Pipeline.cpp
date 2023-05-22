@@ -1,16 +1,15 @@
 #include "pch_dx_11.h"
 #include "Pipeline.h"
 
-Pipeline::Pipeline(ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, OnResizeNotice* resizeNotice, Resources* resources)
+Pipeline::Pipeline(ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, Resources* resources)
 	:dc(dc), currentMaterial(nullptr), currentMesh(nullptr)
 	, swapChain(swapChain)
 	, resources(resources)
 {
-	resizeNotice->AddObserver(this);
 
-	swapChainRtv = new SwapChainRenderTarget(dc, resources, this, resizeNotice);
+	swapChainRtv = new SwapChainRenderTarget(dc, resources, this);
 
-	Init(resizeNotice->GetWidth(), resizeNotice->GetHeight());
+	Init(OnResizeNotice::Get().GetWidth(), OnResizeNotice::Get().GetHeight());
 
 	texInfoBuffer = new ConstantBuffer(dc, resources, this, texInfos, sizeof(TexInfo) * 4096);
 }

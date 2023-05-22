@@ -3,54 +3,54 @@
 
 #include "Pipeline.h"
 
-PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
+PostProcessor::PostProcessor(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
 	:dc(dc)
 	, resources(resources)
 	, pipeline(pipeline)
 {
 
-	gBufferRenderPass = new GBufferRenderPass(dc, resources, pipeline, resizeNotice);
+	gBufferRenderPass = new GBufferRenderPass(dc, resources, pipeline);
 
 	screenMesh = new ScreenMesh(dc, resources, pipeline);
 
-	deferredRenderPass = new DeferredRenderPass(dc, resources, pipeline, resizeNotice);
+	deferredRenderPass = new DeferredRenderPass(dc, resources, pipeline);
 
-	gridPass = new GridPass(dc, resources, pipeline, resizeNotice);
+	gridPass = new GridPass(dc, resources, pipeline);
 
-	downSamplerPass = new SamplerPass(dc, resources, pipeline, resizeNotice);
+	downSamplerPass = new SamplerPass(dc, resources, pipeline);
 	//downSamplerPass->SetRatio(0.5f, 0.5f);
 
-	colorGradingPass = new ColorGradingPass(dc, resources, pipeline, resizeNotice);
+	colorGradingPass = new ColorGradingPass(dc, resources, pipeline);
 
-	gaussianBlurPassX = new GaussianBlurPass(dc, resources, pipeline, resizeNotice, { 1,0 });
+	gaussianBlurPassX = new GaussianBlurPass(dc, resources, pipeline, { 1,0 });
 
-	gaussianBlurPassY = new GaussianBlurPass(dc, resources, pipeline, resizeNotice, { 0,1 });
+	gaussianBlurPassY = new GaussianBlurPass(dc, resources, pipeline, { 0,1 });
 
-	lightAdaptionPass = new LightAdaptionPass(dc, resources, pipeline, resizeNotice);
+	lightAdaptionPass = new LightAdaptionPass(dc, resources, pipeline);
 
-	finalPass = new FinalPass(dc, resources, pipeline, resizeNotice);
+	finalPass = new FinalPass(dc, resources, pipeline);
 
-	cubeMapPass = new CubeMapPass(dc, resources, pipeline, resizeNotice);
+	cubeMapPass = new CubeMapPass(dc, resources, pipeline);
 
-	bloomPass = new BloomPass(dc, resources, pipeline, resizeNotice);
+	bloomPass = new BloomPass(dc, resources, pipeline);
 	bloomPass->CreateDestTexture(0, "BloomRT");
 
-	lightPass = new LightPass(dc, resources, pipeline, resizeNotice);
+	lightPass = new LightPass(dc, resources, pipeline);
 
-	greyScalePass = new GreyScalePass(dc, resources, pipeline, resizeNotice);
+	greyScalePass = new GreyScalePass(dc, resources, pipeline);
 	greyScalePass->CreateDestTexture(0, "GreyScale", DXGI_FORMAT_R32_FLOAT);
 
-	averagePass = new AveragePass(dc, resources, pipeline, resizeNotice);
+	averagePass = new AveragePass(dc, resources, pipeline);
 	averagePass->CreateDestTexture(0, "Average");
 
-	luminancePass = new LuminancePass(dc, resources, pipeline, resizeNotice);
+	luminancePass = new LuminancePass(dc, resources, pipeline);
 	luminancePass->CreateDestTexture(0, "Luminance");
 	luminancePass->Init();
 
-	lightAdaptionPass = new LightAdaptionPass(dc, resources, pipeline, resizeNotice);
+	lightAdaptionPass = new LightAdaptionPass(dc, resources, pipeline);
 	lightAdaptionPass->CreateDestTexture(0, "LightAdaption");
 
-	toneMappingPass = new ToneMappingPass(dc, resources, pipeline, resizeNotice);
+	toneMappingPass = new ToneMappingPass(dc, resources, pipeline);
 	toneMappingPass->CreateDestTexture(0, "toneMapping");
 }
 

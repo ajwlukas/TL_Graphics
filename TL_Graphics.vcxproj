@@ -306,6 +306,7 @@ xcopy /E /S /Y /R "$(OutputPath)*" "$(OutputPath)..\_Sample\*"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Graphics\Line.cpp" />
+    <ClCompile Include="src\Graphics\OnResize.cpp" />
     <ClCompile Include="src\Graphics\Pass\AccumulatorPass.cpp" />
     <ClCompile Include="src\Graphics\Pass\AveragePass.cpp" />
     <ClCompile Include="src\Graphics\Pass\BloomPass.cpp" />

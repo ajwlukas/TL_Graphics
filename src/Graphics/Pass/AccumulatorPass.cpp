@@ -3,11 +3,10 @@
 
 #include "Pipeline.h"
 
-AccumulatorPass::AccumulatorPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
-	:IRenderPass(dc, resources, pipeline, resizeNotice, 1, 2)
-	, resizeNotice(resizeNotice)
+AccumulatorPass::AccumulatorPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
+	:IRenderPass(dc, resources, pipeline, 1, 2)
 {
-	CreateRenderTarget(resizeNotice);
+	CreateRenderTarget();
 	CreateShader();
 }
 
@@ -41,7 +40,7 @@ void AccumulatorPass::Execute()
 	pipeline->SetViewPort(oldViewport);
 }
 
-void AccumulatorPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
+void AccumulatorPass::CreateRenderTarget()
 {
 	/*rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "Accumulator");*/
 }

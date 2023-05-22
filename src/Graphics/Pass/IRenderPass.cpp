@@ -1,13 +1,11 @@
 #include "pch_dx_11.h"
 #include "IRenderPass.h"
 
-IRenderPass::IRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, UINT rttNum, UINT sourceTextureNum)
+IRenderPass::IRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, UINT rttNum, UINT sourceTextureNum)
 	: dc(dc)
 	, resources(resources)
 	, pipeline(pipeline)
-	, resizeNotice(resizeNotice)
 {
-	resizeNotice->AddObserver(this);
 	rtts.resize(rttNum);
 	sourceTextures.resize(sourceTextureNum);
 	DescViewPort();
@@ -31,7 +29,7 @@ void IRenderPass::SetSourceTexture(TL_Graphics::ITexture* texture, UINT sourceTe
 
 void IRenderPass::CreateDestTexture(UINT renderTargetNum, string debugName, DXGI_FORMAT format)
 {
-	rtts[renderTargetNum] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, debugName, format);
+	rtts[renderTargetNum] = new RenderTargetTexture(dc, resources, pipeline, 1.0f, 1.0f, debugName, format);
 }
 
 void IRenderPass::DeleteDestTextures()
@@ -86,8 +84,8 @@ void IRenderPass::ResizeViewport()
 		assert(widthRatio > 0.0f);//assert When value is not set
 		assert(heightRatio > 0.0f);
 
-		viewPort.Width = resizeNotice->GetWidth() * widthRatio;
-		viewPort.Height = resizeNotice->GetHeight() * heightRatio;
+		viewPort.Width = OnResizeNotice::Get().GetWidth() * widthRatio;
+		viewPort.Height = OnResizeNotice::Get().GetHeight() * heightRatio;
 	}
 	else
 	{

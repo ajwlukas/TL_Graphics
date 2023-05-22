@@ -30,7 +30,7 @@ constexpr UINT MAX_RENDERTARGET = 8;
 class Pipeline : public OnResize_Observer
 {
 public:
-	Pipeline(ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, OnResizeNotice* resizeNotice, Resources* resources);
+	Pipeline(ID3D11DeviceContext* dc, IDXGISwapChain* swapChain, Resources* resources);
 	~Pipeline();
 
 	void Init(UINT width, UINT height);

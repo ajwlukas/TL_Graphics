@@ -9,7 +9,7 @@
 class DeferredRenderPass : public IRenderPass
 {
 public:
-	DeferredRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	DeferredRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~DeferredRenderPass();
 
 	// IRenderPass을(를) 통해 상속됨

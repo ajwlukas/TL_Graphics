@@ -21,7 +21,7 @@ const UINT rtSizeLow = 1000;
 class Shadow
 {
 public:
-	Shadow(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice,Camera* camera, UINT directionalShadowNum);
+	Shadow(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline,Camera* camera, UINT directionalShadowNum);
 	~Shadow();
 
 	void Execute();
@@ -79,7 +79,7 @@ private:
 	Data lightCamLow;
 	TL_Math::Matrix lightTransformLow;
 
-	void CreateRTTs(OnResizeNotice* resizeNotice);
+	void CreateRTTs();
 	void CreateDepthStateAndView();
 	void DescViewport(float size);
 	void CreateShader();

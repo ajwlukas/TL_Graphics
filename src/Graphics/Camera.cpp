@@ -6,7 +6,7 @@
 
 constexpr float pi = 3.141592f;
 
-Camera::Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, float fov, float frustumNear, float frustumFar)
+Camera::Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, float fov, float frustumNear, float frustumFar)
 	:data{}
 	, fov(fov)
 	, frustumNear(frustumNear)
@@ -14,9 +14,8 @@ Camera::Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline
 {
 	fovInRadian = pi / 180.0f * fov;
 
-	resizeNotice->AddObserver(this);
 
-	aspectRatio = resizeNotice->GetWidth() / (float)resizeNotice->GetHeight();
+	aspectRatio = OnResizeNotice::Get().GetWidth() / (float)OnResizeNotice::Get().GetHeight();
 
 	data.view = XMMatrixInverse(nullptr, XMMatrixIdentity());
 	data.proj = XMMatrixPerspectiveFovLH(fovInRadian, aspectRatio, frustumNear, frustumFar);

@@ -3,14 +3,13 @@
 
 #include "Pipeline.h"
 
-RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, UINT width, UINT height, std::string debugName, DXGI_FORMAT format)
+RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, UINT width, UINT height, std::string debugName, DXGI_FORMAT format)
 	:Texture(dc, resources, pipeline), RenderTarget(dc, resources, pipeline)
 	, isBasedWindowSize(false)
 	, dc(dc)
 	, resources(resources)
 	, pipeline(pipeline)
 	, format(format)
-	, resizeNotice(resizeNotice)
 	, m_DebugName(debugName)
 {
 	sizeX = width;
@@ -21,7 +20,7 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
 	SetDebugName(debugName);
 }
 
-RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, float widthRatio, float heightRatio, std::string debugName, DXGI_FORMAT format)
+RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, float widthRatio, float heightRatio, std::string debugName, DXGI_FORMAT format)
 	: Texture(dc, resources, pipeline), RenderTarget(dc, resources, pipeline)
 	, widthRatio(widthRatio)
 	, heightRatio(heightRatio)
@@ -30,13 +29,11 @@ RenderTargetTexture::RenderTargetTexture(ID3D11DeviceContext* dc, Resources* res
 	, resources(resources)
 	, pipeline(pipeline)
 	, format(format)
-	, resizeNotice(resizeNotice)
 	, m_DebugName(debugName)
 {
-	resizeNotice->AddObserver(this);
 
-	sizeX = resizeNotice->GetWidth() * widthRatio < 1 ? 1 : resizeNotice->GetWidth() * widthRatio;
-	sizeY = resizeNotice->GetHeight() * heightRatio < 1 ? 1 : resizeNotice->GetHeight();
+	sizeX = OnResizeNotice::Get().GetWidth() * widthRatio < 1 ? 1 : OnResizeNotice::Get().GetWidth() * widthRatio;
+	sizeY = OnResizeNotice::Get().GetHeight() * heightRatio < 1 ? 1 : OnResizeNotice::Get().GetHeight();
 
 	ResizeRTT(sizeX, sizeY);
 
@@ -130,7 +127,7 @@ void RenderTargetTexture::ResizeRatio(float widthRatio, float heightRatio)
 	this->widthRatio = widthRatio;
 	this->heightRatio = heightRatio;
 
-	OnResize(resizeNotice->GetWidth(), resizeNotice->GetHeight());
+	OnResize(OnResizeNotice::Get().GetWidth(), OnResizeNotice::Get().GetHeight());
 }
 
 void RenderTargetTexture::SetDebugName(std::string debugName)

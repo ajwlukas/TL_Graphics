@@ -11,7 +11,7 @@
 class Camera : public TL_Graphics::ICamera, public OnResize_Observer
 {
 public:
-	Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, float fov = 80.0f, float frustumNear = 1.0f, float frustumFar = 2000.0f);
+	Camera(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, float fov = 80.0f, float frustumNear = 1.0f, float frustumFar = 2000.0f);
 	~Camera();
 
 	virtual void Set(TL_Graphics::E_SHADER_TYPE type = TL_Graphics::E_SHADER_TYPE::VS,

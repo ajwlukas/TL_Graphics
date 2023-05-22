@@ -19,7 +19,7 @@ class Pipeline;
 class IRenderPass : public OnResize_Observer
 {
 public:
-	IRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, UINT rttNum, UINT sourceTextureNum);
+	IRenderPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, UINT rttNum, UINT sourceTextureNum);
 	~IRenderPass();
 
 	virtual void Set() = 0;
@@ -45,7 +45,6 @@ protected:
 	ID3D11DeviceContext* dc;
 	Resources* resources;
 	Pipeline* pipeline;
-	OnResizeNotice* resizeNotice;
 
 	vector<RenderTargetTexture*> rtts;
 	vector<TL_Graphics::ITexture*> sourceTextures;

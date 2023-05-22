@@ -3,9 +3,8 @@
 
 #include "Pipeline.h"
 
-AveragePass::AveragePass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
-	:IRenderPass(dc, resources, pipeline, resizeNotice, 1, 1)
-	, resizeNotice(resizeNotice)
+AveragePass::AveragePass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
+	:IRenderPass(dc, resources, pipeline, 1, 1)
 {
 	CreateShader();
 }

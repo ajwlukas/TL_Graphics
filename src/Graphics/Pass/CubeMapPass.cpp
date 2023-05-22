@@ -5,8 +5,8 @@
 
 #include "Vertex.h"
 
-CubeMapPass::CubeMapPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
-	:IRenderPass(dc, resources, pipeline, resizeNotice, 1, 4)
+CubeMapPass::CubeMapPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
+	:IRenderPass(dc, resources, pipeline, 1, 4)
 {
 	cubeMap = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/CubeMaps/ValleyEnvHDR.dds");
 	irradianceMap = new Texture(dc, resources, pipeline, L"_DevelopmentAssets/Texture/CubeMaps/ValleyDiffuseHDR.dds");
@@ -18,7 +18,7 @@ CubeMapPass::CubeMapPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline
 	prefilteredEnvMap->Set(TL_Graphics::E_SHADER_TYPE::PS, 13);
 	iblBRDF->Set(TL_Graphics::E_SHADER_TYPE::PS, 15);
 
-	CreateRenderTarget(resizeNotice);
+	CreateRenderTarget();
 	CreateShader();
 	CreateMesh();
 }
@@ -76,9 +76,9 @@ void CubeMapPass::Execute()
 }
 
 
-void CubeMapPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
+void CubeMapPass::CreateRenderTarget()
 {
-	rtts[0] = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, 1.0f, 1.0f, "SkyBox");
+	rtts[0] = new RenderTargetTexture(dc, resources, pipeline, 1.0f, 1.0f, "SkyBox");
 }
 
 void CubeMapPass::CreateShader()

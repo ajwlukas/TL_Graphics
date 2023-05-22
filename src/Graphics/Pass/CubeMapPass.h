@@ -11,7 +11,7 @@
 class CubeMapPass : public IRenderPass
 {
 public:
-	CubeMapPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	CubeMapPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~CubeMapPass();
 
 	// IRenderPass을(를) 통해 상속됨
@@ -30,7 +30,7 @@ private:
 
 	Shader* shaderPS;
 private:
-	void CreateRenderTarget(OnResizeNotice* resizeNotice);
+	void CreateRenderTarget();
 
 	void CreateShader();
 

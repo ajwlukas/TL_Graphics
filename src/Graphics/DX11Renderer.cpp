@@ -37,14 +37,14 @@ HRESULT DX11Renderer::Init()
     if (hr != S_OK) return hr;
 
     resources = new Resources(device);
-    pipeline = new Pipeline(dc, swapChain, &onResizeNotice, resources);
+    pipeline = new Pipeline(dc, swapChain, resources);
 
     lights = new Light(device,dc, resources, pipeline);
 
     //gBufferRenderPass = new GBufferRenderPass(dc, resources, pipeline, &onResizeNotice);
 
 
-    postProcessor = new PostProcessor(dc, resources, pipeline, &onResizeNotice);
+    postProcessor = new PostProcessor(dc, resources, pipeline);
 
 
 
@@ -56,8 +56,8 @@ HRESULT DX11Renderer::CreateDeviceAndSwapChain()
     DXGI_SWAP_CHAIN_DESC swapChainDesc;
     ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
     swapChainDesc.BufferCount = 1;
-    swapChainDesc.BufferDesc.Width = onResizeNotice.GetWidth();
-    swapChainDesc.BufferDesc.Height = onResizeNotice.GetHeight();
+    swapChainDesc.BufferDesc.Width = OnResizeNotice::Get().GetWidth();
+    swapChainDesc.BufferDesc.Height = OnResizeNotice::Get().GetHeight();
     swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     swapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
     swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
@@ -255,12 +255,12 @@ Camera* DX11Renderer::CreateCamera()
 {
     static bool flag = true;
 
-    cam = new Camera(dc, resources, pipeline, &onResizeNotice, 80.0f, 1.0f, 4000.0f);
+    cam = new Camera(dc, resources, pipeline, 80.0f, 1.0f, 4000.0f);
 
 
     if (false)//여기 어떻게 할 것..
     {
-        shadow = new Shadow(dc, resources, pipeline, &onResizeNotice, cam, (UINT)1);
+        shadow = new Shadow(dc, resources, pipeline, cam, (UINT)1);
         flag = false;
     }
 
@@ -280,7 +280,7 @@ TextureBuffer* DX11Renderer::CreateTextureBuffer(void* data, size_t dataSize)
 
 RenderTargetTexture* DX11Renderer::CreateRenderTargetTexture(float widthRatio , float heightRatio )
 {
-    return new RenderTargetTexture(dc, resources, pipeline, &onResizeNotice, widthRatio, heightRatio);
+    return new RenderTargetTexture(dc, resources, pipeline, widthRatio, heightRatio);
 }
 
 void DX11Renderer::UnSetAllRenderTargets()
@@ -295,7 +295,7 @@ void DX11Renderer::UnSetRenderTarget(UINT slot)
 
 void DX11Renderer::UpdateWindowSize(UINT width, UINT height)
 {
-    onResizeNotice.Update(width, height);
+    OnResizeNotice::Get().Update(width, height);
 }
 
 void DX11Renderer::Draw()

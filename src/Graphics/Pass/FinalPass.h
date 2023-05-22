@@ -16,7 +16,7 @@
 class FinalPass : public IRenderPass
 {
 public:
-	FinalPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	FinalPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~FinalPass();
 
 	// IRenderPass을(를) 통해 상속됨

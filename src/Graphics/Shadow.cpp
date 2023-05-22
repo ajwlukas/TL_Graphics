@@ -1,7 +1,7 @@
 #include "pch_dx_11.h"
 #include "Shadow.h"
 
-Shadow::Shadow(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice, Camera* camera, UINT directionalShadowNum)
+Shadow::Shadow(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, Camera* camera, UINT directionalShadowNum)
 	: dc(dc)
 	, resources(resources)
 	, pipeline(pipeline)
@@ -14,7 +14,7 @@ Shadow::Shadow(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline
 	lightSpaceViewProjLow = new ConstantBuffer(dc, resources, pipeline, &lightCamLow, sizeof(Data));
 	lightSpaceViewProjLow->SetDebugName("LightCamLow");
 
-	CreateRTTs(resizeNotice);
+	CreateRTTs();
 	CreateDepthStateAndView();
 	CreateShader();
 	CreateAndSetSamplerState();
@@ -289,11 +289,11 @@ void Shadow::ClearRTTs()
 	dc->ClearDepthStencilView(depthStencilViewLow, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
-void Shadow::CreateRTTs(OnResizeNotice* resizeNotice)
+void Shadow::CreateRTTs()
 {
-	depthFromLightHigh = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, rtSizeHigh, rtSizeHigh, "depthFromLightHigh", DXGI_FORMAT_R32_FLOAT);
-	depthFromLightMid = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, rtSizeMid, rtSizeMid, "depthFromLightMid", DXGI_FORMAT_R32_FLOAT);
-	depthFromLightLow = new RenderTargetTexture(dc, resources, pipeline, resizeNotice, rtSizeLow, rtSizeLow, "depthFromLightLow", DXGI_FORMAT_R32_FLOAT);
+	depthFromLightHigh = new RenderTargetTexture(dc, resources, pipeline, rtSizeHigh, rtSizeHigh, "depthFromLightHigh", DXGI_FORMAT_R32_FLOAT);
+	depthFromLightMid = new RenderTargetTexture(dc, resources, pipeline, rtSizeMid, rtSizeMid, "depthFromLightMid", DXGI_FORMAT_R32_FLOAT);
+	depthFromLightLow = new RenderTargetTexture(dc, resources, pipeline, rtSizeLow, rtSizeLow, "depthFromLightLow", DXGI_FORMAT_R32_FLOAT);
 }
 
 void Shadow::Execute()

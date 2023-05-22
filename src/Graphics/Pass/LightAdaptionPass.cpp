@@ -3,11 +3,10 @@
 
 #include "Pipeline.h"
 
-LightAdaptionPass::LightAdaptionPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice)
-	:IRenderPass(dc, resources, pipeline, resizeNotice, 1, 2)
-	, resizeNotice(resizeNotice)
+LightAdaptionPass::LightAdaptionPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline)
+	:IRenderPass(dc, resources, pipeline, 1, 2)
 {
-	CreateRenderTarget(resizeNotice);
+	CreateRenderTarget();
 	CreateShader();
 
 	figureBuffer = new ConstantBuffer(dc, resources, pipeline, &m_Figure, sizeof(m_Figure));
@@ -46,7 +45,7 @@ void LightAdaptionPass::Execute()
 	pipeline->SetViewPort(oldViewport);
 }
 
-void LightAdaptionPass::CreateRenderTarget(OnResizeNotice* resizeNotice)
+void LightAdaptionPass::CreateRenderTarget()
 {
 }
 

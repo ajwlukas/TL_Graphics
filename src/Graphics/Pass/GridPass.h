@@ -15,7 +15,7 @@
 class GridPass : public IRenderPass
 {
 public:
-	GridPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline, OnResizeNotice* resizeNotice);
+	GridPass(ID3D11DeviceContext* dc, Resources* resources, Pipeline* pipeline);
 	~GridPass();
 
 
