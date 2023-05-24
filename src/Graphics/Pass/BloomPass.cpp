@@ -49,77 +49,37 @@ void BloomPass::Execute()
 	lightPass->Execute();
 	Texture* lightmap = lightPass->GetDestTexture();
 
-	//가장 낮은 해상도의 RT를 Blur한다.
-	gaussianBlurPassX->SetRatio(0.25f, 0.25f);
-	gaussianBlurPassX->SetSourceTexture(lightmap);
-	gaussianBlurPassX->Execute();
 
-	gaussianBlurPassY->SetRatio(0.25f, 0.25f);
-	gaussianBlurPassY->SetSourceTexture(gaussianBlurPassX->GetDestTexture());
-	gaussianBlurPassY->Execute();
+	for (int i = 1; i < 4; i++)
+	{
+		//가장 낮은 해상도의 RT를 Blur한다.
 
+		float div = 0.25f * i;
+		float div1 = 0.25f * (i + 1);
 
-	//그 위의 단계의 RT와 Accumulate한다.
-	samplerPass->SetRatio(0.5f, 0.5f);
-	samplerPass->SetSourceTexture(lightmap);
-	samplerPass->Execute();
-	accumulatorPass->SetRatio(0.5f, 0.5f);
-	accumulatorPass->SetSourceTexture(gaussianBlurPassY->GetDestTexture(),0);
-	accumulatorPass->SetSourceTexture(samplerPass->GetDestTexture(),1);
-	accumulatorPass->Execute();
+		gaussianBlurPassX->SetRatio(div, div);
+		gaussianBlurPassX->SetSourceTexture(lightmap);
+		gaussianBlurPassX->Execute();
 
-	gaussianBlurPassX->ClearRenderTargets();
-	samplerPass->ClearRenderTargets();
-	gaussianBlurPassY->ClearRenderTargets();
-
-	//그 텍스쳐를 Blur한다.
-	gaussianBlurPassX->SetRatio(0.5f, 0.5f);
-	gaussianBlurPassX->SetSourceTexture(accumulatorPass->GetDestTexture());
-	gaussianBlurPassX->Execute();
-
-	accumulatorPass->ClearRenderTargets();
-
-	gaussianBlurPassY->SetRatio(0.5f, 0.5f);
-	gaussianBlurPassY->SetSourceTexture(gaussianBlurPassX->GetDestTexture());
-	gaussianBlurPassY->Execute();
-
-	//그 위의 단계의 RT와 Accumulate한다.
-	samplerPass->SetRatio(0.75f, 0.75f);
-	samplerPass->SetSourceTexture(lightmap);
-	samplerPass->Execute();
-	accumulatorPass->SetRatio(0.75f, 0.75f);
-	accumulatorPass->SetSourceTexture(gaussianBlurPassY->GetDestTexture(),0);
-	accumulatorPass->SetSourceTexture(samplerPass->GetDestTexture(),1);
-	accumulatorPass->Execute();
-
-	gaussianBlurPassX->ClearRenderTargets();
-	samplerPass->ClearRenderTargets();
-	gaussianBlurPassY->ClearRenderTargets();
+		gaussianBlurPassY->SetRatio(div, div);
+		gaussianBlurPassY->SetSourceTexture(gaussianBlurPassX->GetDestTexture());
+		gaussianBlurPassY->Execute();
 
 
-	//그 텍스쳐를 Blur한다.
-	gaussianBlurPassX->SetRatio(0.75f, 0.75f);
-	gaussianBlurPassX->SetSourceTexture(accumulatorPass->GetDestTexture());
-	gaussianBlurPassX->Execute();
+		//그 위의 단계의 RT와 Accumulate한다.
+		samplerPass->SetRatio(div1, div1);
+		samplerPass->SetSourceTexture(lightmap);
+		samplerPass->Execute();
+		accumulatorPass->SetRatio(div1, div1);
+		accumulatorPass->SetSourceTexture(gaussianBlurPassY->GetDestTexture(),0);
+		accumulatorPass->SetSourceTexture(samplerPass->GetDestTexture(),1);
+		accumulatorPass->Execute();
 
-	accumulatorPass->ClearRenderTargets();
+		gaussianBlurPassX->ClearRenderTargets();
+		samplerPass->ClearRenderTargets();
+		gaussianBlurPassY->ClearRenderTargets();
 
-	gaussianBlurPassY->SetRatio(0.75f, 0.75f);
-	gaussianBlurPassY->SetSourceTexture(gaussianBlurPassX->GetDestTexture());
-	gaussianBlurPassY->Execute();
-
-	//그 위의 단계의 RT와 Accumulate한다.
-	samplerPass->SetRatio(1.0f, 1.0f);
-	samplerPass->SetSourceTexture(lightmap);
-	samplerPass->Execute();
-	accumulatorPass->SetRatio(1.0f, 1.0f);
-	accumulatorPass->SetSourceTexture(gaussianBlurPassY->GetDestTexture(), 0);
-	accumulatorPass->SetSourceTexture(samplerPass->GetDestTexture(), 1);
-	accumulatorPass->Execute();
-
-	gaussianBlurPassX->ClearRenderTargets();
-	samplerPass->ClearRenderTargets();
-	gaussianBlurPassY->ClearRenderTargets();
+	}
 
 	//마지막으로 원본과 합쳐준다.
 	accumulatorPass0->SetDestTexture(rtts[0]);
